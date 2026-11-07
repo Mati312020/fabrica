@@ -1,3 +1,4 @@
+import type { MemoryState } from "./memoryTypes";
 import type {
   AgentInfo,
   BlockInfo,
@@ -31,6 +32,7 @@ export interface DomainState {
   audit: { llamadas: number; veredicto: Verdict | null; historial: Verdict[] };
   budget: { usado: number; limite: number } | null;
   budgetPhase: BudgetPhase;
+  memory: MemoryState;
   /** Encendido de cables por clave lógica (`chat`, `dispatch:x`, `task:x`, `audit:x`, `return`). */
   edgeFx: Record<string, EdgeFx>;
 }
@@ -54,5 +56,6 @@ export const initialState: DomainState = {
   audit: { llamadas: 0, veredicto: null, historial: [] },
   budget: null,
   budgetPhase: "normal",
+  memory: { count: 0, items: [], content: null, savedSeq: 0 },
   edgeFx: {},
 };

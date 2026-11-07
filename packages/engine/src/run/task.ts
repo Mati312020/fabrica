@@ -1,4 +1,5 @@
 import type { ModelName } from "@fabrica/events";
+import { memoryBlock, recall } from "../memory/recall.js";
 import { ROLES, nextModel } from "../roles/roles.js";
 import type { RoleName } from "../provider/types.js";
 import { auditTask } from "./audit.js";
@@ -21,6 +22,8 @@ export interface TaskSpec {
   build(motivos: string[]): string;
   /** Validación del motor sobre la salida; devuelve el motivo de rechazo o null. */
   check?(output: unknown): string | null;
+  /** Texto para buscar en la memoria; por defecto, el resumen. */
+  memoryQuery?: string;
   /** Motivos previos (por ejemplo, el comentario del usuario). */
   motivos?: string[];
 }
@@ -45,12 +48,15 @@ export async function runTask(ctx: Ctx, spec: TaskSpec): Promise<TaskResult> {
     if (spec.blockId) ctx.emit("block.progress", { blockId: spec.blockId, pct });
   };
   for (let attempt = 1; ; attempt++) {
+    const recalled = recall(ctx, spec.memoryQuery ?? spec.resumen);
+    const block = memoryBlock(recalled);
     ctx.emit("task.assigned", {
       taskId: spec.id, de: "orquestador", a: agent, resumen: spec.resumen,
       ...(spec.blockId ? { blockId: spec.blockId } : {}),
     });
     progress(10);
-    const prompt = spec.build(rechazos === 0 ? motivos : motivos.slice(-1));
+    const prompt = [spec.build(rechazos === 0 ? motivos : motivos.slice(-1)), block].filter(Boolean).join("\n\n");
+    if (recalled.length) ctx.emit("agent.tool", { id: agent, herramienta: "memoria", detalle: `${recalled.length} recuerdos` });
     const out = await execRole(ctx, agent, {
       role: spec.role, model, system: def.system, prompt, tools: def.tools, schema: def.schema,
       cwd: ctx.state.workspace ?? "", agentId: agent, taskId: spec.id, attempt,
@@ -60,7 +66,7 @@ export async function runTask(ctx: Ctx, spec: TaskSpec): Promise<TaskResult> {
     if (out.ok && motivo === null) {
       progress(60);
       ctx.agents.status(agent, "en_auditoria");
-      const verdict = await auditTask(ctx, spec.id, spec.resumen, out.data);
+      const verdict = await auditTask(ctx, spec.id, spec.resumen, out.data, agent);
       if (verdict.fatal !== undefined) return fail(ctx, agent, verdict.fatal);
       if (verdict.ok) {
         ctx.agents.status(agent, "terminado");

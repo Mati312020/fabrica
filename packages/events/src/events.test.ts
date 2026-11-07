@@ -82,3 +82,22 @@ describe("eventSchema", () => {
     expect(eventSchema.safeParse(pct).success).toBe(false);
   });
 });
+
+describe("contrato de la Fase 3", () => {
+  it("memory.read pide un id y memory.snapshot / memory.content traen el resumen y el origen", () => {
+    expect(commandSchema.safeParse({ type: "memory.read", at, data: { id: "m1" } }).success).toBe(true);
+    expect(commandSchema.safeParse({ type: "memory.read", at, data: {} }).success).toBe(false);
+    const item = { id: "m1", titulo: "t", etiquetas: ["a"], proyecto: "p", actualizado: at };
+    expect(eventSchema.safeParse({ type: "memory.snapshot", at, data: { items: [item] } }).success).toBe(true);
+    const content = { ...item, contenido: "c", agente: "a", tarea: "t1", creado: at };
+    expect(eventSchema.safeParse({ type: "memory.content", at, data: content }).success).toBe(true);
+    expect(eventSchema.safeParse({ type: "memory.content", at, data: item }).success).toBe(false);
+  });
+
+  it("engine.status suma memoryCount (0 si el motor no lo manda)", () => {
+    const data = { apiKeyConfigured: false, paused: false, workspace: null, budgetLimit: 5 };
+    const parsed = eventSchema.safeParse({ type: "engine.status", at, data: { ...data, memoryCount: 7 } });
+    expect(parsed.success && parsed.data.type === "engine.status" && parsed.data.data.memoryCount).toBe(7);
+    expect(eventSchema.safeParse({ type: "engine.status", at, data: { ...data, memoryCount: -1 } }).success).toBe(false);
+  });
+});

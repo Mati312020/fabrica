@@ -35,6 +35,8 @@ export const runEventSchemas = [
     paused: z.boolean(),
     workspace: z.string().nullable(),
     budgetLimit: nonNegative,
+    /** Recuerdos guardados en la memoria persistente. */
+    memoryCount: nonNegative.default(0),
   }),
   msg("engine.error", { code: z.string(), message: z.string() }),
 ] as const;

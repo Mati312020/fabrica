@@ -20,7 +20,7 @@ async function runBlock(ctx: Ctx, rama: string, block: PlanBlock): Promise<boole
   for (;;) {
     const result = await runTask(ctx, {
       id: ctx.nextId(`blk-${block.id}`), rama, role: "codificacion", model: "sonnet", blockId: block.id,
-      resumen: `Codificar el bloque ${block.nombre}`, motivos, build: (m) => prompt(ctx, block, m),
+      resumen: `Codificar el bloque ${block.nombre}`, memoryQuery: `${block.nombre} ${block.descripcion}`, motivos, build: (m) => prompt(ctx, block, m),
     });
     if (result.status !== "ok") return false;
     const out = result.output as CodeOut;

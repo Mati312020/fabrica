@@ -1,3 +1,4 @@
+import { memoryTitles, recall } from "../memory/recall.js";
 import { ROLES } from "../roles/roles.js";
 import type { OrchestratorOut, ResearchOut } from "../roles/schemas.js";
 import { ensureCore, proposeBranch } from "./branches.js";
@@ -9,11 +10,13 @@ import { runTask } from "./task.js";
 
 const MAX_FINDINGS = 10;
 
-function context(ctx: Ctx): string {
+function context(ctx: Ctx, texto: string): string {
   const lines = [`Ramas existentes: ${[...ctx.branches].join(", ") || "ninguna"}`];
   if (ctx.findings.length) lines.push(`Hallazgos aprobados: ${ctx.findings.length}`);
   if (ctx.pendingPlan) lines.push("Hay un plan esperando la aprobación del usuario.");
   if (ctx.done.size) lines.push(`Bloques ensamblados: ${ctx.done.size}`);
+  const titles = memoryTitles(recall(ctx, texto));
+  if (titles) lines.push(titles);
   return lines.join("\n");
 }
 
@@ -39,7 +42,7 @@ export async function handleChat(ctx: Ctx, texto: string): Promise<void> {
   const def = ROLES.orquestador;
   const out = await execRole(ctx, ORCHESTRATOR_ID, {
     role: "orquestador", model: def.model, system: def.system, tools: def.tools, schema: def.schema,
-    prompt: `${context(ctx)}\n\nMensaje del usuario:\n${texto}`,
+    prompt: `${context(ctx, texto)}\n\nMensaje del usuario:\n${texto}`,
     cwd: ctx.state.workspace ?? "", agentId: ORCHESTRATOR_ID, taskId: ctx.nextId("chat"), attempt: 1,
   });
   ctx.agents.status(ORCHESTRATOR_ID, out.ok ? "terminado" : "error");

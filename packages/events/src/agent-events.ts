@@ -2,6 +2,8 @@ import { z } from "zod";
 import { AGENT_STATES, MODELS } from "./constants.js";
 import { msg, nonNegative } from "./envelope.js";
 
+const tags = z.array(z.string());
+
 const model = z.enum(MODELS);
 
 /** Eventos del motor sobre ramas, agentes, tareas, auditoría y memoria (§9). */
@@ -36,4 +38,20 @@ export const agentEventSchemas = [
   msg("task.blocked", { taskId: z.string(), motivo: z.string() }),
   msg("memory.saved", { id: z.string(), titulo: z.string() }),
   msg("memory.deleted", { id: z.string(), titulo: z.string() }),
+  msg("memory.snapshot", {
+    items: z.array(
+      z.object({ id: z.string(), titulo: z.string(), etiquetas: tags, proyecto: z.string(), actualizado: z.string() }),
+    ),
+  }),
+  msg("memory.content", {
+    id: z.string(),
+    titulo: z.string(),
+    contenido: z.string(),
+    etiquetas: tags,
+    proyecto: z.string(),
+    agente: z.string(),
+    tarea: z.string(),
+    creado: z.string(),
+    actualizado: z.string(),
+  }),
 ] as const;

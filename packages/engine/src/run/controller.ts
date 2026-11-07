@@ -1,24 +1,34 @@
 import type { FabricaCommand } from "@fabrica/events";
+import { memoryControl } from "../memory/control.js";
+import { emitMemory } from "../memory/sync.js";
+import type { MemoryStore } from "../memory/store.js";
 import type { Emit } from "../emit.js";
 import type { ModelProvider } from "../provider/types.js";
 import type { EngineState } from "../state.js";
 import { handleChat } from "./chat.js";
-import { codePlan } from "./coding.js";
-import { createCtx, type Ctx } from "./context.js";
-import { planFlow } from "./plan.js";
+import { createCtx } from "./context.js";
+import { approvePlan, rejectPlan } from "./planControl.js";
 
 /** Dependencias del controlador de corridas. */
 export interface ControllerDeps {
   emit: Emit;
   provider: ModelProvider;
   state: EngineState;
+  memory: MemoryStore;
 }
 
 /** Controlador: traduce comandos de la UI en corridas del motor. */
 export interface Controller {
-  handle(command: FabricaCommand): void;
+  /** Despacha un comando; `reply` es el destino de las respuestas dirigidas al solicitante. */
+  handle(command: FabricaCommand, reply?: Emit): void;
   /** Emite `engine.status` con el estado actual a todos los clientes. */
   emitStatus(): void;
+  /** Manda el listado de la memoria (a un cliente o a todos). */
+  emitMemory(reply?: Emit): void;
+  /** Abre la base de memoria en `file` (null = cerrarla) y publica el nuevo listado. */
+  setMemoryPath(file: string | null): void;
+  /** Revisa que la base no haya quedado dentro de la carpeta del proyecto. */
+  guardMemory(): void;
   shutdown(): void;
 }
 
@@ -30,11 +40,8 @@ export function createController(deps: ControllerDeps): Controller {
   const abort = new AbortController();
   const ctx = createCtx({ ...deps, signal: abort.signal });
   const { emit, state } = deps;
-  const emitStatus = () =>
-    emit("engine.status", {
-      apiKeyConfigured: state.hasApiKey(), paused: state.paused,
-      workspace: state.workspace, budgetLimit: ctx.budget.limit(),
-    });
+  const emitStatus = ctx.emitStatus;
+  const memory = memoryControl(ctx);
   const background = (job: Promise<void>) =>
     void job.catch((e: unknown) => emit("engine.error", { code: "run_failed", message: String(e) }));
 
@@ -57,7 +64,7 @@ export function createController(deps: ControllerDeps): Controller {
     ctx.decisions.delete(key);
   }
 
-  function handle(command: FabricaCommand): void {
+  function handle(command: FabricaCommand, reply: Emit = emit): void {
     switch (command.type) {
       case "chat.send": return chat(command.data.texto);
       case "plan.approve": return approvePlan(ctx, command.data.planId, background);
@@ -65,6 +72,8 @@ export function createController(deps: ControllerDeps): Controller {
       case "block.approve": return resolve(`block:${command.data.blockId}`, { approve: true });
       case "block.reject":
         return resolve(`block:${command.data.blockId}`, { approve: false, comentario: command.data.comentario });
+      case "memory.read": return memory.read(command, reply);
+      case "memory.delete": return memory.remove(command);
       case "run.answer": return resolve(command.data.taskId, command.data.decision);
       case "budget.setLimit":
         ctx.budget.setLimit(command.data.usd);
@@ -77,24 +86,12 @@ export function createController(deps: ControllerDeps): Controller {
         return emitStatus();
       case "hello":
         return emit("engine.error", { code: "bad_command", message: "hello ya fue enviado" });
-      default:
-        return emit("engine.error", { code: "not_implemented", message: `${command.type} llega en una fase posterior` });
     }
   }
 
-  return { handle, emitStatus, shutdown: () => abort.abort() };
-}
-
-function approvePlan(ctx: Ctx, planId: string, background: (job: Promise<void>) => void): void {
-  if (ctx.pendingPlan?.id !== planId) return;
-  const { data } = ctx.pendingPlan;
-  ctx.pendingPlan = null;
-  background(codePlan(ctx, data));
-}
-
-function rejectPlan(ctx: Ctx, planId: string, comentario: string, background: (job: Promise<void>) => void): void {
-  if (ctx.pendingPlan?.id !== planId) return;
-  const { data } = ctx.pendingPlan;
-  ctx.pendingPlan = null;
-  background(planFlow(ctx, data.bloques, comentario));
+  return {
+    handle, emitStatus, shutdown: () => abort.abort(),
+    emitMemory: (reply) => emitMemory(ctx, reply),
+    setMemoryPath: memory.setPath, guardMemory: memory.guard,
+  };
 }

@@ -8,6 +8,7 @@ import { attachConnection } from "./connection.js";
 import type { ModelProvider } from "./provider/types.js";
 import { SdkProvider } from "./provider/sdk.js";
 import { createController } from "./run/controller.js";
+import { createMemoryStore } from "./memory/store.js";
 import { createState } from "./state.js";
 
 const MAX_PAYLOAD_BYTES = 64 * 1024;
@@ -21,6 +22,8 @@ export interface EngineOptions {
   allowedOrigins?: readonly string[];
   /** Proveedor de modelos; por defecto el SDK real. Los tests inyectan un guion. */
   provider?: ModelProvider;
+  /** Archivo de la memoria (SQLite). Fuera de la carpeta del proyecto; `:memory:` en tests. */
+  memoryPath?: string;
 }
 
 /** Motor en ejecución. */
@@ -28,6 +31,8 @@ export interface EngineHandle {
   port: number;
   /** Guarda la API key en memoria y avisa el nuevo estado. Vacía = borrar. */
   setApiKey(key: string): void;
+  /** Abre la base de memoria en esa ruta (null = cerrarla). Debe estar fuera de la carpeta del proyecto. */
+  setMemoryPath(file: string | null): void;
   /** Fija la carpeta del proyecto (debe ser un directorio existente); null o inválida = ninguna. */
   setWorkspace(dir: string | null): void;
   close(): Promise<void>;
@@ -51,7 +56,8 @@ export async function startEngine(options: EngineOptions): Promise<EngineHandle>
   const bus = createBus();
   const state = createState();
   const provider = options.provider ?? new SdkProvider(state.apiKey);
-  const controller = createController({ emit: bus.emit, provider, state });
+  const controller = createController({ emit: bus.emit, provider, state, memory: createMemoryStore() });
+  if (options.memoryPath) controller.setMemoryPath(options.memoryPath);
   const wss = new WebSocketServer({
     host: "127.0.0.1",
     port: options.port ?? 0,
@@ -70,8 +76,10 @@ export async function startEngine(options: EngineOptions): Promise<EngineHandle>
       state.setApiKey(key);
       controller.emitStatus();
     },
+    setMemoryPath: (file) => controller.setMemoryPath(file),
     setWorkspace(dir) {
       state.workspace = validDirectory(dir);
+      controller.guardMemory();
       controller.emitStatus();
     },
     close: () =>

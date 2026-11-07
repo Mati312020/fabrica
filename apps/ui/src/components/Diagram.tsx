@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import type { SendCommand } from "../hooks/useEngine";
 import { useDiagramGraph } from "../hooks/useDiagramGraph";
 import { useUi } from "../store/uiStore";
 import { DetailPanel } from "./detail/DetailPanel";
@@ -6,7 +7,7 @@ import { DiagramCanvas } from "./diagram/DiagramCanvas";
 import { EmptyState } from "./Panel";
 
 /** Diagrama de agentes: vacío hasta el primer evento de ramas o agentes; clic en un nodo abre su detalle. */
-export function Diagram() {
+export function Diagram({ send }: { send: SendCommand }) {
   const { t } = useTranslation();
   const graph = useDiagramGraph();
   const open = useUi((s) => s.selected !== null);
@@ -20,7 +21,7 @@ export function Diagram() {
       ) : (
         <EmptyState>{t("diagram.empty")}</EmptyState>
       )}
-      <DetailPanel />
+      <DetailPanel send={send} />
     </section>
   );
 }

@@ -28,8 +28,16 @@ export const planOut = z.object({ resumen: z.string(), bloques: z.array(planBloc
 /** Salida de codificación. */
 export const codeOut = z.object({ resumen: z.string(), archivos: z.array(z.string()) });
 
-/** Salida de auditoría. */
-export const auditOut = z.object({ ok: z.boolean(), motivo: z.string(), sugerencia: z.string() });
+/** Aprendizaje reutilizable que propone el auditor (se valida en el motor antes de guardarlo). */
+export const learningOut = z.object({ titulo: z.string(), contenido: z.string(), etiquetas: z.array(z.string()) });
+
+/** Salida de auditoría. `aprendizajes` solo cuenta cuando `ok` es true (máximo 3). */
+export const auditOut = z.object({
+  ok: z.boolean(),
+  motivo: z.string(),
+  sugerencia: z.string(),
+  aprendizajes: z.array(learningOut).optional(),
+});
 
 export type OrchestratorOut = z.infer<typeof orchestratorOut>;
 export type ResearchOut = z.infer<typeof researchOut>;

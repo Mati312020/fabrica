@@ -90,7 +90,7 @@
 .mem .hd { display: flex; align-items: center; gap: 10px; }
 .mem .st { margin-left: auto; font-family: var(--mono); font-size: 16px; font-weight: 600; color: var(--tx2); }
 .mem.on .st, .mem.on .mt { color: var(--m); }
-.mem .grid { display: grid; grid-template-columns: 90px minmax(0, 1fr) 90px; gap: 12px; align-items: end; }
+.mem .grid { display: grid; grid-template-columns: 74px minmax(0, 1fr) 74px 74px; gap: 12px; align-items: end; }
 .big { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 28px; font-weight: 600; line-height: 1; }
 .verd { font-family: var(--mono); font-size: 24px; font-weight: 700; letter-spacing: 0.04em; line-height: 1; transform-origin: left center; animation: verdict-in 120ms cubic-bezier(0.16, 1, 0.3, 1); }
 .verd.v-err { color: var(--err); }

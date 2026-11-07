@@ -46,12 +46,13 @@ export function attachConnection(socket: WebSocket, deps: ConnectionDeps): void 
       clearTimeout(timer);
       bus.add(socket);
       bus.emitTo(socket, "engine.ready", { version: ENGINE_VERSION, protocol: PROTOCOL_VERSION });
-      return controller.emitStatus();
+      controller.emitStatus();
+      return controller.emitMemory((type, data) => bus.emitTo(socket, type, data));
     }
     if (!command) {
       return bus.emitTo(socket, "engine.error", { code: "bad_command", message: "Comando inválido" });
     }
-    controller.handle(command);
+    controller.handle(command, (type, data) => bus.emitTo(socket, type, data));
   });
 
   socket.on("close", () => {

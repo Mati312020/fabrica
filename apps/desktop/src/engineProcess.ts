@@ -12,6 +12,8 @@ export interface EngineProcess {
   sendApiKey(key: string): void;
   /** Manda la carpeta del proyecto al motor (null = ninguna). */
   sendWorkspace(dir: string | null): void;
+  /** Manda la ruta del archivo de memoria (SQLite, fuera de la carpeta del proyecto). */
+  sendMemoryPath(file: string | null): void;
   kill(): void;
 }
 
@@ -46,6 +48,7 @@ export function startEngineProcess(onExit: (code: number) => void): EngineProces
     alive: () => alive,
     sendApiKey: (key) => child.postMessage({ type: "config.apiKey", key }),
     sendWorkspace: (dir) => child.postMessage({ type: "config.workspace", path: dir }),
+    sendMemoryPath: (file) => child.postMessage({ type: "config.memoryPath", path: file }),
     kill() {
       killedByUs = true;
       child.kill();

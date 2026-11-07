@@ -3,6 +3,7 @@ import type { CommandType, EventOf, EventType, FabricaCommand, FabricaEvent } fr
 import { createController } from "../run/controller.js";
 import { ScriptedProvider, type Handler } from "./scripted.js";
 import type { RoleName } from "../provider/types.js";
+import { createMemoryStore, type MemoryStore } from "../memory/store.js";
 
 /** Banco de pruebas: motor con guion, sin WebSocket. */
 export interface Harness {
@@ -15,6 +16,8 @@ export interface Harness {
   /** Tipos de evento en orden, opcionalmente filtrados. */
   types(only?: readonly EventType[]): string[];
   of<T extends EventType>(type: T): EventOf<T>["data"][];
+  /** Memoria del banco (SQLite en `:memory:`), para sembrar y revisar recuerdos. */
+  memory: MemoryStore;
   close(): void;
 }
 
@@ -32,14 +35,16 @@ export function makeHarness(
   state.workspace = options.workspace === undefined ? process.cwd() : options.workspace;
   if (options.apiKey !== false) state.setApiKey("sk-ant-test");
   const provider = new ScriptedProvider(script);
+  const memory = createMemoryStore();
+  memory.open(":memory:", null);
   const abort = createController({
-    provider, state,
+    provider, state, memory,
     emit: (type, data) => void events.push({ type, at: new Date().toISOString(), data } as unknown as FabricaEvent),
   });
   const find = <T extends EventType>(type: T, test?: (d: EventOf<T>["data"]) => boolean) =>
     events.find((e) => e.type === type && (!test || test(e.data as never))) as EventOf<T> | undefined;
   return {
-    provider, events,
+    provider, events, memory,
     send: (type, data) => abort.handle({ type, at: new Date().toISOString(), data } as FabricaCommand),
     async waitFor(type, test) {
       for (let i = 0; i < 500; i++) {
@@ -51,6 +56,9 @@ export function makeHarness(
     },
     types: (only) => events.map((e) => e.type).filter((t) => !only || only.includes(t)),
     of: (type) => events.filter((e) => e.type === type).map((e) => e.data) as never,
-    close: () => abort.shutdown(),
+    close: () => {
+      abort.shutdown();
+      memory.close();
+    },
   };
 }

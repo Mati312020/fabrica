@@ -4,7 +4,7 @@ import { ORCHESTRATOR, anyActive, auditors, type Column } from "./columns";
 import { D, type Layout } from "./layout";
 
 /** Lo que el diagrama necesita del estado de dominio. */
-export type GraphInput = Pick<DomainState, "branches" | "agents" | "edgeFx" | "audit"> & {
+export type GraphInput = Pick<DomainState, "branches" | "agents" | "edgeFx" | "audit" | "memory"> & {
   pending: number;
 };
 
@@ -30,6 +30,7 @@ export function buildNodes(input: GraphInput, columns: Column[], layout: Layout)
     node("join:mid", "join", dot(layout.mid), { fx: undefined }, 7, 7),
     node("memo", "memory", layout.memoria, {
       llamadas: input.audit.llamadas, veredicto: input.audit.veredicto, auditores: judges.length, active: anyActive(judges),
+      recuerdos: input.memory.count, savedSeq: input.memory.savedSeq,
     }, D.memoW, D.memoH),
   ];
   for (const column of columns) {

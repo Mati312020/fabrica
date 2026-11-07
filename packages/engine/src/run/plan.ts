@@ -50,6 +50,7 @@ export async function planFlow(ctx: Ctx, previous: PlanBlock[] | null = null, co
     id: ctx.nextId("plan-task"), rama, role: "planificacion", model: "opus",
     resumen: comentario ? "Replanificar con el comentario del usuario" : "Armar el plan de bloques",
     motivos: comentario ? [`El usuario rechazó el plan: ${comentario}`] : [],
+    memoryQuery: ctx.userMessages.slice(-3).join(" "),
     build: (motivos) => buildPrompt(ctx, previous, motivos),
     check: (output) => validatePlan(output as PlanOut),
   });

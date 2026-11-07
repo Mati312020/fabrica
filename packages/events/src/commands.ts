@@ -13,6 +13,7 @@ export const commandSchema = z.discriminatedUnion("type", [
   msg("block.approve", { blockId: z.string() }),
   msg("block.reject", { blockId: z.string(), comentario: z.string().max(4000) }),
   msg("memory.delete", { id: z.string() }),
+  msg("memory.read", { id: z.string() }),
   msg("budget.useReserve", empty),
   msg("budget.setLimit", { usd: z.number().positive().max(100000) }),
   msg("run.answer", { taskId: z.string(), decision: z.enum(RUN_DECISIONS) }),

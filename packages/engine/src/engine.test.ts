@@ -45,20 +45,21 @@ describe("motor", () => {
 
   it("con token correcto manda engine.ready y engine.status", async () => {
     const ws = connect("http://localhost:5173");
-    const events = collect(ws, 2);
+    const events = collect(ws, 3);
     ws.on("open", () => ws.send(hello(TOKEN)));
-    const [ready, status] = await events;
+    const [ready, status, snapshot] = await events;
+    expect(snapshot).toMatchObject({ type: "memory.snapshot", data: { items: [] } });
     expect(ready?.type).toBe("engine.ready");
     expect(status).toMatchObject({
       type: "engine.status",
-      data: { apiKeyConfigured: false, workspace: null, budgetLimit: 5 },
+      data: { apiKeyConfigured: false, workspace: null, budgetLimit: 5, memoryCount: 0 },
     });
     ws.close();
   });
 
   it("chat.send sin carpeta responde con error guiado y mensaje del sistema", async () => {
     const ws = connect();
-    const events = collect(ws, 5);
+    const events = collect(ws, 6);
     ws.on("open", () => {
       ws.send(hello(TOKEN));
       ws.send(stamp("chat.send", { texto: "hola" }));
@@ -72,24 +73,24 @@ describe("motor", () => {
 
   it("un comando inválido da engine.error sin cerrar la conexión", async () => {
     const ws = connect();
-    const events = collect(ws, 3);
+    const events = collect(ws, 4);
     ws.on("open", () => {
       ws.send(hello(TOKEN));
       ws.send(stamp("chat.send", { texto: 42 }));
     });
-    expect((await events)[2]).toMatchObject({ type: "engine.error", data: { code: "bad_command" } });
+    expect((await events)[3]).toMatchObject({ type: "engine.error", data: { code: "bad_command" } });
     expect(ws.readyState).toBe(WebSocket.OPEN);
     ws.close();
   });
 
   it("la API key solo cambia el estado, nunca se emite", async () => {
     const ws = connect();
-    const events = collect(ws, 3);
+    const events = collect(ws, 4);
     ws.on("open", () => ws.send(hello(TOKEN)));
     await new Promise((r) => setTimeout(r, 100));
     engine.setApiKey("sk-ant-secreta");
     const all = await events;
-    expect(all[2]).toMatchObject({ data: { apiKeyConfigured: true } });
+    expect(all[3]).toMatchObject({ data: { apiKeyConfigured: true } });
     expect(JSON.stringify(all)).not.toContain("secreta");
     ws.close();
   });

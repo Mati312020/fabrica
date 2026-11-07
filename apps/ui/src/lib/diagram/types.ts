@@ -14,6 +14,8 @@ export type MemoryNodeData = {
   veredicto: Verdict | null;
   auditores: number;
   active: boolean;
+  recuerdos: number;
+  savedSeq: number;
 };
 /** Forma del cable. */
 export type WireShape = "bezier" | "step" | "straight";

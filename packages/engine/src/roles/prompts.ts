@@ -22,5 +22,9 @@ export const PROMPTS = {
   auditoria:
     "Sos un auditor. Revisás el resultado de otro agente contra la tarea pedida, mirando los archivos " +
     "si hace falta. No corregís: devolvés ok, el motivo y una sugerencia concreta. " +
-    "Rechazá solo si hay un problema real. " + COMMON,
+    "Rechazá solo si hay un problema real. " +
+    "Si aprobás, podés proponer hasta 3 aprendizajes en `aprendizajes` (titulo, contenido, etiquetas): " +
+    "solo lo reutilizable en otros proyectos (normas, decisiones de stack, errores a no repetir, componentes " +
+    "útiles, preferencias que el usuario dijo en el chat). Nunca datos personales, credenciales ni contenido " +
+    "de archivos del proyecto. Si no hay nada realmente útil, omitilos; si rechazás, no propongas ninguno. " + COMMON,
 } as const;

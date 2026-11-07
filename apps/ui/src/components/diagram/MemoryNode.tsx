@@ -7,6 +7,7 @@ import type { MemoryNodeData } from "../../lib/diagram/types";
 export function MemoryNode({ data }: NodeProps<Node<MemoryNodeData>>) {
   const { t } = useTranslation();
   const calls = useCountUp(data.llamadas) ?? 0;
+  const memories = useCountUp(data.recuerdos) ?? 0;
   const verdict = data.veredicto;
   const tone = data.active ? " on" : data.llamadas > 0 ? " has" : "";
   return (
@@ -31,6 +32,10 @@ export function MemoryNode({ data }: NodeProps<Node<MemoryNodeData>>) {
           )}
         </div>
         <div><div className="lbl">{t("diagram.auditors")}</div><div className="big">{data.auditores}</div></div>
+        <div>
+          <div className="lbl">{t("diagram.memories")}</div>
+          <div key={data.savedSeq} className={`big${data.savedSeq > 0 ? " bump" : ""}`}>{memories}</div>
+        </div>
       </div>
     </div>
   );

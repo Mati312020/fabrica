@@ -1,4 +1,5 @@
 import type { Emit } from "../emit.js";
+import type { MemoryStore } from "../memory/store.js";
 import { createBudget, type Budget } from "../budget/budget.js";
 import type { ModelProvider } from "../provider/types.js";
 import type { PlanOut } from "../roles/schemas.js";
@@ -26,6 +27,7 @@ export interface Ctx {
   gate: Gate;
   agents: Agents;
   auditors: Pool;
+  memory: MemoryStore;
   signal: AbortSignal;
   auditorIds: Map<number, string>;
   branches: Set<string>;
@@ -37,13 +39,15 @@ export interface Ctx {
   counter: number;
   nextId(prefix: string): string;
   say(rol: "orquestador" | "sistema", texto: string): void;
+  /** Emite `engine.status` con el estado actual a todos los clientes. */
+  emitStatus(): void;
 }
 
 /**
  * Crea el contexto de una corrida.
  * @param deps Publicador, proveedor, estado del motor y señal de cierre.
  */
-export function createCtx(deps: Pick<Ctx, "emit" | "provider" | "state" | "signal">): Ctx {
+export function createCtx(deps: Pick<Ctx, "emit" | "provider" | "state" | "signal" | "memory">): Ctx {
   const { emit } = deps;
   const gate = createGate(() => deps.state.paused || budget.blocked());
   const budget = createBudget(emit, () => gate.poke());
@@ -66,5 +70,10 @@ export function createCtx(deps: Pick<Ctx, "emit" | "provider" | "state" | "signa
       return `${prefix}-${this.counter}`;
     },
     say: (rol, texto) => emit("chat.message", { rol, texto }),
+    emitStatus: () =>
+      emit("engine.status", {
+        apiKeyConfigured: deps.state.hasApiKey(), paused: deps.state.paused, workspace: deps.state.workspace,
+        budgetLimit: budget.limit(), memoryCount: deps.memory.repo()?.count() ?? 0,
+      }),
   };
 }

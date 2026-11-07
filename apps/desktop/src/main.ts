@@ -1,4 +1,5 @@
 import { app, BrowserWindow } from "electron";
+import path from "node:path";
 import { CHANNELS } from "./channels";
 import { startEngineProcess } from "./engineProcess";
 import { registerIpc } from "./ipc";
@@ -14,6 +15,8 @@ app.whenReady().then(async () => {
       if (!win.isDestroyed()) win.webContents.send(CHANNELS.engineExit, code);
     }
   });
+  // La memoria persistente vive en userData, nunca en la carpeta del proyecto.
+  engine.sendMemoryPath(path.join(app.getPath("userData"), "memory.db"));
   registerIpc(engine);
   app.on("before-quit", () => engine.kill());
   createWindow();

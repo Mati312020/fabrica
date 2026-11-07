@@ -1,6 +1,7 @@
 import type { FabricaEvent } from "@fabrica/events";
 import { reduceAgents } from "./reduceAgents";
 import { reduceAudit } from "./reduceAudit";
+import { reduceMemory } from "./reduceMemory";
 import { reduceRun } from "./reduceRun";
 import type { DomainState } from "./state";
 import { formatTime, summarize } from "./summarize";
@@ -17,5 +18,5 @@ export function applyEvent(state: DomainState, event: FabricaEvent): DomainState
   const seq = state.seq + 1;
   const entry = { id: seq, time: formatTime(event.at), type: event.type, summary: summarize(event) };
   const base = { ...state, seq, log: [...state.log, entry].slice(-MAX_LOG) };
-  return reduceRun(reduceAudit(reduceAgents(base, event), event), event);
+  return reduceMemory(reduceRun(reduceAudit(reduceAgents(base, event), event), event), event);
 }
