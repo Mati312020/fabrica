@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import type { ChatMessage } from "../store/state";
+import type { ChatMessage } from "../store/types";
 
 /** Props de {@link ChatMessageView}. */
 interface ChatMessageViewProps {

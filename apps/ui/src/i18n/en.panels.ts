@@ -1,0 +1,52 @@
+import type { esPanels } from "./es.panels";
+
+/** Cards, assembly and budget texts in English. */
+export const enPanels: typeof esPanels = {
+  cards: {
+    planPending: "PLAN TO APPROVE",
+    planStats: "{{bloques}} blocks · {{familias}} families · {{niveles}} levels",
+    planNote: "Nothing gets coded until you approve.",
+    block: "block",
+    dependsOn: "depends on",
+    visual: "VISUAL",
+    planComment: "Changes to the plan (optional)",
+    requestChanges: "Request changes",
+    approvePlan: "Approve plan and code",
+    blockPending: "APPROVAL PENDING",
+    noFiles: "No files reported and no preview.",
+    rejectComment: "What should change?",
+    confirmReject: "Reject with comment",
+    approve: "Approve",
+    reject: "Reject…",
+    blocked: "TASK BLOCKED",
+    retry: "Retry",
+    cancel: "Cancel task",
+  },
+  assembly: {
+    title: "Assembly",
+    empty: "Blocks show up once you approve a plan.",
+    count: "{{done}} / {{total}} assembled",
+    building_one: "under construction · {{count}}",
+    building_other: "under construction · {{count}}",
+    assembled: "assembled set",
+    state: {
+      propuesto: "proposed",
+      pendiente: "queued",
+      construyendo: "building",
+      aprobacion: "waiting for your approval",
+      ensamblado: "assembled",
+    },
+  },
+  budget: {
+    title: "Budget",
+    empty: "No budget reported yet",
+    used: "{{pct}}% used",
+    phase: { normal: "RUNNING", aviso: "WARNING 80 %", pausa: "PAUSED 95 %" },
+    thresholds: "warning at {{warn}} · pause at {{pause}}",
+    reserve: "Use the 5 % reserve · {{amount}}",
+    final: "Hard stop: raise the limit to continue.",
+    limitLabel: "New limit in dollars",
+    limitPlaceholder: "Limit: {{limit}}",
+    setLimit: "Change",
+  },
+};

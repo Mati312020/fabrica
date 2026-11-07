@@ -1,4 +1,6 @@
 import type { es } from "./es";
+import { enPanels } from "./en.panels";
+import { enRun } from "./en.run";
 
 type Messages = typeof es;
 
@@ -13,20 +15,13 @@ export const en: Messages = {
     theme: "Theme",
     language: "Language",
     settings: "Settings",
+    chooseFolder: "Choose folder",
   },
   theme: { oscuro: "Dark", claro: "Light", sistema: "System" },
   connection: {
     conectando: "Connecting",
     conectado: "Connected",
     desconectado: "Disconnected",
-  },
-  diagram: {
-    title: "Agent diagram",
-    empty: "Nothing is running yet. Message the orchestrator to get started.",
-  },
-  assembly: {
-    title: "Assembly",
-    empty: "Blocks show up once you approve a plan.",
   },
   chat: {
     title: "Chat · orchestrator",
@@ -41,11 +36,6 @@ export const en: Messages = {
     empty: "Every engine event shows up here.",
     count_one: "{{count}} event",
     count_other: "{{count}} events",
-  },
-  budget: {
-    title: "Budget",
-    empty: "No budget configured",
-    used: "{{pct}}% used",
   },
   settings: {
     title: "Settings",
@@ -65,4 +55,6 @@ export const en: Messages = {
       engine_unavailable: "The engine is not available. Try again in a few seconds.",
     },
   },
+  ...enRun,
+  ...enPanels,
 };

@@ -23,7 +23,7 @@ export function App() {
         <div className="grid min-h-0 grid-cols-[minmax(0,430fr)_minmax(0,380fr)_minmax(0,242fr)] gap-3">
           <Chat send={send} />
           <SessionLog />
-          <Budget />
+          <Budget send={send} />
         </div>
       </main>
       {settingsOpen ? <SettingsDrawer onClose={closeSettings} /> : null}

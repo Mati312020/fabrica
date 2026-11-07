@@ -1,25 +1,16 @@
-import type { AgentState, ChatRole, ModelName } from "@fabrica/events";
-
-/** Mensaje de chat tal como lo emitió el motor. */
-export interface ChatMessage {
-  id: number;
-  rol: ChatRole;
-  texto: string;
-}
-
-/** Línea del registro de sesión: un evento recibido. */
-export interface LogEntry {
-  id: number;
-  time: string;
-  type: string;
-  summary: string;
-}
-
-/** Agente conocido por los eventos `agent.*`. */
-export interface AgentInfo {
-  modelo: ModelName;
-  estado: AgentState;
-}
+import type {
+  AgentInfo,
+  BlockInfo,
+  BlockedTask,
+  BranchInfo,
+  BudgetPhase,
+  ChatMessage,
+  EdgeFx,
+  LogEntry,
+  PlanInfo,
+  TaskInfo,
+  Verdict,
+} from "./types";
 
 /** Estado de dominio: se construye solo con `applyEvent`. */
 export interface DomainState {
@@ -27,10 +18,21 @@ export interface DomainState {
   engine: { version: string; protocol: number } | null;
   apiKeyConfigured: boolean;
   paused: boolean;
+  workspace: string | null;
+  budgetLimit: number;
   messages: ChatMessage[];
   log: LogEntry[];
+  branches: BranchInfo[];
   agents: Record<string, AgentInfo>;
+  tasks: Record<string, TaskInfo>;
+  plan: PlanInfo | null;
+  blocks: Record<string, BlockInfo>;
+  blocked: BlockedTask[];
+  audit: { llamadas: number; veredicto: Verdict | null; historial: Verdict[] };
   budget: { usado: number; limite: number } | null;
+  budgetPhase: BudgetPhase;
+  /** Encendido de cables por clave lógica (`chat`, `dispatch:x`, `task:x`, `audit:x`, `return`). */
+  edgeFx: Record<string, EdgeFx>;
 }
 
 /** Estado antes de recibir cualquier evento. */
@@ -39,8 +41,18 @@ export const initialState: DomainState = {
   engine: null,
   apiKeyConfigured: false,
   paused: false,
+  workspace: null,
+  budgetLimit: 0,
   messages: [],
   log: [],
+  branches: [],
   agents: {},
+  tasks: {},
+  plan: null,
+  blocks: {},
+  blocked: [],
+  audit: { llamadas: 0, veredicto: null, historial: [] },
   budget: null,
+  budgetPhase: "normal",
+  edgeFx: {},
 };

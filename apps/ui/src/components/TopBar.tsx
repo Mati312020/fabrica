@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import type { SendCommand } from "../hooks/useEngine";
+import { useWorkspace } from "../hooks/useWorkspace";
 import { useFabricaStore } from "../store/store";
 import { ConnectionBadge } from "./ConnectionBadge";
 import { LanguageSwitch } from "./LanguageSwitch";
@@ -19,6 +20,7 @@ const Sep = () => <div className="h-[22px] w-px bg-line" />;
 export function TopBar({ send, onOpenSettings }: TopBarProps) {
   const { t } = useTranslation();
   const engine = useFabricaStore((s) => s.domain.engine);
+  const workspace = useWorkspace();
   const engineLine = engine
     ? t("topbar.engine", { version: engine.version, protocol: engine.protocol })
     : t("topbar.engineWaiting");
@@ -32,9 +34,18 @@ export function TopBar({ send, onOpenSettings }: TopBarProps) {
       </div>
       <Sep />
       <div className="flex flex-col gap-px font-mono">
-        <b className="text-[12.5px] font-medium">{t("topbar.noProject")}</b>
+        <b className="text-[12.5px] font-medium" title={workspace.path ?? ""}>{workspace.name ?? t("topbar.noProject")}</b>
         <span className="whitespace-nowrap text-[10.5px] text-tx3">{engineLine}</span>
       </div>
+      {workspace.canChoose ? (
+        <button
+          type="button"
+          onClick={workspace.choose}
+          className="h-[26px] cursor-pointer rounded-md border border-line bg-transparent px-2.5 font-mono text-[11px] text-tx2"
+        >
+          {t("topbar.chooseFolder")}
+        </button>
+      ) : null}
       <ModelChips />
       <Sep />
       <PauseButton send={send} />

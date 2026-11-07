@@ -1,3 +1,6 @@
+import { esPanels } from "./es.panels";
+import { esRun } from "./es.run";
+
 /** Textos en español rioplatense neutro (idioma por defecto). */
 export const es = {
   topbar: {
@@ -9,20 +12,13 @@ export const es = {
     theme: "Tema",
     language: "Idioma",
     settings: "Ajustes",
+    chooseFolder: "Elegir carpeta",
   },
   theme: { oscuro: "Oscuro", claro: "Claro", sistema: "Sistema" },
   connection: {
     conectando: "Conectando",
     conectado: "Conectado",
     desconectado: "Desconectado",
-  },
-  diagram: {
-    title: "Diagrama de agentes",
-    empty: "Todavía no hay ejecución. Escribile al orquestador para empezar.",
-  },
-  assembly: {
-    title: "Montaje",
-    empty: "Los bloques aparecen cuando apruebes un plan.",
   },
   chat: {
     title: "Chat · orquestador",
@@ -37,11 +33,6 @@ export const es = {
     empty: "Cada evento del motor aparece acá.",
     count_one: "{{count}} evento",
     count_other: "{{count}} eventos",
-  },
-  budget: {
-    title: "Presupuesto",
-    empty: "Sin presupuesto configurado",
-    used: "{{pct}}% usado",
   },
   settings: {
     title: "Ajustes",
@@ -61,4 +52,6 @@ export const es = {
       engine_unavailable: "El motor no está disponible. Probá de nuevo en unos segundos.",
     },
   },
+  ...esRun,
+  ...esPanels,
 };

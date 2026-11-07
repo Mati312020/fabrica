@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import type { SendCommand } from "../hooks/useEngine";
 import { useStickToBottom } from "../hooks/useStickToBottom";
 import { useFabricaStore } from "../store/store";
+import { ApprovalCards } from "./cards/ApprovalCards";
 import { ChatInput } from "./ChatInput";
 import { ChatMessageView } from "./ChatMessageView";
 import { Panel, PanelHeader } from "./Panel";
@@ -15,7 +16,8 @@ interface ChatProps {
 export function Chat({ send }: ChatProps) {
   const { t } = useTranslation();
   const messages = useFabricaStore((s) => s.domain.messages);
-  const listRef = useStickToBottom<HTMLDivElement>(messages);
+  const marker = useFabricaStore((s) => `${s.domain.messages.length}:${s.domain.plan?.planId}:${s.domain.blocked.length}`);
+  const listRef = useStickToBottom<HTMLDivElement>(marker);
   return (
     <Panel label={t("chat.title")} className="gap-2 px-3.5 py-3">
       <PanelHeader title={t("chat.title")} />
@@ -23,6 +25,7 @@ export function Chat({ send }: ChatProps) {
         {messages.map((message) => (
           <ChatMessageView key={message.id} message={message} />
         ))}
+        <ApprovalCards send={send} />
       </div>
       <ChatInput send={send} />
     </Panel>
