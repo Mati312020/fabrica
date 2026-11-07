@@ -1,0 +1,32 @@
+import { app, BrowserWindow } from "electron";
+import { CHANNELS } from "./channels";
+import { startEngineProcess } from "./engineProcess";
+import { registerIpc } from "./ipc";
+import { loadApiKey } from "./secrets";
+import { createWindow } from "./window";
+
+if (!app.requestSingleInstanceLock()) app.quit();
+
+app.whenReady().then(async () => {
+  const engine = startEngineProcess((code) => {
+    for (const win of BrowserWindow.getAllWindows()) {
+      if (!win.isDestroyed()) win.webContents.send(CHANNELS.engineExit, code);
+    }
+  });
+  registerIpc(engine);
+  app.on("before-quit", () => engine.kill());
+  createWindow();
+
+  await engine.connection.catch(() => null);
+  const stored = await loadApiKey();
+  if (stored && engine.alive()) engine.sendApiKey(stored);
+});
+
+app.on("second-instance", () => {
+  const [win] = BrowserWindow.getAllWindows();
+  if (!win) return;
+  if (win.isMinimized()) win.restore();
+  win.focus();
+});
+
+app.on("window-all-closed", () => app.quit());

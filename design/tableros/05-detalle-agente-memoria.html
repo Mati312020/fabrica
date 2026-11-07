@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es"><head>
+<meta charset="utf-8">
+<title>Alfa · detalle de agente</title>
+<script src="c9531a62-1161-4bd2-bbe0-1929254171dc"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0}
+.root{--mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;--sans:'IBM Plex Sans',system-ui,sans-serif;position:relative;width:1440px;height:900px;overflow:hidden;font-family:var(--sans);color:var(--tx);background-color:var(--bg)}
+.th-oscuro{--bg:#08090b;--grid:rgba(255,255,255,.026);--gridM:rgba(255,255,255,.05);--panel:rgba(17,19,24,.72);--border:rgba(255,255,255,.08);--hl:rgba(255,255,255,.08);--shadow:0 18px 40px rgba(0,0,0,.45);--tx:#e9eaee;--tx2:#a1a7b1;--tx3:#6c727d;--line:rgba(255,255,255,.17);--opus:var(--opus-b);--sonnet:var(--sonnet-b);--ok:var(--ok-b);--err:var(--err-b);--warn:var(--warn-b)}
+.th-claro{--bg:#f2f3f5;--grid:rgba(20,24,32,.045);--gridM:rgba(20,24,32,.08);--panel:rgba(255,255,255,.82);--border:rgba(20,24,32,.11);--hl:#fff;--shadow:0 10px 28px rgba(20,24,32,.08);--tx:#15171c;--tx2:#454b56;--tx3:#666c77;--line:rgba(20,24,32,.24);--opus:color-mix(in oklch,var(--opus-b) 66%,#000);--sonnet:color-mix(in oklch,var(--sonnet-b) 70%,#000);--ok:color-mix(in oklch,var(--ok-b) 60%,#000);--err:color-mix(in oklch,var(--err-b) 72%,#000);--warn:color-mix(in oklch,var(--warn-b) 62%,#000)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.glass{position:absolute;box-sizing:border-box;background:var(--panel);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid var(--border);border-radius:12px;box-shadow:inset 0 1px 0 var(--hl),var(--shadow);padding:24px;display:flex;flex-direction:column;gap:18px}
+.th-oscuro .lit{border-color:color-mix(in srgb,var(--m) 70%,transparent);box-shadow:inset 0 1px 0 var(--hl),0 0 0 1px color-mix(in srgb,var(--m) 25%,transparent),0 0 40px color-mix(in srgb,var(--m) 16%,transparent),var(--shadow)}
+.th-claro .lit{border-color:var(--m);box-shadow:0 10px 30px color-mix(in srgb,var(--m) 16%,transparent)}
+.lbl{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--tx3)}
+.row{display:flex;align-items:center;gap:10px}
+.mtag{font-family:var(--mono);font-size:11px;letter-spacing:.08em;padding:3px 8px;border-radius:999px;border:1px solid color-mix(in srgb,var(--m) 60%,transparent);color:var(--m);background:color-mix(in srgb,var(--m) 10%,transparent)}
+.x{margin-left:auto;width:32px;height:32px;border:1px solid var(--line);border-radius:6px;background:transparent;color:var(--tx2);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.state{font-family:var(--mono);font-size:40px;font-weight:600;letter-spacing:-.02em;color:var(--m);line-height:1}
+.tool{font-family:var(--mono);font-size:12px;color:var(--tx2);border:1px solid color-mix(in srgb,var(--m) 40%,transparent);border-radius:5px;padding:5px 8px}
+.tool b{color:var(--m);font-weight:600}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--border);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.stats div{background:var(--panel);padding:10px 12px;display:flex;flex-direction:column;gap:4px}
+.big{font-family:var(--mono);font-size:26px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.05}
+.live{flex:1;min-height:0;border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-family:var(--mono);font-size:12px;line-height:1.7;color:var(--tx2);background:color-mix(in srgb,var(--bg) 55%,transparent);overflow:hidden}
+.add{color:var(--ok)}
+.cur{display:inline-block;width:7px;height:14px;background:var(--tx);vertical-align:-2px}
+.btn{height:34px;padding:0 14px;border:1px solid var(--line);border-radius:6px;background:transparent;color:var(--tx);font-family:var(--mono);font-size:12px;cursor:pointer}
+.mem li{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)}
+.mem li .t{flex:1;min-width:0;font-size:13.5px;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mem li small{font-family:var(--mono);font-size:10.5px;color:var(--tx3);white-space:nowrap}
+.lk{height:28px;padding:0 10px;border:1px solid var(--line);border-radius:5px;background:transparent;color:var(--tx2);font-family:var(--mono);font-size:11px;cursor:pointer}
+.del{color:var(--err);border-color:color-mix(in srgb,var(--err) 45%,transparent)}
+.open{margin:-2px 0 6px;padding:10px 12px;border-radius:6px;border:1px solid var(--border);font-size:13px;line-height:1.5;color:var(--tx2)}
+</style>
+</helmet>
+<div class="root th-{{tema}}" style="{{rootStyle}}">
+
+<div class="mono" style="position: absolute; left: 56px; top: 36px; font-size: 12px; color: var(--tx3)">5 · panel de detalle — se abre al hacer clic en un nodo; el diagrama queda detrás, atenuado</div>
+
+<section class="glass lit" style="left: 56px; top: 72px; width: 620px; height: 792px; --m: var(--sonnet)" aria-label="Detalle de agente coder-01b">
+<div class="row">
+<span class="mtag">SONNET</span>
+<span class="mono" style="font-size: 15px; font-weight: 600">coder-01b</span>
+<span class="mono" style="font-size: 11px; color: var(--warn)">↑ escalado desde haiku</span>
+<button class="x" type="button" aria-label="Cerrar"><svg width="12" height="12" sc-camel-view-box="0 0 12 12" aria-hidden="true"><path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" stroke-width="1.4"></path></svg></button>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<span class="lbl">estado</span>
+<div class="row" style="gap: 16px"><span class="state">escribiendo</span><span class="tool"><b>▸ editar_archivo</b> src/auth/session.ts</span></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span class="lbl">tarea · rama codificación</span>
+<p style="margin: 0; font-size: 14.5px; line-height: 1.5; color: var(--tx)">Migración de sesiones: mover los tokens de refresco a la tabla <span class="mono" style="font-size: 13px">sesiones</span> con expiración deslizante y dejar los tests en verde.</p>
+</div>
+<div style="display: flex; gap: 20px; align-items: center">
+<div style="position: relative; width: 128px; height: 128px; flex: none">
+<svg width="128" height="128" sc-camel-view-box="0 0 128 128" role="img" aria-label="Contexto usado: 62 por ciento">
+<circle cx="64" cy="64" r="52" fill="none" stroke="var(--line)" stroke-width="6"></circle>
+<circle cx="64" cy="64" r="52" fill="none" stroke="var(--m)" stroke-width="6" stroke-dasharray="202.6 326.7" transform="rotate(-90 64 64)" stroke-linecap="butt"></circle>
+<line x1="64" y1="6" x2="64" y2="16" stroke="var(--warn)" stroke-width="1.5" transform="rotate(288 64 64)"></line>
+</svg>
+<div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px">
+<span class="big" style="color: var(--m)">62%</span>
+<span class="mono" style="font-size: 10px; color: var(--tx3)">contexto</span>
+</div>
+</div>
+<div class="stats" style="flex: 1">
+<div><span class="lbl">tiempo</span><span class="big">04:12</span></div>
+<div><span class="lbl">progreso</span><span class="big" style="color: var(--m)">64%</span></div>
+<div><span class="lbl">costo</span><span class="big">0,41</span><span class="mono" style="font-size: 10px; color: var(--tx3)">US$</span></div>
+<div><span class="lbl">entrada</span><span class="big" style="font-size: 20px">48.210</span><span class="mono" style="font-size: 10px; color: var(--tx3)">tokens</span></div>
+<div><span class="lbl">salida</span><span class="big" style="font-size: 20px">9.734</span><span class="mono" style="font-size: 10px; color: var(--tx3)">tokens</span></div>
+<div><span class="lbl">contexto</span><span class="big" style="font-size: 20px">124k</span><span class="mono" style="font-size: 10px; color: var(--tx3)">de 200k · aviso 80%</span></div>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px; flex: 1; min-height: 0">
+<div class="row"><span class="lbl">texto en vivo</span><span class="mono" style="margin-left: auto; font-size: 10.5px; color: var(--tx3)">streaming · 38 tok/s</span></div>
+<div class="live">
+<div>Reescribo refreshSession() para que renueve la expiración en cada uso.</div>
+<div class="add">+ const VENTANA_MS = 30 * 60 * 1000;</div>
+<div class="add">+ await db.sesiones.update({ id, expiraEn: ahora + VENTANA_MS });</div>
+<div style="color: var(--err)">- if (token.expirado) throw new ErrorSesion();</div>
+<div>El intento anterior de Haiku fallaba porque el test usa reloj simulado;</div>
+<div>uso el mismo reloj en la función, no Date.now().</div>
+<div style="color: var(--tx)">Corro session.test.ts antes de pedir auditoría<span class="cur"></span></div>
+</div>
+</div>
+<div class="row"><button class="btn" type="button">Pausar agente</button><button class="btn" type="button">Ver cambios</button><span class="mono" style="margin-left: auto; font-size: 11px; color: var(--tx3)">arrancó 12:41:02</span></div>
+</section>
+
+<section class="glass mem lit" style="left: 740px; top: 72px; width: 644px; height: 792px; --m: var(--opus)" aria-label="Detalle de Memoria y Auditoría">
+<div class="row">
+<span class="mtag">OPUS</span>
+<span class="mono" style="font-size: 15px; font-weight: 600">Memoria · Auditoría</span>
+<button class="x" type="button" aria-label="Cerrar"><svg width="12" height="12" sc-camel-view-box="0 0 12 12" aria-hidden="true"><path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" stroke-width="1.4"></path></svg></button>
+</div>
+<div class="row" style="gap: 16px"><span class="state">despierto</span><span class="tool"><b>▸ revisar</b> respuesta de coder-01 · intento 3/3</span></div>
+<div class="stats">
+<div><span class="lbl">llamadas</span><span class="big">14</span></div>
+<div><span class="lbl">último veredicto</span><span class="big" style="color: var(--err); font-size: 24px; letter-spacing: .03em">RECHAZADO</span></div>
+<div><span class="lbl">recuerdos</span><span class="big">37</span></div>
+</div>
+<div style="border: 1px solid color-mix(in srgb, var(--err) 40%, transparent); border-radius: 8px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px">
+<span class="lbl" style="color: var(--err)">motivo del veredicto</span>
+<p style="margin: 0; font-size: 13.5px; line-height: 1.5; color: var(--tx2)">session.test.ts falla en “renueva la expiración”. Mismo error en los tres intentos: <span class="mono" style="color: var(--warn); font-weight: 600">BUCLE DETENIDO</span>. Recomiendo escalar a Sonnet.</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 4px; flex: 1; min-height: 0">
+<div class="row"><span class="lbl">lo aprendido · 37</span><label class="mono" for="buscar" style="margin-left: auto; font-size: 11px; color: var(--tx3)">buscar</label><input id="buscar" type="search" style="width: 180px; height: 28px; box-sizing: border-box; border: 1px solid var(--line); border-radius: 5px; background: transparent; color: var(--tx); font-family: var(--mono); font-size: 11px; padding: 0 8px"></div>
+<ul style="list-style: none; margin: 0; padding: 0">
+<li><span class="t" style="color: var(--m)">Los tests de sesión usan reloj simulado</span><small>hoy 12:40 · coder-01</small><button class="lk" type="button">Cerrar</button><button class="lk del" type="button">Borrar</button></li>
+<div class="open">Toda función que calcule expiración debe recibir el reloj inyectado. Usar <span class="mono" style="font-size: 12px">Date.now()</span> rompe session.test.ts y explica los tres errores de coder-01.</div>
+<li><span class="t">snake_case en tablas, camelCase en el cliente</span><small>hoy 11:58 · planner-01</small><button class="lk" type="button">Leer</button><button class="lk del" type="button">Borrar</button></li>
+<li><span class="t">La API de pagos limita a 100 solicitudes por minuto</span><small>hoy 12:22 · research-01</small><button class="lk" type="button">Leer</button><button class="lk del" type="button">Borrar</button></li>
+<li><span class="t">Haiku entra en bucle con migraciones de varias tablas</span><small>hoy 12:41 · auditor</small><button class="lk" type="button">Leer</button><button class="lk del" type="button">Borrar</button></li>
+<li><span class="t">ui-login depende de api-usuarios v2, no de v1</span><small>ayer · planner-01</small><button class="lk" type="button">Leer</button><button class="lk del" type="button">Borrar</button></li>
+<li><span class="t">No guardar tokens en el almacenamiento del navegador</span><small>ayer · auditor</small><button class="lk" type="button">Leer</button><button class="lk del" type="button">Borrar</button></li>
+</ul>
+</div>
+<div class="row"><span class="mono" style="font-size: 11px; color: var(--tx3)">borrar un recuerdo pide confirmación y queda en el registro</span></div>
+</section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;tema&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;oscuro&quot;,&quot;claro&quot;],&quot;default&quot;:&quot;oscuro&quot;,&quot;section&quot;:&quot;Pantalla&quot;},&quot;opus&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#a78bfa&quot;,&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;sonnet&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#fb923c&quot;,&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;aprobado&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#4ade80&quot;,&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;rechazado&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#f87171&quot;,&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;aviso&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#fbbf24&quot;,&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  renderVals() {
+    var p = this.props;
+    return {
+      tema: p.tema === 'claro' ? 'claro' : 'oscuro',
+      rootStyle: '--opus-b:' + (p.opus || '#a78bfa') + ';--sonnet-b:' + (p.sonnet || '#fb923c') + ';--ok-b:' + (p.aprobado || '#4ade80') + ';--err-b:' + (p.rechazado || '#f87171') + ';--warn-b:' + (p.aviso || '#fbbf24')
+    };
+  }
+}
+</script>
+
+
+</body></html>

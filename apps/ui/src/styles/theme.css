@@ -1,0 +1,20 @@
+/* Expone los tokens como utilidades de Tailwind (bg-panel, text-tx2, border-line...). */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-panel: var(--panel);
+  --color-border: var(--border);
+  --color-tx: var(--tx);
+  --color-tx2: var(--tx2);
+  --color-tx3: var(--tx3);
+  --color-line: var(--line);
+  --color-idle: var(--idle);
+  --color-node: var(--node);
+  --color-opus: var(--opus);
+  --color-sonnet: var(--sonnet);
+  --color-haiku: var(--haiku);
+  --color-ok: var(--ok);
+  --color-err: var(--err);
+  --color-warn: var(--warn);
+  --font-mono: var(--mono);
+  --font-sans: var(--sans);
+}

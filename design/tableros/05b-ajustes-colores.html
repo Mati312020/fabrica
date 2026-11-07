@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es"><head>
+<meta charset="utf-8">
+<title>Alfa · ajustes de colores de énfasis</title>
+<script src="a4dc08f3-a72d-4e00-bef5-b3645b0b1abc"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0}
+.root{--mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;--sans:'IBM Plex Sans',system-ui,sans-serif;position:relative;width:1440px;height:900px;overflow:hidden;font-family:var(--sans);color:#e9eaee;background:#08090b;display:flex;gap:24px;padding:56px;box-sizing:border-box}
+.glass{box-sizing:border-box;background:rgba(17,19,24,.72);border:1px solid rgba(255,255,255,.08);border-radius:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 18px 40px rgba(0,0,0,.45);padding:24px;display:flex;flex-direction:column;gap:14px}
+.lbl{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#6c727d}
+.h{font-family:var(--mono);font-size:20px;font-weight:600}
+.sub{font-size:13.5px;line-height:1.5;color:#a1a7b1;margin:0}
+.rows{display:flex;flex-direction:column}
+.r{display:grid;grid-template-columns:120px minmax(0,1fr) 116px 84px;align-items:center;gap:14px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.07)}
+.r .nm{font-family:var(--mono);font-size:12.5px;display:flex;flex-direction:column;gap:2px}
+.r .nm small{font-size:10px;color:#6c727d}
+.sws{display:flex;gap:8px}
+.sw{width:30px;height:30px;border-radius:6px;border:1px solid rgba(255,255,255,.12);cursor:pointer;padding:0}
+.sw.sel{outline:2px solid #e9eaee;outline-offset:2px}
+.hex{height:30px;width:116px;box-sizing:border-box;border:1px solid rgba(255,255,255,.17);border-radius:6px;background:transparent;color:#e9eaee;font-family:var(--mono);font-size:12px;padding:0 8px}
+.cr{font-family:var(--mono);font-size:11px;text-align:right}
+.btn{height:36px;padding:0 16px;border:1px solid rgba(255,255,255,.17);border-radius:6px;background:transparent;color:#e9eaee;font-family:var(--mono);font-size:12px;cursor:pointer}
+.btn.pri{background:#e9eaee;color:#08090b;border-color:#e9eaee}
+.pv{flex:1;border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.pv.d{background:#08090b;border:1px solid rgba(255,255,255,.08);--tx:#e9eaee;--tx3:#6c727d;--line:rgba(255,255,255,.17);--node:#0c0d11}
+.pv.l{background:#f2f3f5;border:1px solid rgba(20,24,32,.1);--tx:#15171c;--tx3:#666c77;--line:rgba(20,24,32,.24);--node:#fff}
+.nodes{display:flex;flex-direction:column;gap:8px}
+.ag{box-sizing:border-box;height:52px;padding:7px 10px;border:1px solid var(--m);border-radius:6px;font-family:var(--mono);display:flex;flex-direction:column;justify-content:center;gap:2px}
+.ag small{font-size:9.5px;letter-spacing:.08em;color:var(--m)}
+.ag b{font-size:16px;color:var(--m);font-weight:600}
+.d .ag{background:color-mix(in srgb,var(--m) 8%,#0a0b0e);box-shadow:0 0 0 1px color-mix(in srgb,var(--m) 35%,transparent),0 0 20px color-mix(in srgb,var(--m) 26%,transparent)}
+.l .ag{background:color-mix(in srgb,var(--m) 8%,#fff);box-shadow:0 6px 16px color-mix(in srgb,var(--m) 20%,transparent)}
+.vs{display:flex;gap:14px;font-family:var(--mono);font-size:15px;font-weight:700;letter-spacing:.04em}
+.fam{display:flex;gap:6px}
+.fam span{flex:1;height:18px;border-radius:3px}
+</style>
+</helmet>
+<div class="root" style="{{vars}}">
+<section class="glass" style="width: 760px" aria-label="Colores de énfasis">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span class="lbl">ajustes · apariencia</span>
+<span class="h">Colores de énfasis</span>
+<p class="sub">El color solo codifica datos: modelo, veredicto y familia de bloques. Elegí un tono base; Alfa lo aplica en vivo y genera solo la variante oscura para el tema claro. Contraste medido contra el fondo oscuro.</p>
+</div>
+<div class="rows">
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="8">
+<div class="r">
+<div class="nm"><span style="color: {{r.c}}">{{r.name}}</span><small>{{r.role}}</small></div>
+<div class="sws">
+<sc-for list="{{r.sw}}" as="s" hint-placeholder-count="4">
+<button type="button" class="{{s.cls}}" style="background: {{s.c}}" aria-label="{{s.label}}" sc-camel-on-click="{{s.pick}}"></button>
+</sc-for>
+</div>
+<label style="display: flex; flex-direction: column"><span class="lbl" style="position: absolute; width: 1px; height: 1px; overflow: hidden">Hex de {{r.name}}</span><input class="hex" type="text" value="{{r.c}}" sc-camel-on-change="{{r.onHex}}"></label>
+<span class="cr" style="color: {{r.crColor}}">{{r.cr}}</span>
+</div>
+</sc-for>
+</div>
+<div style="display: flex; gap: 10px; margin-top: auto">
+<button class="btn" type="button" sc-camel-on-click="{{reset}}">Restablecer</button>
+<button class="btn pri" type="button">Guardar</button>
+<span class="lbl" style="margin-left: auto; align-self: center">{{changed}}</span>
+</div>
+</section>
+
+<section class="glass" style="flex: 1; min-width: 0" aria-label="Vista previa">
+<span class="lbl">vista previa en vivo</span>
+<div style="display: flex; gap: 14px; flex: 1">
+<sc-for list="{{pvs}}" as="v" hint-placeholder-count="2">
+<div class="pv {{v.cls}}" style="{{v.vars}}">
+<span class="lbl" style="color: var(--tx3)">{{v.name}}</span>
+<div class="nodes">
+<div class="ag" style="--m: var(--opus)"><small>OPUS · orquestador</small><b>delegando</b></div>
+<div class="ag" style="--m: var(--sonnet)"><small>SONNET · coder-01b</small><b>escribiendo</b></div>
+<div class="ag" style="--m: var(--haiku)"><small>HAIKU · research-01</small><b>pensando</b></div>
+</div>
+<div style="border-top: 1px dashed var(--sonnet); position: relative; margin: 6px 0"></div>
+<div class="vs"><span style="color: var(--ok)">APROBADO</span></div>
+<div class="vs"><span style="color: var(--err)">RECHAZADO</span></div>
+<div class="vs"><span style="color: var(--warn)">BUCLE DETENIDO</span></div>
+<div class="fam"><span style="background: var(--famA)"></span><span style="background: color-mix(in oklch, var(--famA) 70%, var(--mx))"></span><span style="background: var(--famB)"></span><span style="background: color-mix(in oklch, var(--famB) 70%, var(--mx))"></span></div>
+</div>
+</sc-for>
+</div>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.defs = { opus: '#a78bfa', sonnet: '#fb923c', haiku: '#60a5fa', ok: '#4ade80', err: '#f87171', warn: '#fbbf24', famA: '#2dd4bf', famB: '#f472b6' };
+    this.state = { c: Object.assign({}, this.defs) };
+  }
+  lum(hex) {
+    var h = hex.replace('#', '');
+    if (h.length !== 6) return 0;
+    var v = [0, 2, 4].map(function (i) {
+      var x = parseInt(h.substr(i, 2), 16) / 255;
+      return x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4);
+    });
+    return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2];
+  }
+  renderVals() {
+    var self = this;
+    var c = this.state.c;
+    var bgL = this.lum('#08090b');
+    var spec = [
+      ['opus', 'Opus', 'modelo', ['#a78bfa', '#c084fc', '#818cf8', '#e879f9']],
+      ['sonnet', 'Sonnet', 'modelo', ['#fb923c', '#f59e0b', '#fb7185', '#fdba74']],
+      ['haiku', 'Haiku', 'modelo', ['#60a5fa', '#38bdf8', '#22d3ee', '#93c5fd']],
+      ['ok', 'Aprobado', 'veredicto', ['#4ade80', '#34d399', '#a3e635', '#86efac']],
+      ['err', 'Rechazado', 'veredicto · error', ['#f87171', '#fb7185', '#ef4444', '#fca5a5']],
+      ['warn', 'Aviso', 'bucle · 80 %', ['#fbbf24', '#facc15', '#fdba74', '#fde047']],
+      ['famA', 'Familia A', 'bloques', ['#2dd4bf', '#5eead4', '#a3e635', '#67e8f9']],
+      ['famB', 'Familia B', 'bloques', ['#f472b6', '#e879f9', '#fda4af', '#c4b5fd']]
+    ];
+    function set(k, v) { var n = Object.assign({}, self.state.c); n[k] = v; self.setState({ c: n }); }
+    var rows = spec.map(function (s) {
+      var k = s[0];
+      var L = self.lum(c[k]);
+      var ratio = (Math.max(L, bgL) + 0.05) / (Math.min(L, bgL) + 0.05);
+      var okC = ratio >= 4.5;
+      return {
+        name: s[1], role: s[2], c: c[k],
+        cr: ratio.toFixed(1).replace('.', ',') + ':1 ' + (okC ? '✓' : 'bajo'),
+        crColor: okC ? '#a1a7b1' : c.warn,
+        onHex: function (e) { var v = (e && e.target ? e.target.value : '').trim(); if (/^#[0-9a-fA-F]{6}$/.test(v)) set(k, v.toLowerCase()); },
+        sw: s[3].map(function (h) { return { c: h, label: s[1] + ' ' + h, cls: c[k] === h ? 'sw sel' : 'sw', pick: function () { set(k, h); } }; })
+      };
+    });
+    var base = '--opus:' + c.opus + ';--sonnet:' + c.sonnet + ';--haiku:' + c.haiku + ';--ok:' + c.ok + ';--err:' + c.err + ';--warn:' + c.warn + ';--famA:' + c.famA + ';--famB:' + c.famB;
+    function dk(v, p) { return 'color-mix(in oklch,' + v + ' ' + p + '%,#000)'; }
+    var light = '--opus:' + dk(c.opus, 66) + ';--sonnet:' + dk(c.sonnet, 70) + ';--haiku:' + dk(c.haiku, 66) + ';--ok:' + dk(c.ok, 60) + ';--err:' + dk(c.err, 72) + ';--warn:' + dk(c.warn, 62) + ';--famA:' + dk(c.famA, 62) + ';--famB:' + dk(c.famB, 70) + ';--mx:#000';
+    var n = 0;
+    for (var k in this.defs) { if (this.defs[k] !== c[k]) n++; }
+    return {
+      vars: '',
+      rows: rows,
+      pvs: [{ name: 'oscuro', cls: 'd', vars: base + ';--mx:#fff' }, { name: 'claro', cls: 'l', vars: light }],
+      reset: function () { self.setState({ c: Object.assign({}, self.defs) }); },
+      changed: n ? n + ' cambio' + (n > 1 ? 's' : '') + ' sin guardar' : 'valores por defecto'
+    };
+  }
+}
+</script>
+
+
+</body></html>

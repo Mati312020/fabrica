@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es"><head>
+<meta charset="utf-8">
+<title>Alfa · gramática de animación</title>
+<script src="59aa02ab-8aa9-4754-8b91-165b8ff01547"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0}
+.root{--mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;--sans:'IBM Plex Sans',system-ui,sans-serif;--tx:#e9eaee;--tx2:#a1a7b1;--tx3:#6c727d;--line:rgba(255,255,255,.17);--border:rgba(255,255,255,.08);width:1440px;height:1560px;box-sizing:border-box;padding:48px 56px;background:#08090b;color:var(--tx);font-family:var(--sans);display:flex;flex-direction:column;gap:20px}
+.lbl{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--tx3)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.tbl{display:flex;flex-direction:column}
+.tr{display:grid;grid-template-columns:200px 200px 150px 210px minmax(0,1fr) 300px;gap:20px;align-items:center;padding:14px 0;border-bottom:1px solid var(--border)}
+.th{padding:0 0 10px}
+.nm{font-family:var(--mono);font-size:14px;font-weight:600}
+.ev{font-family:var(--mono);font-size:11.5px;color:var(--tx2)}
+.dur{font-family:var(--mono);font-size:12.5px;color:var(--tx)}
+.crv{font-family:var(--mono);font-size:11px;color:var(--tx2);line-height:1.5}
+.ds{font-size:13px;line-height:1.5;color:var(--tx2)}
+.demo{display:flex;align-items:center;gap:10px}
+.stage{position:relative;width:200px;height:64px;border:1px solid var(--border);border-radius:6px;overflow:hidden;background:#0a0b0e;flex:none}
+.play{height:36px;padding:0 12px;border:1px solid var(--line);border-radius:6px;background:transparent;color:var(--tx);font-family:var(--mono);font-size:11.5px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.base{fill:none;stroke:var(--line);stroke-width:1.2;stroke-dasharray:3 4}
+.fz{fill:none;stroke-width:1.6;stroke-dasharray:100 100;stroke-dashoffset:100;stroke-linecap:round}
+.tip{position:absolute;left:0;top:0;width:0;height:0;border-top:4px solid transparent;border-bottom:4px solid transparent;border-left:7px solid currentColor;opacity:0;offset-rotate:auto}
+.dst{position:absolute;width:26px;height:26px;border:1px solid var(--line);border-radius:5px;box-sizing:border-box}
+.nd{position:absolute;left:14px;top:12px;width:170px;height:40px;box-sizing:border-box;border:1px solid var(--line);border-radius:6px;padding:4px 8px;font-family:var(--mono);opacity:.34}
+.nd small{display:block;font-size:9px;letter-spacing:.08em;color:var(--tx3)}
+.nd b{font-size:14px;font-weight:600}
+.w{opacity:0;display:inline-block;color:var(--sonnet)}
+.ndon{opacity:1;border-color:var(--sonnet);box-shadow:0 0 18px color-mix(in srgb,var(--sonnet) 30%,transparent)}
+.swapa{display:inline}
+.swapb{display:none}
+.big{font-family:var(--mono);font-size:22px;font-weight:700;letter-spacing:.04em}
+.cube{position:absolute;left:16px;top:16px;width:30px;height:32px;color:var(--famA)}
+.slot{position:absolute;left:150px;top:16px;width:30px;height:32px}
+.lg{position:absolute;left:10px;right:10px;font-family:var(--mono);font-size:10.5px;white-space:nowrap}
+@keyframes fzA{0%{stroke-dashoffset:100;opacity:1}60%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
+@keyframes fzB{0%{stroke-dashoffset:100;opacity:1}60%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
+@keyframes tipA{0%{offset-distance:0%;opacity:1}60%{offset-distance:100%;opacity:1}61%,100%{opacity:0;offset-distance:100%}}
+@keyframes tipB{0%{offset-distance:0%;opacity:1}60%{offset-distance:100%;opacity:1}61%,100%{opacity:0;offset-distance:100%}}
+@keyframes dsA{0%,58%{border-color:var(--line);box-shadow:none}62%{border-color:var(--c);box-shadow:0 0 14px var(--c)}100%{border-color:var(--line);box-shadow:none}}
+@keyframes dsB{0%,58%{border-color:var(--line);box-shadow:none}62%{border-color:var(--c);box-shadow:0 0 14px var(--c)}100%{border-color:var(--line);box-shadow:none}}
+.pA .fz{animation:fzA 1s linear forwards}.pB .fz{animation:fzB 1s linear forwards}
+.pA .tip{animation:tipA 1s linear forwards}.pB .tip{animation:tipB 1s linear forwards}
+.pA .dst{animation:dsA 1s cubic-bezier(.4,0,.2,1)}.pB .dst{animation:dsB 1s cubic-bezier(.4,0,.2,1)}
+@keyframes onA{from{opacity:.34;border-color:var(--line);box-shadow:none}to{opacity:1;border-color:var(--sonnet);box-shadow:0 0 18px color-mix(in srgb,var(--sonnet) 30%,transparent)}}
+@keyframes onB{from{opacity:.34;border-color:var(--line);box-shadow:none}to{opacity:1;border-color:var(--sonnet);box-shadow:0 0 18px color-mix(in srgb,var(--sonnet) 30%,transparent)}}
+@keyframes wA{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+@keyframes wB{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.pA .nd.go{animation:onA .25s cubic-bezier(.16,1,.3,1) forwards}.pB .nd.go{animation:onB .25s cubic-bezier(.16,1,.3,1) forwards}
+.pA .w{animation:wA .18s .06s ease-out forwards}.pB .w{animation:wB .18s .06s ease-out forwards}
+@keyframes offA{from{opacity:1;border-color:var(--sonnet);box-shadow:0 0 18px color-mix(in srgb,var(--sonnet) 30%,transparent)}to{opacity:.46;border-color:var(--line);box-shadow:none}}
+@keyframes offB{from{opacity:1;border-color:var(--sonnet);box-shadow:0 0 18px color-mix(in srgb,var(--sonnet) 30%,transparent)}to{opacity:.46;border-color:var(--line);box-shadow:none}}
+@keyframes hideA{to{opacity:0}}@keyframes hideB{to{opacity:0}}
+@keyframes showA{from{opacity:0}to{opacity:1}}@keyframes showB{from{opacity:0}to{opacity:1}}
+.pA .nd.stop{animation:offA .3s cubic-bezier(.4,0,.2,1) forwards}.pB .nd.stop{animation:offB .3s cubic-bezier(.4,0,.2,1) forwards}
+.ok2{position:absolute;left:8px;top:18px;opacity:0;color:color-mix(in srgb,var(--ok) 65%,var(--tx3))}
+.wk{position:absolute;left:8px;top:18px;color:var(--sonnet)}
+.pA .wk{animation:hideA .15s forwards}.pB .wk{animation:hideB .15s forwards}
+.pA .ok2{animation:showA .15s .15s forwards}.pB .ok2{animation:showB .15s .15s forwards}
+@keyframes wakeA{from{opacity:.16;border-color:var(--line)}to{opacity:1;border-color:var(--opus);box-shadow:0 0 18px color-mix(in srgb,var(--opus) 28%,transparent)}}
+@keyframes wakeB{from{opacity:.16;border-color:var(--line)}to{opacity:1;border-color:var(--opus);box-shadow:0 0 18px color-mix(in srgb,var(--opus) 28%,transparent)}}
+.au{opacity:.16}
+.pA .au{animation:wakeA .3s cubic-bezier(.16,1,.3,1) forwards}.pB .au{animation:wakeB .3s cubic-bezier(.16,1,.3,1) forwards}
+.zz,.aw{position:absolute;left:8px;top:18px}
+.aw{opacity:0;color:var(--opus)}
+.pA .zz{animation:hideA 0s .15s forwards}.pB .zz{animation:hideB 0s .15s forwards}
+.pA .aw{animation:showA 0s .15s forwards}.pB .aw{animation:showB 0s .15s forwards}
+.e2,.e3,.esc,.nw{position:absolute}
+.e3,.esc{opacity:0}
+.pA .e2{animation:hideA 0s forwards}.pB .e2{animation:hideB 0s forwards}
+.pA .e3{animation:showA 0s forwards}.pB .e3{animation:showB 0s forwards}
+.pA .esc{animation:showA 0s .3s forwards}.pB .esc{animation:showB 0s .3s forwards}
+@keyframes nwA{0%{height:0;opacity:.34;border-color:var(--line)}40%{height:22px;opacity:.34;border-color:var(--line);box-shadow:none}100%{height:22px;opacity:1;border-color:var(--sonnet);box-shadow:0 0 14px color-mix(in srgb,var(--sonnet) 35%,transparent)}}
+@keyframes nwB{0%{height:0;opacity:.34;border-color:var(--line)}40%{height:22px;opacity:.34;border-color:var(--line);box-shadow:none}100%{height:22px;opacity:1;border-color:var(--sonnet);box-shadow:0 0 14px color-mix(in srgb,var(--sonnet) 35%,transparent)}}
+.nw{left:110px;top:34px;width:80px;height:0;overflow:hidden;box-sizing:border-box;border:1px solid var(--line);border-radius:4px;font-family:var(--mono);font-size:9.5px;color:var(--sonnet);padding:3px 5px;opacity:0}
+.pA .nw{animation:nwA .45s .5s cubic-bezier(.16,1,.3,1) forwards}.pB .nw{animation:nwB .45s .5s cubic-bezier(.16,1,.3,1) forwards}
+@keyframes vA{0%{opacity:1;transform:scale(1.04)}100%{opacity:1;transform:scale(1)}}
+@keyframes vB{0%{opacity:1;transform:scale(1.04)}100%{opacity:1;transform:scale(1)}}
+.vd{position:absolute;left:12px;top:16px;color:var(--err);opacity:0;transform-origin:left center}
+.pA .vd{animation:vA .12s cubic-bezier(.16,1,.3,1) forwards}.pB .vd{animation:vB .12s cubic-bezier(.16,1,.3,1) forwards}
+.c14,.c15{position:absolute;right:12px;top:18px;font-family:var(--mono);font-size:20px;font-weight:600}
+.c15{opacity:0}
+.pA .c14{animation:hideA 0s forwards}.pB .c14{animation:hideB 0s forwards}
+.pA .c15{animation:showA 0s forwards}.pB .c15{animation:showB 0s forwards}
+@keyframes blkA{0%{transform:none}17%{transform:translate(0,-6px)}60%{transform:translate(134px,-6px)}73%{transform:translate(134px,0)}84%{transform:translate(134px,-3px)}100%{transform:translate(134px,0)}}
+@keyframes blkB{0%{transform:none}17%{transform:translate(0,-6px)}60%{transform:translate(134px,-6px)}73%{transform:translate(134px,0)}84%{transform:translate(134px,-3px)}100%{transform:translate(134px,0)}}
+@keyframes flA{0%,80%{box-shadow:none}86%{box-shadow:0 0 0 2px var(--famA),0 0 20px var(--famA)}100%{box-shadow:none}}
+@keyframes flB{0%,80%{box-shadow:none}86%{box-shadow:0 0 0 2px var(--famA),0 0 20px var(--famA)}100%{box-shadow:none}}
+.pA .cube{animation:blkA 1.2s linear forwards}.pB .cube{animation:blkB 1.2s linear forwards}
+.pA .slot{animation:flA 1.2s linear}.pB .slot{animation:flB 1.2s linear}
+@keyframes lnA{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes lnB{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes dimA{to{opacity:.5}}@keyframes dimB{to{opacity:.5}}
+.ln{opacity:0}
+.pA .ln{animation:lnA .14s cubic-bezier(.16,1,.3,1) forwards}.pB .ln{animation:lnB .14s cubic-bezier(.16,1,.3,1) forwards}
+.pA .old{animation:dimA .2s forwards}.pB .old{animation:dimB .2s forwards}
+.pbar{position:absolute;left:12px;right:12px;bottom:14px;height:2px;background:var(--line)}
+.pbar i{display:block;height:100%;background:var(--sonnet);transition:width .12s linear}
+</style>
+</helmet>
+<div class="root" style="{{vars}}">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span class="lbl">9 · gramática de animación</span>
+<span class="mono" style="font-size: 26px; font-weight: 600">Nada se mueve si no pasó algo</span>
+<p style="margin: 0; font-size: 14px; color: var(--tx2); line-height: 1.5; max-width: 900px">Cada animación tiene un evento que la dispara. En reposo no corre ninguna: sin pulsos, sin cursor parpadeante, sin fondos animados. Los botones “Disparar” simulan el evento.</p>
+</div>
+<div class="tbl">
+<div class="tr th"><span class="lbl">animación</span><span class="lbl">evento que la dispara</span><span class="lbl">duración</span><span class="lbl">curva</span><span class="lbl">comportamiento</span><span class="lbl">demo</span></div>
+
+<div class="tr"><span class="nm">01 · Tarea viajando</span><span class="ev">task.dispatched</span><span class="dur">300–900 ms<br>+ 400 ms apagado</span><span class="crv">viaje: linear (≈450 px/s)<br>apagado: cubic-bezier(.4,0,.2,1)</span><span class="ds">El conector punteado se enciende segmento a segmento en el color del modelo destino, con la punta de flecha delante (mecha). Al llegar, el destino destella y el conector vuelve a gris.</span>
+<div class="demo"><div class="{{c.fuse}}" style="--c: var(--sonnet)"><svg width="200" height="64" sc-camel-view-box="0 0 200 64" style="position: absolute; inset: 0" aria-hidden="true"><path class="base" d="M14 50 C 70 50, 110 14, 166 14"></path><path class="fz" sc-camel-path-length="100" d="M14 50 C 70 50, 110 14, 166 14" style="stroke: var(--sonnet)"></path></svg><span class="tip" style="color: var(--sonnet); offset-path: path('M14 50 C 70 50, 110 14, 166 14')"></span><span class="dst" style="left: 166px; top: 1px"></span></div><button class="play" type="button" sc-camel-on-click="{{go.fuse}}">Disparar</button></div></div>
+
+<div class="tr"><span class="nm">02 · Respuesta volviendo</span><span class="ev">agent.response_ready</span><span class="dur">igual que 01</span><span class="crv">igual que 01</span><span class="ds">Mismo efecto hacia la línea de auditoría, con flechas que apuntan al destino. La unión de la rama se enciende al recibirla.</span>
+<div class="demo"><div class="{{c.ret}}" style="--c: var(--haiku)"><svg width="200" height="64" sc-camel-view-box="0 0 200 64" style="position: absolute; inset: 0" aria-hidden="true"><path class="base" d="M20 8 C 20 40, 60 50, 166 50"></path><path class="fz" sc-camel-path-length="100" d="M20 8 C 20 40, 60 50, 166 50" style="stroke: var(--haiku)"></path></svg><span class="tip" style="color: var(--haiku); offset-path: path('M20 8 C 20 40, 60 50, 166 50')"></span><span class="dst" style="left: 166px; top: 37px; border-radius: 50%"></span></div><button class="play" type="button" sc-camel-on-click="{{go.ret}}">Disparar</button></div></div>
+
+<div class="tr"><span class="nm">03 · Agente arranca</span><span class="ev">agent.started</span><span class="dur">250 ms<br>palabra 180 ms (+60)</span><span class="crv">cubic-bezier(.16,1,.3,1)<br>ease-out</span><span class="ds">El borde pasa de gris al color del modelo con un glow suave (en claro: tinte y sombra) y aparece la palabra de estado subiendo 4 px.</span>
+<div class="demo"><div class="{{c.on}}"><div class="nd go"><small>SONNET · coder-01b</small><b><span class="w">escribiendo</span></b></div></div><button class="play" type="button" sc-camel-on-click="{{go.on}}">Disparar</button></div></div>
+
+<div class="tr"><span class="nm">04 · Agente termina</span><span class="ev">agent.completed</span><span class="dur">300 ms<br>“✓ listo” 150 ms</span><span class="crv">cubic-bezier(.4,0,.2,1)</span><span class="ds">El color baja a gris y la palabra de estado se reemplaza por “✓ listo” en verde apagado.</span>
+<div class="demo"><div class="{{c.off}}"><div class="nd ndon stop"><small>SONNET · coder-01b</small><b style="position: relative; display: block"><span class="wk" style="top: 0; left: 0">escribiendo</span><span class="ok2" style="top: 0; left: 0">✓ listo</span></b></div></div><button class="play" type="button" sc-camel-on-click="{{go.off}}">Disparar</button></div></div>
+
+<div class="tr"><span class="nm">05 · Progreso</span><span class="ev">agent.progress {pct}</span><span class="dur">paso = min(40 ms, 600 ms ÷ Δ)</span><span class="crv">por pasos de 1<br>barra: 120 ms linear</span><span class="ds">El número sube de a uno en cifras tabulares (no salta) y la barra fina lo acompaña.</span>
+<div class="demo"><div class="stage"><span class="big" style="position: absolute; left: 12px; top: 10px; color: var(--sonnet)">{{pct}}%</span><div class="pbar"><i style="width: {{pct}}%"></i></div></div><button class="play" type="button" sc-camel-on-click="{{go.prog}}">Disparar</button></div></div>
+
+<div class="tr"><span class="nm">06 · Auditor despertando</span><span class="ev">audit.requested</span><span class="dur">300 ms<br>texto a los 150 ms</span><span class="crv">cubic-bezier(.16,1,.3,1)</span><span class="ds">Pasa de “dormido” casi invisible a “despierto”: se enciende su recuadro y sale un conector (01) hacia el agente que revisa.</span>
+<div class="demo"><div class="{{c.wake}}"><div class="nd au" style="border-radius: 8px"><small>OPUS · MEMORIA · AUDITORÍA</small><b style="position: relative; display: block"><span class="zz" style="top: 0; left: 0; color: var(--tx2)">dormido</span><span class="aw" style="top: 0; left: 0">despierto</span></b></div></div><button class="play" type="button" sc-camel-on-click="{{go.wake}}">Disparar</button></div></div>
+
+<div class="tr"><span class="nm">07 · Error y escalado</span><span class="ev">agent.error {n}<br>agent.escalated (n = 3)</span><span class="dur">error: 0 ms<br>ESCALADO: +300 ms<br>nuevo agente: 450 ms</span><span class="crv">cambios instantáneos;<br>alta: cubic-bezier(.16,1,.3,1)</span><span class="ds">“error ×N” en rojo cambia sin fundido y se traza la línea punteada roja hacia auditoría. Al tercero, ESCALADO en grande y entra en la rama un agente de modelo superior que se enciende desde gris.</span>
+<div class="demo"><div class="{{c.esc}}"><span class="e2 mono" style="left: 10px; top: 8px; font-size: 12px; color: var(--err)">error ×2</span><span class="e3 mono" style="left: 10px; top: 8px; font-size: 12px; color: var(--err)">error ×3</span><span class="esc big" style="left: 10px; top: 28px; font-size: 16px; color: var(--warn)">ESCALADO</span><div class="nw">SONNET ↑</div></div><button class="play" type="button" sc-camel-on-click="{{go.esc}}">Disparar</button></div></div>
+
+<div class="tr"><span class="nm">08 · Veredicto</span><span class="ev">audit.verdict</span><span class="dur">entrada 0 ms<br>asienta 120 ms</span><span class="crv">cubic-bezier(.16,1,.3,1)</span><span class="ds">Aparece de golpe, grande y en color (escala 1,04 → 1). El contador de llamadas del auditor sube en uno sin animar.</span>
+<div class="demo"><div class="{{c.verd}}"><span class="vd big">RECHAZADO</span><span class="c14" style="color: var(--tx3)">14</span><span class="c15">15</span></div><button class="play" type="button" sc-camel-on-click="{{go.verd}}">Disparar</button></div></div>
+
+<div class="tr"><span class="nm">09 · Bloque terminado</span><span class="ev">block.completed</span><span class="dur">≈ 1,2 s en total</span><span class="crv">sube 200 ms ease-out<br>viaja 520 ms (.65,0,.35,1)<br>baja 160 ms ease-in<br>rebote 140 ms (.34,1.56,.64,1)<br>destello 220 ms</span><span class="ds">El cubo se completa, sube 6 px, viaja al conjunto ensamblado, baja y encastra con un rebote corto y un destello del color de su familia.</span>
+<div class="demo"><div class="{{c.blk}}"><span class="slot" style="border: 1px dashed var(--tx3); border-radius: 3px"></span><svg class="cube" sc-camel-view-box="0 0 30 32" aria-hidden="true"><path d="M15 1 29 8 15 15 1 8Z" fill="currentColor" fill-opacity=".85"></path><path d="M1 8 15 15 15 31 1 24Z" fill="currentColor" fill-opacity=".55"></path><path d="M15 15 29 8 29 24 15 31Z" fill="currentColor" fill-opacity=".35"></path></svg></div><button class="play" type="button" sc-camel-on-click="{{go.blk}}">Disparar</button></div></div>
+
+<div class="tr"><span class="nm">10 · Registro</span><span class="ev">log.append</span><span class="dur">140 ms<br>atenuado 200 ms</span><span class="crv">cubic-bezier(.16,1,.3,1)</span><span class="ds">Cada evento agrega una línea que entra 6 px desde abajo a brillo pleno; las anteriores bajan a 70 %, 50 %, 38 %… (mínimo 28 %).</span>
+<div class="demo"><div class="{{c.log}}"><span class="lg old" style="top: 8px; color: var(--tx2)"><span style="color: var(--opus)">opus</span> auditor · RECHAZADO</span><span class="lg ln" style="top: 30px; color: var(--tx)"><span style="color: var(--sonnet)">sonnet</span> coder-01b · arranca</span></div><button class="play" type="button" sc-camel-on-click="{{go.log}}">Disparar</button></div></div>
+
+<div class="tr"><span class="nm">11 · Chips de modelo</span><span class="ev">model.active_count</span><span class="dur">200 ms</span><span class="crv">ease-out</span><span class="ds">El chip se tiñe con el color del modelo mientras haya al menos un agente activo; vuelve a gris en 0.</span><span></span></div>
+
+<div class="tr"><span class="nm">12 · Cambio de tema</span><span class="ev">usuario elige tema</span><span class="dur">180 ms</span><span class="crv">linear</span><span class="ds">Fundido cruzado de colores; el layout no se mueve.</span><span></span></div>
+
+<div class="tr"><span class="nm">13 · Movimiento reducido</span><span class="ev">prefers-reduced-motion</span><span class="dur">≤ 100 ms</span><span class="crv">—</span><span class="ds">Sin desplazamientos ni rebotes: todo se vuelve cambio de color. La mecha se reemplaza por el encendido del conector completo.</span><span></span></div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;opus&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#a78bfa&quot;,&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;sonnet&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#fb923c&quot;,&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;haiku&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#60a5fa&quot;,&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;aprobado&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#4ade80&quot;,&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;rechazado&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#f87171&quot;,&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;aviso&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#fbbf24&quot;,&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;familiaA&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#2dd4bf&quot;,&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1560}}">
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { n: { fuse: 0, ret: 0, on: 0, off: 0, wake: 0, esc: 0, verd: 0, blk: 0, log: 0 }, pct: 38 };
+  }
+  componentWillUnmount() { if (this.t) clearInterval(this.t); }
+  renderVals() {
+    var self = this, p = this.props, n = this.state.n;
+    var c = {}, go = {};
+    Object.keys(n).forEach(function (k) {
+      c[k] = 'stage' + (n[k] ? (n[k] % 2 ? ' pA' : ' pB') : '');
+      go[k] = function () { var m = Object.assign({}, self.state.n); m[k] = m[k] + 1; self.setState({ n: m }); };
+    });
+    go.prog = function () {
+      if (self.t) clearInterval(self.t);
+      self.setState({ pct: 38 });
+      var target = 64, step = Math.min(40, 600 / (target - 38));
+      self.t = setInterval(function () {
+        var v = self.state.pct + 1;
+        self.setState({ pct: v });
+        if (v >= target) { clearInterval(self.t); self.t = null; }
+      }, step);
+    };
+    return {
+      vars: '--opus:' + (p.opus || '#a78bfa') + ';--sonnet:' + (p.sonnet || '#fb923c') + ';--haiku:' + (p.haiku || '#60a5fa') + ';--ok:' + (p.aprobado || '#4ade80') + ';--err:' + (p.rechazado || '#f87171') + ';--warn:' + (p.aviso || '#fbbf24') + ';--famA:' + (p.familiaA || '#2dd4bf'),
+      c: c, go: go, pct: this.state.pct
+    };
+  }
+}
+</script>
+
+
+</body></html>

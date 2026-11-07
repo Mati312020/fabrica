@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es"><head>
+<meta charset="utf-8">
+<title>Alfa · presupuesto en tres estados</title>
+<script src="f851bbb1-d63e-4ecd-bd5d-cceddec86a3b"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0}
+.root{--mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;--sans:'IBM Plex Sans',system-ui,sans-serif;--tx:#e9eaee;--tx2:#a1a7b1;--tx3:#6c727d;--line:rgba(255,255,255,.17);--border:rgba(255,255,255,.08);width:1440px;height:560px;box-sizing:border-box;padding:48px 56px;background:#08090b;color:var(--tx);font-family:var(--sans);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.card{--s:var(--tx2);box-sizing:border-box;background:rgba(17,19,24,.72);border:1px solid var(--border);border-radius:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 18px 40px rgba(0,0,0,.45);padding:22px;display:flex;flex-direction:column;gap:14px}
+.card.warn{--s:var(--warn);border-color:color-mix(in srgb,var(--warn) 55%,transparent)}
+.card.stop{--s:var(--err);border-color:color-mix(in srgb,var(--err) 60%,transparent);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 0 36px color-mix(in srgb,var(--err) 16%,transparent),0 18px 40px rgba(0,0,0,.45)}
+.lbl{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--tx3)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.big{font-family:var(--mono);font-size:40px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1}
+.st{font-family:var(--mono);font-size:22px;font-weight:700;letter-spacing:.04em;color:var(--s)}
+.bar{position:relative;height:8px;border-radius:4px;background:rgba(255,255,255,.08);margin-top:6px}
+.bar i{position:absolute;left:0;top:0;bottom:0;border-radius:4px;background:var(--s)}
+.res{position:absolute;left:95%;right:0;top:0;bottom:0;background:repeating-linear-gradient(135deg,rgba(255,255,255,.18) 0 2px,transparent 2px 5px);border-radius:0 4px 4px 0}
+.tick{position:absolute;top:-5px;width:1px;height:18px}
+.tl{position:absolute;top:18px;font-family:var(--mono);font-size:10px;transform:translateX(-50%);white-space:nowrap}
+.msg{font-size:13.5px;line-height:1.5;color:var(--tx2);margin:20px 0 0}
+.btn{height:42px;padding:0 14px;border:1px solid var(--line);border-radius:7px;background:transparent;color:var(--tx);font-family:var(--mono);font-size:12.5px;cursor:pointer}
+.btn.pri{border-color:color-mix(in srgb,var(--warn) 70%,transparent);color:var(--warn);background:color-mix(in srgb,var(--warn) 10%,transparent)}
+</style>
+</helmet>
+<div class="root" style="{{vars}}">
+<sc-for list="{{cards}}" as="c" hint-placeholder-count="3">
+<section class="{{c.cls}}" aria-label="{{c.name}}">
+<div style="display: flex; justify-content: space-between; align-items: center"><span class="lbl">presupuesto · {{c.name}}</span><span class="st">{{c.st}}</span></div>
+<div style="display: flex; align-items: baseline; gap: 8px"><span class="big">{{c.used}}</span><span class="mono" style="font-size: 14px; color: var(--tx3)">/ US$ 20,00</span></div>
+<div class="mono" style="font-size: 13px; color: var(--s)">{{c.pct}}% usado</div>
+<div class="bar">
+<i style="width: {{c.pct}}%"></i>
+<span class="res"></span>
+<span class="tick" style="left: 80%; background: var(--warn)"></span>
+<span class="tick" style="left: 95%; background: var(--err)"></span>
+<span class="tl" style="left: 80%; color: var(--warn)">80 aviso</span>
+<span class="tl" style="left: 95%; color: var(--err)">95 pausa</span>
+</div>
+<p class="msg">{{c.msg}}</p>
+<sc-if value="{{c.actions}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 8px; margin-top: auto">
+<button class="btn pri" type="button">Usar la reserva del 5 % · US$ 1,00</button>
+<div style="display: flex; gap: 8px"><button class="btn" type="button" style="flex: 1">Ampliar presupuesto</button><button class="btn" type="button" style="flex: 1">Terminar ejecución</button></div>
+</div>
+</sc-if>
+<sc-if value="{{c.foot}}" hint-placeholder-val="{{ true }}">
+<div class="mono" style="margin-top: auto; font-size: 11px; color: var(--tx3)">{{c.footTxt}}</div>
+</sc-if>
+</section>
+</sc-for>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;rechazado&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#f87171&quot;,&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;aviso&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#fbbf24&quot;,&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:560}}">
+class Component extends DCLogic {
+  renderVals() {
+    var p = this.props;
+    return {
+      vars: '--err:' + (p.rechazado || '#f87171') + ';--warn:' + (p.aviso || '#fbbf24'),
+      cards: [
+        { name: 'normal', cls: 'card', st: 'EN CURSO', used: '6,42', pct: 32, msg: 'Todo dentro del límite. La barra se mantiene gris: el color aparece recién al cruzar una marca.', actions: false, foot: true, footTxt: 'aviso en 16,00 · pausa en 19,00' },
+        { name: 'aviso', cls: 'card warn', st: 'AVISO 80 %', used: '16,18', pct: 81, msg: 'Pasaste el 80 %. La ejecución sigue; el orquestador prioriza bloques en curso y no abre ramas nuevas.', actions: false, foot: true, footTxt: 'quedan US$ 2,82 antes de la pausa' },
+        { name: 'pausa', cls: 'card stop', st: 'PAUSA 95 %', used: '19,04', pct: 95, msg: 'Ejecución pausada: todos los agentes quedan en “pausado”. Podés usar la reserva para cerrar los bloques abiertos.', actions: true, foot: false, footTxt: '' }
+      ]
+    };
+  }
+}
+</script>
+
+
+</body></html>

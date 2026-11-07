@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es"><head>
+<meta charset="utf-8">
+<title>Alfa · en reposo</title>
+<script src="6c9d2e79-f262-4afe-bb35-48f3037f0527"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 1440px; height: 900px">
+<dc-import name="Main" tema="{{tema}}" estado="reposo" opus="{{opus}}" sonnet="{{sonnet}}" haiku="{{haiku}}" aprobado="{{aprobado}}" rechazado="{{rechazado}}" aviso="{{aviso}}" familia-a="{{familiaA}}" familia-b="{{familiaB}}" hint-size="1440px,900px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;tema&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;oscuro&quot;,&quot;claro&quot;],&quot;default&quot;:&quot;oscuro&quot;,&quot;section&quot;:&quot;Pantalla&quot;},&quot;opus&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#a78bfa&quot;,&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;sonnet&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#fb923c&quot;,&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;haiku&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#60a5fa&quot;,&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;aprobado&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#4ade80&quot;,&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;rechazado&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#f87171&quot;,&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;aviso&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#fbbf24&quot;,&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;familiaA&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#2dd4bf&quot;,&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;familiaB&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#f472b6&quot;,&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  renderVals() {
+    var p = this.props;
+    return {
+      tema: p.tema === 'claro' ? 'claro' : 'oscuro',
+      opus: p.opus || '#a78bfa', sonnet: p.sonnet || '#fb923c', haiku: p.haiku || '#60a5fa',
+      aprobado: p.aprobado || '#4ade80', rechazado: p.rechazado || '#f87171', aviso: p.aviso || '#fbbf24',
+      familiaA: p.familiaA || '#2dd4bf', familiaB: p.familiaB || '#f472b6'
+    };
+  }
+}
+</script>
+
+
+</body></html>

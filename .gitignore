@@ -1,0 +1,12 @@
+node_modules/
+dist/
+out/
+release/
+.env*
+*.db
+*.sqlite*
+*.pem
+*.key
+*.p12
+*.log
+coverage/

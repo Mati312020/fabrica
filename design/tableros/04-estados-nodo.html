@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es"><head>
+<meta charset="utf-8">
+<title>Alfa · estados del nodo de agente</title>
+<script src="862fe429-5a5d-498e-8e9c-910f05792136"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0}
+.sheet{--mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;--sans:'IBM Plex Sans',system-ui,sans-serif;width:1440px;height:1120px;display:flex;flex-direction:column;font-family:var(--sans)}
+.band{flex:1;box-sizing:border-box;padding:40px 56px;display:flex;flex-direction:column;gap:28px;color:var(--tx);background-color:var(--bg)}
+.th-oscuro{--bg:#08090b;--grid:rgba(255,255,255,.026);--gridM:rgba(255,255,255,.05);--tx:#e9eaee;--tx2:#a1a7b1;--tx3:#6c727d;--line:rgba(255,255,255,.17);--idle:#5d636d;--node:rgba(12,13,17,.85);--opus:var(--opus-b);--sonnet:var(--sonnet-b);--haiku:var(--haiku-b);--ok:var(--ok-b);--err:var(--err-b);--warn:var(--warn-b)}
+.th-claro{--bg:#f2f3f5;--grid:rgba(20,24,32,.045);--gridM:rgba(20,24,32,.08);--tx:#15171c;--tx2:#454b56;--tx3:#666c77;--line:rgba(20,24,32,.24);--idle:#9aa0a9;--node:#fbfbfc;--opus:color-mix(in oklch,var(--opus-b) 66%,#000);--sonnet:color-mix(in oklch,var(--sonnet-b) 70%,#000);--haiku:color-mix(in oklch,var(--haiku-b) 66%,#000);--ok:color-mix(in oklch,var(--ok-b) 60%,#000);--err:color-mix(in oklch,var(--err-b) 72%,#000);--warn:color-mix(in oklch,var(--warn-b) 62%,#000)}
+.hd{display:flex;align-items:baseline;gap:16px;font-family:var(--mono)}
+.hd b{font-size:22px;font-weight:600}
+.hd span{font-size:12px;color:var(--tx3)}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:32px 40px}
+.cell{display:flex;flex-direction:column;gap:12px}
+.cap{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--tx2)}
+.cap i{font-style:normal;color:var(--tx3)}
+.note{font-size:12.5px;line-height:1.45;color:var(--tx3);max-width:270px}
+.ag{--m:var(--idle);position:relative;box-sizing:border-box;width:280px;min-height:64px;padding:8px 10px 14px;border:1px solid var(--line);border-radius:6px;background:var(--node);font-family:var(--mono);display:flex;flex-direction:column;gap:4px}
+.r1{display:flex;justify-content:space-between;align-items:center;font-size:10px;color:var(--tx3);font-variant-numeric:tabular-nums}
+.mt{letter-spacing:.08em}
+.r2{display:flex;align-items:baseline;gap:10px;min-width:0}
+.word{font-size:18px;font-weight:600;color:var(--tx2);white-space:nowrap;letter-spacing:-.01em}
+.task{font-family:var(--sans);font-size:11.5px;color:var(--tx3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.tool{display:flex;align-items:center;gap:6px;font-size:10.5px;color:var(--tx2);border:1px solid color-mix(in srgb,var(--m) 40%,transparent);border-radius:4px;padding:3px 6px;align-self:flex-start}
+.tool b{color:var(--m);font-weight:600}
+.bar{position:absolute;left:10px;right:10px;bottom:7px;height:2px;background:var(--line)}
+.bar i{display:block;height:100%;background:var(--m)}
+.idle{opacity:.34}
+.sleep{opacity:.16}
+.done{opacity:.46}
+.done .word{color:color-mix(in srgb,var(--ok) 65%,var(--tx3))}
+.on .mt,.on .word,.on .pct{color:var(--m)}
+.th-oscuro .on{border-color:var(--m);background:color-mix(in srgb,var(--m) 8%,#0a0b0e);box-shadow:0 0 0 1px color-mix(in srgb,var(--m) 35%,transparent),0 0 24px color-mix(in srgb,var(--m) 28%,transparent)}
+.th-claro .on{border-color:var(--m);background:color-mix(in srgb,var(--m) 8%,#fff);box-shadow:0 6px 18px color-mix(in srgb,var(--m) 22%,transparent)}
+.aud{border-style:dashed;border-color:color-mix(in srgb,var(--m) 70%,transparent)}
+.aud .mt{color:var(--m)}
+.aud .au{font-size:10px;letter-spacing:.08em;color:var(--opus)}
+.err{border-color:var(--err);background:color-mix(in srgb,var(--err) 7%,var(--node))}
+.err .word,.err .eb{color:var(--err)}
+.pause{opacity:.6;border-color:color-mix(in srgb,var(--warn) 50%,transparent)}
+.pause .word{color:color-mix(in srgb,var(--warn) 70%,var(--tx3))}
+</style>
+</helmet>
+<div class="sheet" style="{{rootStyle}}">
+<sc-for list="{{bands}}" as="bd" hint-placeholder-count="2">
+<section class="band th-{{bd.t}}" aria-label="{{bd.title}}">
+<div class="hd"><b>{{bd.title}}</b><span>nodo de agente · 8 estados · el brillo solo existe mientras hay trabajo</span></div>
+<div class="grid">
+<sc-for list="{{states}}" as="s" hint-placeholder-count="8">
+<div class="cell">
+<div class="cap"><i>{{s.n}}</i>{{s.label}}</div>
+<div class="ag {{s.cls}}" style="--m: {{s.m}}">
+<div class="r1"><span><span class="mt">{{s.model}}</span> · {{s.id}}</span><span class="pct">{{s.pct}}</span><sc-if value="{{s.err}}" hint-placeholder-val="{{ false }}"><span class="eb">error ×2</span></sc-if><sc-if value="{{s.aud}}" hint-placeholder-val="{{ false }}"><span class="au">→ AUDITOR</span></sc-if></div>
+<div class="r2">
+<sc-if value="{{s.pz}}" hint-placeholder-val="{{ false }}"><svg width="12" height="12" sc-camel-view-box="0 0 12 12" aria-hidden="true" style="color: var(--warn); align-self: center"><rect x="2.5" y="2" width="2.4" height="8" fill="currentColor"></rect><rect x="7.1" y="2" width="2.4" height="8" fill="currentColor"></rect></svg></sc-if>
+<span class="word">{{s.word}}</span><span class="task">{{s.task}}</span></div>
+<sc-if value="{{s.tool}}" hint-placeholder-val="{{ false }}"><div class="tool"><b>▸ editar_archivo</b><span>src/auth/session.ts</span></div></sc-if>
+<sc-if value="{{s.bar}}" hint-placeholder-val="{{ false }}"><div class="bar"><i style="width: {{s.pctN}}%"></i></div></sc-if>
+</div>
+<div class="note">{{s.note}}</div>
+</div>
+</sc-for>
+</div>
+</section>
+</sc-for>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;opus&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#a78bfa&quot;,&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;sonnet&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#fb923c&quot;,&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;haiku&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#60a5fa&quot;,&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;aprobado&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#4ade80&quot;,&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;rechazado&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#f87171&quot;,&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;aviso&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#fbbf24&quot;,&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1120}}">
+class Component extends DCLogic {
+  renderVals() {
+    var p = this.props;
+    var rootStyle = '--opus-b:' + (p.opus || '#a78bfa') + ';--sonnet-b:' + (p.sonnet || '#fb923c') + ';--haiku-b:' + (p.haiku || '#60a5fa') + ';--ok-b:' + (p.aprobado || '#4ade80') + ';--err-b:' + (p.rechazado || '#f87171') + ';--warn-b:' + (p.aviso || '#fbbf24');
+    function s(n, label, cls, model, id, word, task, pct, note, x) {
+      var o = { n: n, label: label, cls: cls, model: model, m: 'var(--' + model.toLowerCase() + ')', id: id, word: word, task: task, pct: pct == null ? '' : pct + '%', pctN: pct || 0, bar: pct != null, note: note, err: false, aud: false, tool: false, pz: false };
+      if (x) { for (var k in x) o[k] = x[k]; }
+      return o;
+    }
+    var states = [
+      s('01', 'esperando', 'idle', 'HAIKU', 'spec-02', 'esperando', 'en cola · 2º', null, 'Borde gris, opacidad 34 %. Sin color de modelo ni glow.'),
+      s('02', 'dormido', 'sleep', 'HAIKU', 'coder-03', 'dormido', 'ui-perfil', null, 'Opacidad 16 %. Casi desaparece: con 30 agentes, no compite con la acción.'),
+      s('03', 'pensando', 'on', 'SONNET', 'research-01', 'pensando', 'límites de la API de pagos', 12, 'Borde y glow en el color del modelo. En claro: borde, tinte y sombra.'),
+      s('04', 'trabajando + herramienta', 'on', 'SONNET', 'coder-01b', 'escribiendo', 'migración de sesiones', 64, 'La herramienta en uso aparece con su argumento; se va al terminar la llamada.', { tool: true }),
+      s('05', 'en auditoría', 'aud', 'SONNET', 'coder-01b', 'en auditoría', 'esperando veredicto', null, 'Borde punteado en su color, sin glow: el brillo pasa al auditor.', { aud: true }),
+      s('06', 'terminado', 'done', 'SONNET', 'coder-01b', '✓ listo', 'migración de sesiones', null, 'Vuelve a gris y muestra “✓ listo” en verde apagado.'),
+      s('07', 'error', 'err', 'HAIKU', 'coder-01', 'detenido', 'test de sesión falla', null, 'Borde rojo y “error ×N”. Al tercer error: ESCALADO a un modelo superior.', { err: true }),
+      s('08', 'pausado', 'pause', 'HAIKU', 'research-02', 'pausado', 'por presupuesto · 95 %', null, 'Ámbar apagado, sin brillo. Se retoma desde el botón Reanudar.', { pz: true })
+    ];
+    return {
+      rootStyle: rootStyle,
+      bands: [{ t: 'oscuro', title: 'Tema oscuro' }, { t: 'claro', title: 'Tema claro' }],
+      states: states
+    };
+  }
+}
+</script>
+
+
+</body></html>

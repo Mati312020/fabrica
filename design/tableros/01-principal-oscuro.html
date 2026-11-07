@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="es"><head>
+<meta charset="utf-8">
+<title>Alfa · pantalla principal</title>
+<script src="e9fc8318-b29c-48fb-b3b5-6d55e7ebf196"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0}
+.alfa{--mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;--sans:'IBM Plex Sans',system-ui,sans-serif;position:relative;width:1440px;height:900px;overflow:hidden;font-family:var(--sans);color:var(--tx);background-color:var(--bg)}
+.th-oscuro{--bg:#08090b;--grid:rgba(255,255,255,.026);--gridM:rgba(255,255,255,.05);--panel:rgba(17,19,24,.66);--border:rgba(255,255,255,.08);--hl:rgba(255,255,255,.08);--shadow:0 18px 40px rgba(0,0,0,.45);--tx:#e9eaee;--tx2:#a1a7b1;--tx3:#6c727d;--line:rgba(255,255,255,.17);--idle:#5d636d;--node:rgba(12,13,17,.85);--mixT:#fff;--opus:var(--opus-b);--sonnet:var(--sonnet-b);--haiku:var(--haiku-b);--ok:var(--ok-b);--err:var(--err-b);--warn:var(--warn-b);--famA:var(--famA-b);--famB:var(--famB-b)}
+.th-claro{--bg:#f2f3f5;--grid:rgba(20,24,32,.045);--gridM:rgba(20,24,32,.08);--panel:rgba(255,255,255,.76);--border:rgba(20,24,32,.11);--hl:rgba(255,255,255,1);--shadow:0 10px 28px rgba(20,24,32,.08);--tx:#15171c;--tx2:#454b56;--tx3:#666c77;--line:rgba(20,24,32,.24);--idle:#9aa0a9;--node:#fbfbfc;--mixT:#000;--opus:color-mix(in oklch,var(--opus-b) 66%,#000);--sonnet:color-mix(in oklch,var(--sonnet-b) 70%,#000);--haiku:color-mix(in oklch,var(--haiku-b) 66%,#000);--ok:color-mix(in oklch,var(--ok-b) 60%,#000);--err:color-mix(in oklch,var(--err-b) 72%,#000);--warn:color-mix(in oklch,var(--warn-b) 62%,#000);--famA:color-mix(in oklch,var(--famA-b) 62%,#000);--famB:color-mix(in oklch,var(--famB-b) 70%,#000)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.glass{position:absolute;box-sizing:border-box;background:var(--panel);-webkit-backdrop-filter:blur(14px) saturate(120%);backdrop-filter:blur(14px) saturate(120%);border:1px solid var(--border);border-radius:10px;box-shadow:inset 0 1px 0 var(--hl),var(--shadow)}
+.lbl{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--tx3)}
+.top{position:absolute;left:0;top:0;right:0;height:52px;display:flex;align-items:center;gap:16px;padding:0 16px;box-sizing:border-box;border-bottom:1px solid var(--border);background:color-mix(in srgb,var(--bg) 80%,transparent)}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-weight:700;font-size:17px;letter-spacing:.02em}
+.sep{width:1px;height:22px;background:var(--line)}
+.proj{display:flex;flex-direction:column;gap:1px;font-family:var(--mono)}
+.proj b{font-size:12.5px;font-weight:500;color:var(--tx)}
+.proj span{font-size:10.5px;color:var(--tx3)}
+.chips{display:flex;gap:8px;margin-left:auto}
+.chip{--m:var(--idle);display:flex;align-items:center;gap:8px;height:28px;padding:0 11px;border:1px solid var(--line);border-radius:999px;font-family:var(--mono);font-size:11px;color:var(--tx3);font-variant-numeric:tabular-nums}
+.chip i{width:7px;height:7px;border-radius:50%;background:var(--idle)}
+.chip.on{color:var(--m);border-color:color-mix(in srgb,var(--m) 60%,transparent);background:color-mix(in srgb,var(--m) 10%,transparent)}
+.chip.on i{background:var(--m)}
+.th-oscuro .chip.on i{box-shadow:0 0 8px var(--m)}
+.btn{height:30px;padding:0 12px;border:1px solid var(--line);border-radius:6px;background:transparent;color:var(--tx);font-family:var(--mono);font-size:11.5px;display:inline-flex;align-items:center;gap:7px;cursor:pointer}
+.seg{display:flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.seg button{border:0;background:transparent;height:28px;padding:0 10px;color:var(--tx3);font-family:var(--mono);font-size:11px;cursor:pointer}
+.seg button.sel{background:color-mix(in srgb,var(--tx) 11%,transparent);color:var(--tx)}
+.dia{position:absolute;left:12px;top:64px;width:1076px;height:536px}
+.c{position:absolute;border:0 dashed var(--line);--lc:var(--line)}
+.ch{height:0;border-top-width:1px}
+.cv{width:0;border-left-width:1px}
+.lit{border-color:var(--lc)}
+.th-oscuro .lit{filter:drop-shadow(0 0 3px var(--lc))}
+.ah{position:absolute;width:0;height:0;--lc:var(--line)}
+.ah-d{border-left:4px solid transparent;border-right:4px solid transparent;border-top:7px solid var(--lc);transform:translateX(-4px)}
+.ah-r{border-top:4px solid transparent;border-bottom:4px solid transparent;border-left:7px solid var(--lc);transform:translateY(-4px)}
+.ah-l{border-top:4px solid transparent;border-bottom:4px solid transparent;border-right:7px solid var(--lc);transform:translateY(-4px)}
+.dot{position:absolute;width:7px;height:7px;border-radius:50%;box-sizing:border-box;background:var(--bg);border:1px solid var(--line);transform:translate(-3px,-3px)}
+.dot.red{border-color:var(--err);background:var(--err)}
+.wires path{fill:none;stroke:var(--line);stroke-width:1;stroke-dasharray:3 4;stroke-linecap:round}
+.wires .litw path{stroke:currentColor;stroke-width:1.5}
+.th-oscuro .wires .litw path{filter:drop-shadow(0 0 3px currentColor)}
+.wires .hide{display:none}
+.bh{position:absolute;top:120px;width:290px;height:28px;box-sizing:border-box;display:flex;align-items:center;justify-content:space-between;padding:0 10px;border:1px solid var(--line);border-radius:4px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--tx3);background:var(--bg)}
+.bh.hot{color:var(--tx);border-color:color-mix(in srgb,var(--tx) 32%,transparent)}
+.bh small{font-size:10px;letter-spacing:.02em;color:var(--tx3)}
+.ag{--m:var(--idle);position:absolute;box-sizing:border-box;width:264px;height:64px;padding:8px 10px 0;border:1px solid var(--line);border-radius:6px;background:var(--node);font-family:var(--mono);display:flex;flex-direction:column;gap:3px}
+.ag .r1{display:flex;justify-content:space-between;align-items:center;font-size:10px;color:var(--tx3);font-variant-numeric:tabular-nums}
+.ag .mt{letter-spacing:.08em}
+.ag .r2{display:flex;align-items:baseline;gap:10px;min-width:0}
+.ag .word{font-size:18px;font-weight:600;color:var(--tx2);white-space:nowrap;letter-spacing:-.01em}
+.ag .task{font-family:var(--sans);font-size:11.5px;color:var(--tx3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.ag .bar{position:absolute;left:10px;right:10px;bottom:7px;height:2px;background:var(--line)}
+.ag .bar i{display:block;height:100%;background:var(--m)}
+.ag.idle{opacity:.34}
+.ag.sleep{opacity:.16}
+.ag.done{opacity:.46}
+.ag.done .word{color:color-mix(in srgb,var(--ok) 65%,var(--tx3))}
+.ag.on .mt,.ag.on .word,.ag.on .pct{color:var(--m)}
+.th-oscuro .ag.on{border-color:var(--m);background:color-mix(in srgb,var(--m) 8%,#0a0b0e);box-shadow:0 0 0 1px color-mix(in srgb,var(--m) 35%,transparent),0 0 24px color-mix(in srgb,var(--m) 28%,transparent)}
+.th-claro .ag.on{border-color:var(--m);background:color-mix(in srgb,var(--m) 8%,#fff);box-shadow:0 6px 18px color-mix(in srgb,var(--m) 22%,transparent)}
+.ag.err{border-color:var(--err);background:color-mix(in srgb,var(--err) 7%,var(--node))}
+.ag.err .word,.ag.err .eb{color:var(--err)}
+.ag .esc{font-size:15px;font-weight:700;letter-spacing:.06em;color:var(--warn);margin-left:auto}
+.ag .tag{font-size:9.5px;letter-spacing:.06em;color:var(--warn)}
+.mem{left:308px;top:412px;width:460px;height:112px;padding:10px 14px;--m:var(--opus);display:flex;flex-direction:column;gap:6px}
+.mem.sleep{opacity:.3}
+.th-oscuro .mem.on{border-color:var(--m);box-shadow:inset 0 1px 0 var(--hl),0 0 0 1px color-mix(in srgb,var(--m) 35%,transparent),0 0 30px color-mix(in srgb,var(--m) 26%,transparent)}
+.th-claro .mem.on{border-color:var(--m);background:color-mix(in srgb,var(--m) 6%,#fff);box-shadow:0 8px 22px color-mix(in srgb,var(--m) 18%,transparent)}
+.mem .hd{display:flex;align-items:center;gap:10px}
+.mem .st{margin-left:auto;font-family:var(--mono);font-size:16px;font-weight:600;color:var(--tx2)}
+.mem.on .st,.mem.on .mt{color:var(--m)}
+.mem .grid{display:grid;grid-template-columns:90px minmax(0,1fr) 90px;gap:12px;align-items:end}
+.big{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:28px;font-weight:600;line-height:1}
+.verd{font-family:var(--mono);font-size:24px;font-weight:700;letter-spacing:.04em;line-height:1}
+.v-err{color:var(--err)}
+.v-ok{color:var(--ok)}
+.v-warn{color:var(--warn)}
+.mem .ft{font-size:11px;color:var(--tx3);font-family:var(--mono)}
+.orch{width:250px}
+.chatn{position:absolute;left:132px;top:26px;width:132px;height:44px;box-sizing:border-box;border:1px solid var(--line);border-radius:6px;background:var(--node);padding:6px 10px;display:flex;flex-direction:column;gap:2px;font-family:var(--mono)}
+.chatn b{font-size:11px;letter-spacing:.1em;font-weight:500;color:var(--tx2)}
+.chatn span{font-size:10.5px;color:var(--tx3)}
+.chatn.pend span{color:var(--warn)}
+.mon{left:1100px;top:64px;width:328px;height:824px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.row{display:flex;align-items:center;justify-content:space-between}
+.cubes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.cube{--f:var(--idle);border:1px solid var(--border);border-radius:8px;padding:10px 10px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;opacity:.45}
+.cube.on{opacity:1;border-color:color-mix(in srgb,var(--f) 45%,transparent)}
+.cube svg{color:var(--f)}
+.th-oscuro .cube.on svg{filter:drop-shadow(0 0 6px color-mix(in srgb,var(--f) 70%,transparent))}
+.cube .nm{font-family:var(--mono);font-size:11.5px;color:var(--tx2)}
+.cube .pc{font-family:var(--mono);font-size:20px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--tx)}
+.cube.on .pc{color:var(--f)}
+.cube .bar{width:100%;height:2px;background:var(--line)}
+.cube .bar i{display:block;height:100%;background:var(--f)}
+.stack{position:relative;height:250px;border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.ic{position:absolute;width:56px;height:60px}
+.leg{display:flex;flex-direction:column;gap:6px;font-family:var(--mono);font-size:11px;color:var(--tx3)}
+.leg div{display:flex;align-items:center;gap:8px}
+.sw{width:10px;height:10px;border-radius:2px}
+.bp{top:612px;height:276px;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.msg{font-size:13px;line-height:1.45;color:var(--tx2)}
+.msg.me{align-self:flex-end;max-width:280px;padding:7px 10px;border-radius:8px;background:color-mix(in srgb,var(--tx) 7%,transparent);color:var(--tx)}
+.who{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--opus)}
+.card{border:1px solid color-mix(in srgb,var(--warn) 55%,transparent);border-radius:8px;padding:8px 10px;display:flex;align-items:center;gap:8px;background:color-mix(in srgb,var(--warn) 7%,transparent)}
+.card .t{font-family:var(--mono);font-size:11px;color:var(--tx);flex:1;min-width:0}
+.card .t small{display:block;color:var(--warn);font-size:9.5px;letter-spacing:.1em}
+.b-ok{border-color:color-mix(in srgb,var(--ok) 60%,transparent);color:var(--ok)}
+.b-no{border-color:color-mix(in srgb,var(--err) 60%,transparent);color:var(--err)}
+.inp{margin-top:auto;height:34px;border:1px solid var(--line);border-radius:6px;display:flex;align-items:center;padding:0 10px;font-size:12.5px;color:var(--tx3);background:transparent;width:100%;box-sizing:border-box;font-family:var(--sans)}
+.log{font-family:var(--mono);font-size:11.5px;line-height:20px;display:flex;flex-direction:column}
+.log div{display:flex;gap:8px;white-space:nowrap;overflow:hidden}
+.log .tm{color:var(--tx3)}
+.log .md{width:50px;flex:none}
+.log .ev{color:var(--tx);overflow:hidden;text-overflow:ellipsis}
+.cur{display:inline-block;width:7px;height:14px;background:var(--tx);vertical-align:-2px}
+.bud .bar{position:relative;height:6px;border-radius:3px;background:color-mix(in srgb,var(--tx) 9%,transparent)}
+.bud .bar i{position:absolute;left:0;top:0;bottom:0;border-radius:3px;background:var(--tx2)}
+.tick{position:absolute;top:-4px;width:1px;height:14px}
+.tl{position:absolute;top:14px;font-family:var(--mono);font-size:9.5px;transform:translateX(-50%);white-space:nowrap}
+</style>
+</helmet>
+<div class="alfa th-{{tema}}" style="{{rootStyle}}">
+
+<header class="top">
+<div class="brand">
+<svg width="20" height="20" sc-camel-view-box="0 0 20 20" aria-hidden="true"><path d="M10 2 18 6.5v7L10 18 2 13.5v-7Z" fill="none" stroke="currentColor" stroke-width="1.3"></path><path d="M10 2v16M2 6.5l8 4.5 8-4.5" fill="none" stroke="currentColor" stroke-width="1" opacity=".5"></path></svg>
+<span>Alfa</span>
+</div>
+<div class="sep"></div>
+<div class="proj"><b>portal-turnos</b><span>{{projSub}}</span></div>
+<div class="chips">
+<sc-for list="{{chips}}" as="ch" hint-placeholder-count="3">
+<div class="{{ch.cls}}" style="--m: {{ch.m}}"><i></i><span>{{ch.name}}</span><span>{{ch.n}}</span></div>
+</sc-for>
+</div>
+<div class="sep"></div>
+<button class="btn" type="button">
+<sc-if value="{{run}}" hint-placeholder-val="{{ true }}"><svg width="12" height="12" sc-camel-view-box="0 0 12 12" aria-hidden="true"><rect x="2.5" y="2" width="2.4" height="8" fill="currentColor"></rect><rect x="7.1" y="2" width="2.4" height="8" fill="currentColor"></rect></svg><span>Pausar</span></sc-if>
+<sc-if value="{{rest}}" hint-placeholder-val="{{ false }}"><svg width="12" height="12" sc-camel-view-box="0 0 12 12" aria-hidden="true"><path d="M3 2v8l7-4z" fill="currentColor"></path></svg><span>Reanudar</span></sc-if>
+</button>
+<div class="seg" role="group" aria-label="Tema">
+<button type="button" class="{{segDark}}">Oscuro</button>
+<button type="button" class="{{segLight}}">Claro</button>
+</div>
+<button class="btn" type="button" aria-label="Idioma">ES
+<svg width="10" height="10" sc-camel-view-box="0 0 10 10" aria-hidden="true"><path d="M2 3.5 5 6.5 8 3.5" fill="none" stroke="currentColor" stroke-width="1.2"></path></svg></button>
+</header>
+
+<section class="dia" aria-label="Diagrama de agentes">
+<svg class="wires" width="1076" height="536" sc-camel-view-box="0 0 1076 536" style="position: absolute; left: 0; top: 0; overflow: visible" aria-hidden="true">
+<defs>
+<marker id="mDim" sc-camel-view-box="0 0 8 8" sc-camel-ref-x="7" sc-camel-ref-y="4" sc-camel-marker-width="7" sc-camel-marker-height="7" orient="auto"><path d="M0 0 8 4 0 8z" style="fill: var(--line); stroke: none"></path></marker>
+<marker id="mSon" sc-camel-view-box="0 0 8 8" sc-camel-ref-x="7" sc-camel-ref-y="4" sc-camel-marker-width="7" sc-camel-marker-height="7" orient="auto"><path d="M0 0 8 4 0 8z" style="fill: var(--sonnet); stroke: none"></path></marker>
+<marker id="mErr" sc-camel-view-box="0 0 8 8" sc-camel-ref-x="7" sc-camel-ref-y="4" sc-camel-marker-width="7" sc-camel-marker-height="7" orient="auto"><path d="M0 0 8 4 0 8z" style="fill: var(--err); stroke: none"></path></marker>
+</defs>
+<g class="dimw">
+<path d="M264 48 C 320 48, 350 48, 407 48" marker-end="url(#mDim)"></path>
+<path d="M538 80 C 538 106, 185 94, 185 120"></path>
+<path d="M538 80 L 538 120"></path>
+<path d="M538 80 C 538 106, 891 94, 891 120"></path>
+<path d="M50 148 L 50 368 Q 50 392 74 392 L 732 392 Q 756 392 756 368 L 756 148"></path>
+<path d="M403 148 L 403 392"></path>
+<path d="M538 392 L 538 412"></path>
+<path d="M768 468 C 1060 468, 1060 48, 670 48" marker-end="url(#mDim)"></path>
+</g>
+<g class="{{litCls}}">
+<path d="M538 80 L 538 120" style="color: var(--sonnet)"></path>
+<path d="M403 148 L 403 234" style="color: var(--sonnet)" marker-end="url(#mSon)"></path>
+<path d="M679 188 C 736 188, 722 320, 722 406" style="color: var(--err)" marker-end="url(#mErr)"></path>
+</g>
+</svg>
+
+<sc-for list="{{branches}}" as="b" hint-placeholder-count="3">
+<div class="{{b.cls}}" style="left: {{b.left}}px"><span>{{b.name}}</span><small>{{b.n}}</small></div>
+</sc-for>
+
+<sc-for list="{{agents}}" as="a" hint-placeholder-count="6">
+<svg class="wires" width="14" height="18" sc-camel-view-box="0 0 14 18" style="position: absolute; left: {{a.tickL}}px; top: {{a.tickS}}px; overflow: visible" aria-hidden="true"><path d="M0 0 Q 0 16 12 16"></path></svg>
+<div class="{{a.cls}}" style="left: {{a.left}}px; top: {{a.top}}px; --m: {{a.m}}">
+<div class="r1"><span><span class="mt">{{a.model}}</span> · {{a.id}}</span><span class="pct">{{a.pct}}</span><sc-if value="{{a.err}}" hint-placeholder-val="{{ false }}"><span class="eb">error ×3</span></sc-if></div>
+<div class="r2"><span class="word">{{a.word}}</span><span class="task">{{a.task}}</span><sc-if value="{{a.err}}" hint-placeholder-val="{{ false }}"><span class="esc">ESCALADO</span></sc-if></div>
+<sc-if value="{{a.hasBar}}" hint-placeholder-val="{{ false }}"><div class="bar"><i style="width: {{a.pctN}}%"></i></div></sc-if>
+<sc-if value="{{a.escTag}}" hint-placeholder-val="{{ false }}"><div class="tag" style="position: absolute; right: 10px; top: -15px">↑ ESCALADO DESDE HAIKU</div></sc-if>
+</div>
+</sc-for>
+
+<div class="dot" style="left: 403px; top: 392px"></div>
+<div class="{{midDot}}" style="left: 538px; top: 392px"></div>
+<div class="lbl" style="position: absolute; left: 60px; top: 399px">línea de auditoría</div>
+
+
+<div class="chatn {{chatCls}}"><b>CHAT</b><span>{{chatSub}}</span></div>
+<div class="ag orch {{orch.cls}}" style="left: 413px; top: 16px; --m: var(--opus)">
+<div class="r1"><span><span class="mt">OPUS</span> · orquestador</span><span>{{orch.meta}}</span></div>
+<div class="r2"><span class="word">{{orch.word}}</span><span class="task">{{orch.task}}</span></div>
+</div>
+
+<div class="glass mem {{mem.cls}}">
+<div class="hd"><span class="lbl" style="color: var(--tx2)">Memoria · Auditoría</span><span class="mt mono" style="font-size: 10px; letter-spacing: .08em">OPUS</span><span class="st">{{mem.st}}</span></div>
+<div class="grid">
+<div><div class="lbl">llamadas</div><div class="big">{{mem.calls}}</div></div>
+<div><div class="lbl">último veredicto</div><div class="verd {{mem.vc}}">{{mem.v}}</div></div>
+<div><div class="lbl">recuerdos</div><div class="big">{{mem.recs}}</div></div>
+</div>
+<div class="ft">{{mem.ft}}</div>
+</div>
+
+<div class="lbl" style="position: absolute; left: 984px; top: 250px">retorno<br>auditado</div>
+</section>
+
+<aside class="glass mon" aria-label="Montaje">
+<div class="row"><span class="lbl" style="color: var(--tx2)">Montaje</span><span class="mono" style="font-size: 11px; color: var(--tx3)">1 / 5 ensamblados</span></div>
+<div class="lbl">en construcción · 4</div>
+<div class="cubes">
+<sc-for list="{{blocks}}" as="k" hint-placeholder-count="4">
+<div class="{{k.cls}}" style="--f: {{k.col}}">
+<svg width="64" height="70" sc-camel-view-box="0 0 64 70" aria-hidden="true">
+<polygon points="{{k.fl}}" fill="currentColor" fill-opacity=".55"></polygon>
+<polygon points="{{k.fr}}" fill="currentColor" fill-opacity=".32"></polygon>
+<polygon points="{{k.ft}}" fill="currentColor" fill-opacity=".8"></polygon>
+<path d="M32 1 63 17 32 33 1 17Z M1 17v36l31 16 31-16V17 M32 33v36" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"></path>
+</svg>
+<span class="nm">{{k.name}}</span>
+<span class="pc">{{k.pct}}%</span>
+<div class="bar"><i style="width: {{k.pct}}%"></i></div>
+</div>
+</sc-for>
+</div>
+<div class="lbl" style="margin-top: 4px">conjunto ensamblado</div>
+<div class="stack">
+<svg width="296" height="250" sc-camel-view-box="0 0 296 250" style="position: absolute; left: 0; top: 0" aria-hidden="true">
+<polygon points="138,127 219,169 165,197 84,155" fill="none" stroke="var(--line)" stroke-width="1"></polygon>
+<polygon points="84,155 165,197 165,203 84,161" fill="var(--line)" fill-opacity=".35"></polygon>
+<polygon points="165,197 219,169 219,175 165,203" fill="var(--line)" fill-opacity=".2"></polygon>
+</svg>
+<sc-for list="{{iso}}" as="q" hint-placeholder-count="5">
+<div class="ic" style="left: {{q.x}}px; top: {{q.y}}px; color: {{q.col}}">
+<sc-if value="{{q.solid}}" hint-placeholder-val="{{ false }}">
+<svg width="56" height="60" sc-camel-view-box="0 0 56 60" aria-hidden="true"><polygon points="1,15 28,29 28,59 1,45" fill="currentColor" fill-opacity=".6"></polygon><polygon points="28,29 55,15 55,45 28,59" fill="currentColor" fill-opacity=".38"></polygon><polygon points="28,1 55,15 28,29 1,15" fill="currentColor" fill-opacity=".85"></polygon><ellipse cx="28" cy="13" rx="7" ry="3.5" fill="none" stroke="var(--bg)" stroke-opacity=".5"></ellipse><path d="M28 1 55 15 28 29 1 15Z M1 15v30l27 14 27-14V15 M28 29v30" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"></path></svg>
+</sc-if>
+<sc-if value="{{q.ghost}}" hint-placeholder-val="{{ true }}">
+<svg width="56" height="60" sc-camel-view-box="0 0 56 60" aria-hidden="true"><path d="M28 1 55 15 28 29 1 15Z M1 15v30l27 14 27-14V15 M28 29v30" fill="none" stroke="var(--tx3)" stroke-opacity=".55" stroke-width="1" stroke-dasharray="3 3"></path></svg>
+</sc-if>
+</div>
+</sc-for>
+<div class="mono" style="position: absolute; left: 12px; bottom: 10px; font-size: 10.5px; color: var(--tx3)">las piezas se apilan sobre sus dependencias</div>
+</div>
+<div class="leg">
+<div><span class="sw" style="background: var(--famA)"></span>núcleo · auth ✓ · esquema-db · api-usuarios</div>
+<div><span class="sw" style="background: var(--famB)"></span>interfaz · ui-login · ui-perfil</div>
+<div><span class="sw" style="border: 1px dashed var(--tx3)"></span>pendiente de encastrar</div>
+</div>
+</aside>
+
+<section class="glass bp" style="left: 12px; width: 430px" aria-label="Chat con el orquestador">
+<div class="row"><span class="lbl" style="color: var(--tx2)">Chat · orquestador</span><span class="mono" style="font-size: 10.5px; color: var(--tx3)">{{chatSub}}</span></div>
+<div class="msg me">Priorizá el login antes que el perfil.</div>
+<div style="display: flex; flex-direction: column; gap: 3px">
+<span class="who">OPUS · ORQUESTADOR</span>
+<div class="msg">Escalé coder-01 a Sonnet después de tres errores en la migración de sesiones. Antes de seguir con ui-login necesito tu visto bueno sobre el plan revisado.</div>
+</div>
+<sc-if value="{{run}}" hint-placeholder-val="{{ true }}">
+<div class="card">
+<div class="t"><small>APROBACIÓN PENDIENTE</small>plan revisado · ui-login</div>
+<button class="btn b-ok" type="button">Aprobar</button>
+<button class="btn b-no" type="button">Rechazar…</button>
+</div>
+</sc-if>
+<sc-if value="{{rest}}" hint-placeholder-val="{{ false }}">
+<div class="mono" style="font-size: 11px; color: var(--tx3); border: 1px solid var(--border); border-radius: 8px; padding: 9px 10px">✓ plan revisado · ui-login — aprobado por vos, 12:43</div>
+</sc-if>
+<label class="inp" for="chatin">Escribile al orquestador…</label>
+<input id="chatin" type="text" style="position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none" aria-label="Mensaje al orquestador">
+</section>
+
+<section class="glass bp" style="left: 454px; width: 380px" aria-label="Registro de sesión">
+<div class="row"><span class="lbl" style="color: var(--tx2)">Registro de sesión</span><span class="mono" style="font-size: 10.5px; color: var(--tx3)">{{logCount}}</span></div>
+<div class="log">
+<sc-for list="{{log}}" as="l" hint-placeholder-count="10">
+<div style="opacity: {{l.op}}"><span class="tm">{{l.t}}</span><span class="md" style="color: {{l.m}}">{{l.md}}</span><span class="ev">{{l.ev}}</span></div>
+</sc-for>
+<div><span class="tm">{{cursorTime}}</span><span class="cur"></span></div>
+</div>
+</section>
+
+<section class="glass bp bud" style="left: 846px; width: 242px" aria-label="Presupuesto">
+<div class="lbl" style="color: var(--tx2)">Presupuesto</div>
+<div style="display: flex; align-items: baseline; gap: 6px"><span class="big">US$ 6,42</span><span class="mono" style="font-size: 12px; color: var(--tx3)">/ 20,00</span></div>
+<div class="mono" style="font-size: 11px; color: var(--tx2)">32% usado</div>
+<div class="bar" style="margin-top: 4px">
+<i style="width: 32%"></i>
+<span class="tick" style="left: 80%; background: var(--warn)"></span>
+<span class="tick" style="left: 95%; background: var(--err)"></span>
+<span class="tl" style="left: 80%; color: var(--warn)">80</span>
+<span class="tl" style="left: 95%; color: var(--err)">95</span>
+</div>
+<div class="mono" style="margin-top: 22px; display: flex; flex-direction: column; gap: 4px; font-size: 11px; color: var(--tx3)">
+<div class="row"><span style="color: var(--opus)">opus</span><span>4,10</span></div>
+<div class="row"><span style="color: var(--sonnet)">sonnet</span><span>1,71</span></div>
+<div class="row"><span style="color: var(--haiku)">haiku</span><span>0,61</span></div>
+</div>
+<div class="mono" style="margin-top: auto; font-size: 10.5px; color: var(--tx3); line-height: 1.5">aviso en 16,00 · pausa en 19,00</div>
+</section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;tema&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;oscuro&quot;,&quot;claro&quot;],&quot;default&quot;:&quot;oscuro&quot;,&quot;section&quot;:&quot;Pantalla&quot;},&quot;estado&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;ejecucion&quot;,&quot;reposo&quot;],&quot;default&quot;:&quot;ejecucion&quot;,&quot;section&quot;:&quot;Pantalla&quot;},&quot;opus&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#a78bfa&quot;,&quot;options&quot;:[&quot;#a78bfa&quot;,&quot;#c084fc&quot;,&quot;#818cf8&quot;],&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;sonnet&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#fb923c&quot;,&quot;options&quot;:[&quot;#fb923c&quot;,&quot;#f59e0b&quot;,&quot;#fb7185&quot;],&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;haiku&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#60a5fa&quot;,&quot;options&quot;:[&quot;#60a5fa&quot;,&quot;#38bdf8&quot;,&quot;#22d3ee&quot;],&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;aprobado&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#4ade80&quot;,&quot;options&quot;:[&quot;#4ade80&quot;,&quot;#34d399&quot;,&quot;#a3e635&quot;],&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;rechazado&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#f87171&quot;,&quot;options&quot;:[&quot;#f87171&quot;,&quot;#fb7185&quot;,&quot;#ef4444&quot;],&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;aviso&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#fbbf24&quot;,&quot;options&quot;:[&quot;#fbbf24&quot;,&quot;#facc15&quot;,&quot;#fdba74&quot;],&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;familiaA&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#2dd4bf&quot;,&quot;options&quot;:[&quot;#2dd4bf&quot;,&quot;#5eead4&quot;,&quot;#a3e635&quot;],&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;familiaB&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#f472b6&quot;,&quot;options&quot;:[&quot;#f472b6&quot;,&quot;#e879f9&quot;,&quot;#fda4af&quot;],&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  renderVals() {
+    var p = this.props;
+    var tema = p.tema === 'claro' ? 'claro' : 'oscuro';
+    var run = p.estado !== 'reposo';
+    var rootStyle = '--opus-b:' + (p.opus || '#a78bfa') + ';--sonnet-b:' + (p.sonnet || '#fb923c') + ';--haiku-b:' + (p.haiku || '#60a5fa') + ';--ok-b:' + (p.aprobado || '#4ade80') + ';--err-b:' + (p.rechazado || '#f87171') + ';--warn-b:' + (p.aviso || '#fbbf24') + ';--famA-b:' + (p.familiaA || '#2dd4bf') + ';--famB-b:' + (p.familiaB || '#f472b6');
+    var M = { OPUS: 'var(--opus)', SONNET: 'var(--sonnet)', HAIKU: 'var(--haiku)' };
+    var cols = [40, 393, 746];
+    function mk(col, i, model, id, st, word, task, pct, extra) {
+      var a = { left: cols[col] + 22, top: 156 + i * 72, tickL: cols[col] + 10, tickT: 156 + i * 72 + 32, tickS: 156 + i * 72 + 16, m: M[model], model: model, id: id, cls: 'ag ' + st, word: word, task: task, pct: pct == null ? '' : pct + '%', pctN: pct || 0, hasBar: pct != null, err: false, escTag: false };
+      if (extra) { for (var k in extra) a[k] = extra[k]; }
+      return a;
+    }
+    var agents = run ? [
+      mk(0, 0, 'OPUS', 'planner-01', 'done', '✓ listo', 'plan de bloques v2', null),
+      mk(0, 1, 'HAIKU', 'spec-02', 'idle', 'esperando', 'criterios de aceptación', null),
+      mk(1, 0, 'HAIKU', 'coder-01', 'err', 'detenido', '', null, { err: true }),
+      mk(1, 1, 'SONNET', 'coder-01b', 'on', 'escribiendo', 'migración de sesiones', 64, { escTag: true }),
+      mk(1, 2, 'HAIKU', 'coder-03', 'sleep', 'dormido', 'ui-perfil', null),
+      mk(2, 0, 'HAIKU', 'research-01', 'on', 'pensando', 'límites de la API de pagos', 38)
+    ] : [
+      mk(0, 0, 'OPUS', 'planner-01', 'done', '✓ listo', 'plan de bloques v2', null),
+      mk(0, 1, 'HAIKU', 'spec-02', 'idle', 'en espera', 'criterios de aceptación', null),
+      mk(1, 0, 'HAIKU', 'coder-01', 'sleep', 'relevado', 'migración de sesiones', null),
+      mk(1, 1, 'SONNET', 'coder-01b', 'done', '✓ listo', 'migración de sesiones', null),
+      mk(1, 2, 'HAIKU', 'coder-03', 'sleep', 'dormido', 'ui-perfil', null),
+      mk(2, 0, 'HAIKU', 'research-01', 'done', '✓ listo', 'límites de la API de pagos', null)
+    ];
+    var branches = [
+      { name: 'PLANIFICACIÓN', n: '2 agentes', left: 40, cls: 'bh' },
+      { name: 'CODIFICACIÓN', n: '3 agentes', left: 393, cls: run ? 'bh hot' : 'bh' },
+      { name: 'INVESTIGACIÓN', n: '1 agente', left: 746, cls: run ? 'bh hot' : 'bh' }
+    ];
+    function cube(pct) {
+      var H = 36, f = H * pct / 100, d = H - f;
+      return {
+        fl: '1,' + (17 + d) + ' 32,' + (33 + d) + ' 32,69 1,53',
+        fr: '32,' + (33 + d) + ' 63,' + (17 + d) + ' 63,53 32,69',
+        ft: '32,' + (1 + d) + ' 63,' + (17 + d) + ' 32,' + (33 + d) + ' 1,' + (17 + d)
+      };
+    }
+    function blk(name, pct, col, on) {
+      var c = cube(pct);
+      return { name: name, pct: pct, col: col, cls: on && run ? 'cube on' : 'cube', fl: c.fl, fr: c.fr, ft: c.ft };
+    }
+    var blocks = [
+      blk('esquema-db', 78, 'color-mix(in oklch, var(--famA) 78%, var(--mixT))', true),
+      blk('api-usuarios', 52, 'color-mix(in oklch, var(--famA) 55%, var(--mixT))', false),
+      blk('ui-login', 31, 'var(--famB)', false),
+      blk('ui-perfil', 9, 'color-mix(in oklch, var(--famB) 65%, var(--mixT))', false)
+    ];
+    function iso(gx, gy, gz, solid, col) {
+      return { x: 110 + (gx - gy) * 27, y: 110 + (gx + gy) * 14 - gz * 30, solid: solid, ghost: !solid, col: col };
+    }
+    var isoList = [
+      iso(0, 0, 0, true, 'var(--famA)'),
+      iso(1, 0, 0, false, ''),
+      iso(0.5, 0, 1, false, ''),
+      iso(0, 0, 2, false, ''),
+      iso(1, 0, 2, false, '')
+    ];
+    var chips = [
+      { name: 'OPUS', n: run ? '2/3' : '0/3', m: 'var(--opus)', cls: run ? 'chip on' : 'chip' },
+      { name: 'SONNET', n: run ? '1/1' : '0/1', m: 'var(--sonnet)', cls: run ? 'chip on' : 'chip' },
+      { name: 'HAIKU', n: run ? '1/4' : '0/4', m: 'var(--haiku)', cls: run ? 'chip on' : 'chip' }
+    ];
+    var L = run ? [
+      ['12:39:48', 'HAIKU', 'coder-01 · error ×1 · test de sesión'],
+      ['12:40:21', 'HAIKU', 'coder-01 · error ×2 · test de sesión'],
+      ['12:40:55', 'HAIKU', 'coder-01 · error ×3 · bucle detenido'],
+      ['12:40:56', 'OPUS', 'auditor · despierta · revisa coder-01'],
+      ['12:40:58', 'OPUS', 'auditor · RECHAZADO · llamada 14'],
+      ['12:40:58', 'OPUS', 'orquestador · escala haiku → sonnet'],
+      ['12:41:02', 'SONNET', 'coder-01b · arranca · escribiendo'],
+      ['12:41:09', 'HAIKU', 'research-01 · pensando'],
+      ['12:41:14', 'SONNET', 'coder-01b · progreso 64%']
+    ] : [
+      ['12:42:31', 'SONNET', 'coder-01b · ✓ listo · esquema-db 100%'],
+      ['12:42:33', 'OPUS', 'auditor · APROBADO · llamada 15'],
+      ['12:42:40', 'HAIKU', 'research-01 · ✓ listo'],
+      ['12:42:41', 'OPUS', 'auditor · APROBADO · llamada 16'],
+      ['12:42:52', 'OPUS', 'orquestador · pide aprobación de plan'],
+      ['12:43:20', 'OPUS', 'orquestador · plan aprobado por vos'],
+      ['12:43:58', 'OPUS', 'auditor · vuelve a dormir'],
+      ['12:44:10', 'OPUS', 'orquestador · ejecución en pausa'],
+      ['12:44:10', 'OPUS', 'sesión en reposo · 0 agentes activos']
+    ];
+    var n = L.length;
+    var log = L.map(function (r, i) {
+      var age = n - 1 - i;
+      var op = run ? Math.max(0.28, 1 - age * 0.12) : Math.max(0.22, 0.6 - age * 0.06);
+      return { t: r[0], md: r[1].toLowerCase(), m: M[r[1]], ev: r[2], op: op };
+    });
+    return {
+      tema: tema, run: run, rest: !run, rootStyle: rootStyle,
+      projSub: run ? 'ejecución #7 · 00:14:22' : 'ejecución #7 · en pausa',
+      chips: chips,
+      segDark: tema === 'oscuro' ? 'sel' : '', segLight: tema === 'claro' ? 'sel' : '',
+      stemStyle: run ? '--lc: var(--sonnet); border-left-style: solid' : '',
+      branches: branches, agents: agents,
+      midDot: 'dot', litCls: run ? 'litw' : 'hide',
+      chatCls: run ? 'pend' : '', chatSub: run ? '1 aprobación pendiente' : 'sin pendientes',
+      orch: run ? { cls: 'on', word: 'delegando', task: 'tarea → coder-01b', meta: '3 ramas' } : { cls: 'idle', word: 'en espera', task: 'sin tareas en curso', meta: '3 ramas' },
+      mem: run ? { cls: 'on', st: 'despierto', calls: 14, v: 'RECHAZADO', vc: 'v-err', recs: 37, ft: 'revisó coder-01 · intento 3/3 · los tests de sesión fallan' } : { cls: 'sleep', st: 'dormido', calls: 16, v: 'APROBADO', vc: 'v-ok', recs: 38, ft: 'última revisión: research-01 · 12:42' },
+      blocks: blocks, iso: isoList,
+      log: log, logCount: run ? '128 eventos' : '141 eventos', cursorTime: run ? '12:41:15' : '12:44:11'
+    };
+  }
+}
+</script>
+
+
+</body></html>

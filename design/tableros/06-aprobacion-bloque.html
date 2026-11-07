@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es"><head>
+<meta charset="utf-8">
+<title>Alfa · aprobación de bloque visual</title>
+<script src="6f69e458-5a70-41dd-b143-681f1e07c0f5"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0}
+.root{--mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;--sans:'IBM Plex Sans',system-ui,sans-serif;--tx:#e9eaee;--tx2:#a1a7b1;--tx3:#6c727d;--line:rgba(255,255,255,.17);--border:rgba(255,255,255,.08);position:relative;width:1440px;height:900px;overflow:hidden;font-family:var(--sans);color:var(--tx);background:#08090b;padding:48px 56px;box-sizing:border-box}
+.card{box-sizing:border-box;height:100%;background:rgba(17,19,24,.72);border:1px solid color-mix(in srgb,var(--warn) 45%,transparent);border-radius:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 18px 40px rgba(0,0,0,.45);padding:22px;display:flex;flex-direction:column;gap:16px}
+.lbl{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--tx3)}
+.row{display:flex;align-items:center;gap:10px}
+.mono{font-family:var(--mono)}
+.frame{position:relative;flex:1;min-width:0;border:1px solid var(--border);border-radius:8px;overflow:hidden;display:flex;flex-direction:column;background:#0c0d11}
+.chrome{height:34px;display:flex;align-items:center;gap:10px;padding:0 12px;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:11px;color:var(--tx3)}
+.url{flex:1;height:22px;border:1px solid var(--border);border-radius:4px;display:flex;align-items:center;padding:0 8px}
+.site{position:relative;flex:1;background:#f6f4ef;color:#1f2328;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Sans',system-ui,sans-serif}
+.form{width:340px;display:flex;flex-direction:column;gap:12px;padding:32px;background:#fff;border:1px solid #e3e0d8;border-radius:10px}
+.form h3{margin:0;font-size:22px;font-weight:600}
+.f{display:flex;flex-direction:column;gap:5px;font-size:13px;color:#4a4f57}
+.f span{height:38px;border:1px solid #d6d2c8;border-radius:6px}
+.go{height:40px;width:140px;border-radius:6px;background:#1f5f5b;color:#fff;font-size:14px;display:flex;align-items:center;justify-content:center}
+.pin{position:absolute;width:26px;height:26px;border-radius:50%;background:var(--warn);color:#141210;font-family:var(--mono);font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 4px color-mix(in srgb,var(--warn) 30%,transparent)}
+.area{position:absolute;border:1.5px dashed var(--warn);border-radius:6px}
+.side{width:380px;display:flex;flex-direction:column;gap:14px}
+.mk{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);font-size:13.5px;line-height:1.45;color:var(--tx2)}
+.mk b{flex:none;width:22px;height:22px;border-radius:50%;background:var(--warn);color:#141210;font-family:var(--mono);font-size:11px;display:flex;align-items:center;justify-content:center}
+.btn{height:44px;padding:0 18px;border:1px solid var(--line);border-radius:7px;background:transparent;color:var(--tx);font-family:var(--mono);font-size:13px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.ok{border-color:color-mix(in srgb,var(--ok) 70%,transparent);color:var(--ok);background:color-mix(in srgb,var(--ok) 9%,transparent)}
+.no{border-color:color-mix(in srgb,var(--err) 70%,transparent);color:var(--err)}
+.tg{border-color:color-mix(in srgb,var(--warn) 60%,transparent);color:var(--warn)}
+.tg.on{background:color-mix(in srgb,var(--warn) 14%,transparent)}
+textarea{width:100%;box-sizing:border-box;min-height:84px;resize:none;border:1px solid var(--line);border-radius:7px;background:transparent;color:var(--tx);font-family:var(--sans);font-size:13.5px;padding:10px}
+</style>
+</helmet>
+<div class="root" style="{{vars}}">
+<section class="card" aria-label="Aprobación del bloque ui-login">
+<div class="row">
+<span class="lbl" style="color: var(--warn)">aprobación pendiente · bloque visual</span>
+<span class="mono" style="font-size: 18px; font-weight: 600">ui-login</span>
+<span class="mono" style="font-size: 11px; color: var(--tx3)">familia interfaz · hecho por coder-02 (sonnet) · auditor: APROBADO</span>
+<button class="{{tgCls}}" type="button" style="margin-left: auto; height: 34px" sc-camel-on-click="{{toggle}}"><svg width="14" height="14" sc-camel-view-box="0 0 14 14" aria-hidden="true"><path d="M2 12l2.5-.6L11.5 4.4 9.6 2.5 2.6 9.5Z" fill="none" stroke="currentColor" stroke-width="1.3"></path></svg>{{tgLabel}}</button>
+</div>
+<div style="display: flex; gap: 20px; flex: 1; min-height: 0">
+<div class="frame">
+<div class="chrome"><span>vista previa</span><span class="url">localhost:5173/ingresar</span><span>1280 × 800</span></div>
+<div class="site">
+<div class="form">
+<h3>Ingresá a tus turnos</h3>
+<div class="f">Correo electrónico<span></span></div>
+<div class="f">Contraseña<span></span></div>
+<div class="go">Ingresar</div>
+</div>
+<sc-if value="{{marking}}" hint-placeholder-val="{{ true }}">
+<div class="area" style="left: 284px; top: 352px; width: 160px; height: 52px"></div>
+<div class="pin" style="left: 270px; top: 338px">1</div>
+<div class="area" style="left: 252px; top: 180px; width: 290px; height: 44px"></div>
+<div class="pin" style="left: 530px; top: 166px">2</div>
+<div class="mono" style="position: absolute; left: 14px; bottom: 12px; font-size: 11px; color: #6b5a1e; background: #fff6d6; padding: 4px 8px; border-radius: 4px">modo marcar · arrastrá para encerrar una zona</div>
+</sc-if>
+</div>
+</div>
+<div class="side">
+<div class="lbl">qué cambiar · {{markCount}}</div>
+<sc-if value="{{marking}}" hint-placeholder-val="{{ true }}">
+<div>
+<div class="mk"><b>1</b><span>El botón debería ocupar todo el ancho del formulario.</span></div>
+<div class="mk"><b>2</b><span>El título queda muy pegado a los campos; darle más aire.</span></div>
+</div>
+</sc-if>
+<sc-if value="{{notMarking}}" hint-placeholder-val="{{ false }}">
+<p style="margin: 0; font-size: 13.5px; color: var(--tx3); line-height: 1.5">Activá “Marcar en pantalla” para señalar zonas de la vista previa. Cada marca viaja con el rechazo al agente que hizo el bloque.</p>
+</sc-if>
+<label class="lbl" for="coment">comentario general</label>
+<textarea id="coment">Falta el enlace “Olvidé mi contraseña” debajo del campo.</textarea>
+<div style="margin-top: auto; display: flex; flex-direction: column; gap: 10px">
+<button class="btn ok" type="button">Aprobar y encastrar</button>
+<button class="btn no" type="button">Rechazar con {{markCount}}</button>
+<span class="mono" style="font-size: 11px; color: var(--tx3); line-height: 1.5">rechazar devuelve el bloque a codificación con las marcas y el comentario; vuelve a pasar por auditoría</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;aprobado&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#4ade80&quot;,&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;rechazado&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#f87171&quot;,&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;aviso&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#fbbf24&quot;,&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { marking: true }; }
+  renderVals() {
+    var p = this.props, self = this, m = this.state.marking;
+    return {
+      vars: '--ok:' + (p.aprobado || '#4ade80') + ';--err:' + (p.rechazado || '#f87171') + ';--warn:' + (p.aviso || '#fbbf24'),
+      marking: m, notMarking: !m,
+      tgCls: m ? 'btn tg on' : 'btn tg',
+      tgLabel: m ? 'Marcando en pantalla' : 'Marcar en pantalla',
+      markCount: m ? '2 marcas' : 'comentario',
+      toggle: function () { self.setState({ marking: !self.state.marking }); }
+    };
+  }
+}
+</script>
+
+
+</body></html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es"><head>
+<meta charset="utf-8">
+<title>Alfa · aprobación del plan</title>
+<script src="93e11671-0f6d-4a7a-870d-90edab2be393"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0}
+.root{--mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;--sans:'IBM Plex Sans',system-ui,sans-serif;--tx:#e9eaee;--tx2:#a1a7b1;--tx3:#6c727d;--line:rgba(255,255,255,.17);--border:rgba(255,255,255,.08);position:relative;width:1440px;height:900px;overflow:hidden;font-family:var(--sans);color:var(--tx);background:#08090b;padding:48px 56px;box-sizing:border-box}
+.card{box-sizing:border-box;height:100%;background:rgba(17,19,24,.72);border:1px solid color-mix(in srgb,var(--opus) 55%,transparent);border-radius:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 0 40px color-mix(in srgb,var(--opus) 12%,transparent),0 18px 40px rgba(0,0,0,.45);padding:24px;display:flex;flex-direction:column;gap:18px}
+.lbl{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--tx3)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.row{display:flex;align-items:center;gap:10px}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{text-align:left;font-family:var(--mono);font-size:10.5px;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:var(--tx3);padding:0 10px 10px;border-bottom:1px solid var(--border)}
+td{padding:13px 10px;border-bottom:1px solid var(--border);vertical-align:middle;color:var(--tx2)}
+td.nm{font-family:var(--mono);font-size:14px;color:var(--tx)}
+.sq{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:10px;vertical-align:0}
+.dep{display:inline-flex;font-family:var(--mono);font-size:11px;padding:2px 7px;border:1px solid var(--line);border-radius:4px;margin-right:5px;color:var(--tx2)}
+.vis{font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--warn)}
+.graph{position:relative;width:440px;height:470px;flex:none}
+.graph path{fill:none;stroke:var(--line);stroke-width:1.2;stroke-dasharray:3 4;stroke-linecap:round}
+.gn{position:absolute;width:170px;height:40px;box-sizing:border-box;border:1px solid var(--line);border-radius:6px;background:#0c0d11;font-family:var(--mono);font-size:12.5px;display:flex;align-items:center;gap:8px;padding:0 10px}
+.btn{height:44px;padding:0 18px;border:1px solid var(--line);border-radius:7px;background:transparent;color:var(--tx);font-family:var(--mono);font-size:13px;cursor:pointer}
+.ok{border-color:color-mix(in srgb,var(--ok) 70%,transparent);color:var(--ok);background:color-mix(in srgb,var(--ok) 9%,transparent)}
+</style>
+</helmet>
+<div class="root" style="{{vars}}">
+<section class="card" aria-label="Aprobación del plan">
+<div class="row">
+<span class="lbl" style="color: var(--opus)">opus · orquestador · plan v2</span>
+<span class="mono" style="margin-left: auto; font-size: 11px; color: var(--tx3)">nada se codifica hasta que apruebes</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span class="mono" style="font-size: 24px; font-weight: 600">5 bloques · 2 familias · 4 niveles</span>
+<p style="margin: 0; font-size: 14px; color: var(--tx2); line-height: 1.5; max-width: 760px">Cada bloque se construye después de los que necesita y se apila sobre ellos en el montaje. Los bloques visuales vuelven a pedirte aprobación con vista previa.</p>
+</div>
+<div style="display: flex; gap: 40px; flex: 1; min-height: 0">
+<div style="flex: 1; min-width: 0">
+<sc-raw-table>
+<sc-raw-thead><sc-raw-tr><sc-raw-th>bloque</sc-raw-th><sc-raw-th>depende de</sc-raw-th><sc-raw-th>agente</sc-raw-th><sc-raw-th style="text-align: right">est.</sc-raw-th></sc-raw-tr></sc-raw-thead>
+<sc-raw-tbody>
+<sc-raw-tr><sc-raw-td class="nm"><span class="sq" style="background: var(--famA)"></span>auth</sc-raw-td><sc-raw-td><span style="color: var(--tx3)">—</span></sc-raw-td><sc-raw-td><span class="mono" style="color: var(--sonnet)">sonnet</span></sc-raw-td><sc-raw-td class="mono" style="text-align: right">1,20</sc-raw-td></sc-raw-tr>
+<sc-raw-tr><sc-raw-td class="nm"><span class="sq" style="background: color-mix(in oklch, var(--famA) 78%, #fff)"></span>esquema-db</sc-raw-td><sc-raw-td><span class="dep">auth</span></sc-raw-td><sc-raw-td><span class="mono" style="color: var(--haiku)">haiku</span></sc-raw-td><sc-raw-td class="mono" style="text-align: right">0,90</sc-raw-td></sc-raw-tr>
+<sc-raw-tr><sc-raw-td class="nm"><span class="sq" style="background: color-mix(in oklch, var(--famA) 55%, #fff)"></span>api-usuarios</sc-raw-td><sc-raw-td><span class="dep">auth</span><span class="dep">esquema-db</span></sc-raw-td><sc-raw-td><span class="mono" style="color: var(--sonnet)">sonnet</span></sc-raw-td><sc-raw-td class="mono" style="text-align: right">2,10</sc-raw-td></sc-raw-tr>
+<sc-raw-tr><sc-raw-td class="nm"><span class="sq" style="background: var(--famB)"></span>ui-login <span class="vis">· VISUAL</span></sc-raw-td><sc-raw-td><span class="dep">api-usuarios</span></sc-raw-td><sc-raw-td><span class="mono" style="color: var(--sonnet)">sonnet</span></sc-raw-td><sc-raw-td class="mono" style="text-align: right">1,40</sc-raw-td></sc-raw-tr>
+<sc-raw-tr><sc-raw-td class="nm"><span class="sq" style="background: color-mix(in oklch, var(--famB) 65%, #fff)"></span>ui-perfil <span class="vis">· VISUAL</span></sc-raw-td><sc-raw-td><span class="dep">api-usuarios</span></sc-raw-td><sc-raw-td><span class="mono" style="color: var(--haiku)">haiku</span></sc-raw-td><sc-raw-td class="mono" style="text-align: right">0,80</sc-raw-td></sc-raw-tr>
+</sc-raw-tbody>
+</sc-raw-table>
+<div class="row" style="margin-top: 14px; justify-content: space-between"><span class="lbl">estimado total</span><span class="mono" style="font-size: 20px; font-weight: 600">US$ 6,40 <span style="font-size: 12px; color: var(--tx3); font-weight: 400">de 20,00 disponibles</span></span></div>
+<label class="lbl" for="pcom" style="display: block; margin-top: 22px; margin-bottom: 8px">cambios al plan (opcional)</label>
+<input id="pcom" type="text" placeholder="Ej.: ui-perfil puede esperar a la próxima ejecución" style="width: 100%; box-sizing: border-box; height: 40px; border: 1px solid var(--line); border-radius: 7px; background: transparent; color: var(--tx); font-family: var(--sans); font-size: 13.5px; padding: 0 12px">
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<span class="lbl">dependencias · se apila de abajo hacia arriba</span>
+<div class="graph">
+<svg width="440" height="470" sc-camel-view-box="0 0 440 470" style="position: absolute; left: 0; top: 0" aria-hidden="true">
+<defs><marker id="pa" sc-camel-view-box="0 0 8 8" sc-camel-ref-x="7" sc-camel-ref-y="4" sc-camel-marker-width="7" sc-camel-marker-height="7" orient="auto"><path d="M0 0 8 4 0 8z" style="fill: var(--tx3); stroke: none"></path></marker></defs>
+<path d="M240 400 C 240 360, 130 360, 130 320" marker-end="url(#pa)"></path>
+<path d="M254 400 C 350 350, 350 250, 254 200" marker-end="url(#pa)"></path>
+<path d="M130 280 C 130 240, 240 240, 240 200" marker-end="url(#pa)"></path>
+<path d="M240 160 C 240 120, 130 120, 130 80" marker-end="url(#pa)"></path>
+<path d="M240 160 C 240 120, 350 120, 350 80" marker-end="url(#pa)"></path>
+</svg>
+<div class="gn" style="left: 45px; top: 40px"><span class="sq" style="margin: 0; background: var(--famB)"></span>ui-login</div>
+<div class="gn" style="left: 265px; top: 40px"><span class="sq" style="margin: 0; background: color-mix(in oklch, var(--famB) 65%, #fff)"></span>ui-perfil</div>
+<div class="gn" style="left: 155px; top: 160px"><span class="sq" style="margin: 0; background: color-mix(in oklch, var(--famA) 55%, #fff)"></span>api-usuarios</div>
+<div class="gn" style="left: 45px; top: 280px"><span class="sq" style="margin: 0; background: color-mix(in oklch, var(--famA) 78%, #fff)"></span>esquema-db</div>
+<div class="gn" style="left: 155px; top: 400px"><span class="sq" style="margin: 0; background: var(--famA)"></span>auth</div>
+</div>
+</div>
+</div>
+<div class="row" style="justify-content: flex-end; gap: 12px">
+<button class="btn" type="button">Pedir cambios</button>
+<button class="btn ok" type="button">Aprobar plan y empezar a codificar</button>
+</div>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;opus&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#a78bfa&quot;,&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;sonnet&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#fb923c&quot;,&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;haiku&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#60a5fa&quot;,&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;aprobado&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#4ade80&quot;,&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;aviso&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#fbbf24&quot;,&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;familiaA&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#2dd4bf&quot;,&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;familiaB&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#f472b6&quot;,&quot;section&quot;:&quot;Colores de énfasis&quot;},&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  renderVals() {
+    var p = this.props;
+    return { vars: '--opus:' + (p.opus || '#a78bfa') + ';--sonnet:' + (p.sonnet || '#fb923c') + ';--haiku:' + (p.haiku || '#60a5fa') + ';--ok:' + (p.aprobado || '#4ade80') + ';--warn:' + (p.aviso || '#fbbf24') + ';--famA:' + (p.familiaA || '#2dd4bf') + ';--famB:' + (p.familiaB || '#f472b6') };
+  }
+}
+</script>
+
+
+</body></html>
