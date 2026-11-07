@@ -10,6 +10,8 @@ export interface EngineProcess {
   alive(): boolean;
   /** Manda la API key al motor por el canal del proceso padre (nunca por WebSocket). */
   sendApiKey(key: string): void;
+  /** Manda la carpeta del proyecto al motor (null = ninguna). */
+  sendWorkspace(dir: string | null): void;
   kill(): void;
 }
 
@@ -43,6 +45,7 @@ export function startEngineProcess(onExit: (code: number) => void): EngineProces
     connection,
     alive: () => alive,
     sendApiKey: (key) => child.postMessage({ type: "config.apiKey", key }),
+    sendWorkspace: (dir) => child.postMessage({ type: "config.workspace", path: dir }),
     kill() {
       killedByUs = true;
       child.kill();

@@ -49,19 +49,24 @@ describe("motor", () => {
     ws.on("open", () => ws.send(hello(TOKEN)));
     const [ready, status] = await events;
     expect(ready?.type).toBe("engine.ready");
-    expect(status).toMatchObject({ type: "engine.status", data: { apiKeyConfigured: false } });
+    expect(status).toMatchObject({
+      type: "engine.status",
+      data: { apiKeyConfigured: false, workspace: null, budgetLimit: 5 },
+    });
     ws.close();
   });
 
-  it("chat.send responde con chat.message del sistema", async () => {
+  it("chat.send sin carpeta responde con error guiado y mensaje del sistema", async () => {
     const ws = connect();
-    const events = collect(ws, 4);
+    const events = collect(ws, 5);
     ws.on("open", () => {
       ws.send(hello(TOKEN));
       ws.send(stamp("chat.send", { texto: "hola" }));
     });
-    const roles = (await events).filter((e) => e.type === "chat.message").map((e) => e.data);
+    const all = await events;
+    const roles = all.filter((e) => e.type === "chat.message").map((e) => e.data);
     expect(roles).toMatchObject([{ rol: "usuario" }, { rol: "sistema" }]);
+    expect(all.find((e) => e.type === "engine.error")).toMatchObject({ data: { code: "no_workspace" } });
     ws.close();
   });
 

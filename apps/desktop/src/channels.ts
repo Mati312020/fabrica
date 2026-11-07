@@ -5,4 +5,6 @@ export const CHANNELS = {
   apiKeySet: "apiKey:set",
   apiKeyStatus: "apiKey:status",
   apiKeyClear: "apiKey:clear",
+  workspaceChoose: "workspace:choose",
+  workspaceCurrent: "workspace:current",
 } as const;

@@ -9,6 +9,10 @@ const bridge: FabricaBridge = {
     status: () => ipcRenderer.invoke(CHANNELS.apiKeyStatus),
     clear: () => ipcRenderer.invoke(CHANNELS.apiKeyClear),
   },
+  workspace: {
+    choose: () => ipcRenderer.invoke(CHANNELS.workspaceChoose),
+    current: () => ipcRenderer.invoke(CHANNELS.workspaceCurrent),
+  },
   onEngineExit(cb) {
     const listener = (_event: unknown, code: number) => cb(code);
     ipcRenderer.on(CHANNELS.engineExit, listener);

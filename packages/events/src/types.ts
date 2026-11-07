@@ -1,5 +1,5 @@
 import type { z } from "zod";
-import type { AGENT_STATES, CHAT_ROLES, MODELS } from "./constants.js";
+import type { AGENT_STATES, BLOCK_KINDS, CHAT_ROLES, MODELS } from "./constants.js";
 import type { commandSchema } from "./commands.js";
 import type { eventSchema } from "./events.js";
 
@@ -19,5 +19,7 @@ export type EventOf<T extends EventType> = Extract<FabricaEvent, { type: T }>;
 export type AgentState = (typeof AGENT_STATES)[number];
 /** Modelo de un agente. */
 export type ModelName = (typeof MODELS)[number];
+/** Tipo de bloque del plan. */
+export type BlockKind = (typeof BLOCK_KINDS)[number];
 /** Rol de un mensaje de chat. */
 export type ChatRole = (typeof CHAT_ROLES)[number];

@@ -10,6 +10,7 @@ interface ParentPort {
 const parentMessage = z.discriminatedUnion("type", [
   z.object({ type: z.literal("init"), token: z.string().min(16) }),
   z.object({ type: z.literal("config.apiKey"), key: z.string().max(512) }),
+  z.object({ type: z.literal("config.workspace"), path: z.string().max(1024).nullable() }),
 ]);
 
 const parentPort = (process as unknown as { parentPort?: ParentPort }).parentPort;
@@ -17,17 +18,25 @@ if (!parentPort) throw new Error("child.ts debe correr como utilityProcess de El
 
 let engine: EngineHandle | null = null;
 let pendingKey: string | null = null;
+let pendingWorkspace: string | null = null;
 
 parentPort.on("message", async ({ data }) => {
   const message = parentMessage.safeParse(data);
   if (!message.success) return;
-  if (message.data.type === "config.apiKey") {
-    if (engine) engine.setApiKey(message.data.key);
-    else pendingKey = message.data.key;
+  const m = message.data;
+  if (m.type === "config.apiKey") {
+    if (engine) engine.setApiKey(m.key);
+    else pendingKey = m.key;
+    return;
+  }
+  if (m.type === "config.workspace") {
+    if (engine) engine.setWorkspace(m.path);
+    else pendingWorkspace = m.path;
     return;
   }
   if (engine) return;
-  engine = await startEngine({ token: message.data.token });
+  engine = await startEngine({ token: m.token });
   if (pendingKey !== null) engine.setApiKey(pendingKey);
+  if (pendingWorkspace !== null) engine.setWorkspace(pendingWorkspace);
   parentPort.postMessage({ type: "listening", port: engine.port });
 });

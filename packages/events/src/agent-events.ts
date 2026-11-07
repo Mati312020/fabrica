@@ -1,14 +1,25 @@
 import { z } from "zod";
-import { AGENT_STATES, BRANCH_KINDS, MODELS } from "./constants.js";
+import { AGENT_STATES, MODELS } from "./constants.js";
 import { msg, nonNegative } from "./envelope.js";
 
 const model = z.enum(MODELS);
 
 /** Eventos del motor sobre ramas, agentes, tareas, auditoría y memoria (§9). */
 export const agentEventSchemas = [
-  msg("branch.created", { id: z.string(), tipo: z.enum(BRANCH_KINDS), nombre: z.string() }),
-  msg("agent.spawned", { id: z.string(), rama: z.string(), modelo: model }),
-  msg("task.assigned", { taskId: z.string(), de: z.string(), a: z.string(), resumen: z.string() }),
+  msg("branch.created", { id: z.string(), tipo: z.string(), nombre: z.string() }),
+  msg("agent.spawned", {
+    id: z.string(),
+    rama: z.string(),
+    modelo: model,
+    escaladoDesde: model.optional(),
+  }),
+  msg("task.assigned", {
+    taskId: z.string(),
+    de: z.string(),
+    a: z.string(),
+    resumen: z.string(),
+    blockId: z.string().optional(),
+  }),
   msg("agent.status", { id: z.string(), estado: z.enum(AGENT_STATES) }),
   msg("agent.progress", { id: z.string(), pct: z.number().min(0).max(100) }),
   msg("agent.tool", { id: z.string(), herramienta: z.string(), detalle: z.string() }),
@@ -22,6 +33,7 @@ export const agentEventSchemas = [
   msg("task.toAudit", { taskId: z.string(), auditorId: z.string() }),
   msg("audit.result", { taskId: z.string(), ok: z.boolean(), motivo: z.string() }),
   msg("task.escalated", { taskId: z.string(), modeloAnterior: model, modeloNuevo: model }),
+  msg("task.blocked", { taskId: z.string(), motivo: z.string() }),
   msg("memory.saved", { id: z.string(), titulo: z.string() }),
   msg("memory.deleted", { id: z.string(), titulo: z.string() }),
 ] as const;

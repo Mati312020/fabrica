@@ -17,5 +17,11 @@ export interface FabricaBridge {
     status(): Promise<{ configured: boolean }>;
     clear(): Promise<void>;
   };
+  workspace: {
+    /** Abre el selector de carpeta; devuelve la ruta elegida o null si se canceló. */
+    choose(): Promise<string | null>;
+    /** Carpeta guardada, si hay. */
+    current(): Promise<string | null>;
+  };
   onEngineExit(cb: (code: number) => void): () => void;
 }

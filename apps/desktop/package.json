@@ -15,6 +15,7 @@
     "esbuild": "^0.28.2"
   },
   "dependencies": {
-    "@fabrica/events": "^0.0.0"
+    "@fabrica/events": "^0.0.0",
+    "zod": "^4.6.7"
   }
 }

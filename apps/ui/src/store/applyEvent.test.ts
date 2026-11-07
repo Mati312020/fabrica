@@ -19,9 +19,9 @@ describe("applyEvent", () => {
   });
 
   it("engine.status actualiza pausa y API key", () => {
-    const event: FabricaEvent = { type: "engine.status", at, data: { apiKeyConfigured: true, paused: true } };
+    const event: FabricaEvent = { type: "engine.status", at, data: { apiKeyConfigured: true, paused: true, workspace: null, budgetLimit: 5 } };
     const state = applyEvent(initialState, event);
-    expect(state).toMatchObject({ apiKeyConfigured: true, paused: true });
+    expect(state).toMatchObject({ apiKeyConfigured: true, paused: true, workspace: null, budgetLimit: 5 });
   });
 
   it("engine.ready guarda la versión del motor", () => {

@@ -3,6 +3,7 @@ import { CHANNELS } from "./channels";
 import { startEngineProcess } from "./engineProcess";
 import { registerIpc } from "./ipc";
 import { loadApiKey } from "./secrets";
+import { loadSettings } from "./settings";
 import { createWindow } from "./window";
 
 if (!app.requestSingleInstanceLock()) app.quit();
@@ -20,6 +21,8 @@ app.whenReady().then(async () => {
   await engine.connection.catch(() => null);
   const stored = await loadApiKey();
   if (stored && engine.alive()) engine.sendApiKey(stored);
+  const { workspace } = await loadSettings();
+  if (workspace && engine.alive()) engine.sendWorkspace(workspace);
 });
 
 app.on("second-instance", () => {

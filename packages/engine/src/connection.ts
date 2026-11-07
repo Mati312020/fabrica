@@ -2,8 +2,8 @@ import { CLOSE_UNAUTHORIZED, PROTOCOL_VERSION, commandSchema } from "@fabrica/ev
 import type { WebSocket } from "ws";
 import { tokenMatches } from "./auth.js";
 import type { EventBus } from "./bus.js";
-import { ENGINE_VERSION, emitStatus, handleCommand } from "./handlers.js";
-import type { EngineState } from "./state.js";
+import type { Controller } from "./run/controller.js";
+import { ENGINE_VERSION } from "./version.js";
 
 const HELLO_TIMEOUT_MS = 3000;
 
@@ -11,7 +11,7 @@ const HELLO_TIMEOUT_MS = 3000;
 export interface ConnectionDeps {
   token: string;
   bus: EventBus;
-  state: EngineState;
+  controller: Controller;
 }
 
 function parseCommand(raw: unknown, isBinary: boolean) {
@@ -27,10 +27,10 @@ function parseCommand(raw: unknown, isBinary: boolean) {
 /**
  * Gobierna una conexión: exige `hello` con token en 3 s y después despacha comandos.
  * @param socket Socket recién aceptado.
- * @param deps Token esperado, bus y estado del motor.
+ * @param deps Token esperado, bus y controlador.
  */
 export function attachConnection(socket: WebSocket, deps: ConnectionDeps): void {
-  const { token, bus, state } = deps;
+  const { token, bus, controller } = deps;
   let authenticated = false;
   const timer = setTimeout(() => socket.close(CLOSE_UNAUTHORIZED, "hello timeout"), HELLO_TIMEOUT_MS);
 
@@ -46,12 +46,12 @@ export function attachConnection(socket: WebSocket, deps: ConnectionDeps): void 
       clearTimeout(timer);
       bus.add(socket);
       bus.emitTo(socket, "engine.ready", { version: ENGINE_VERSION, protocol: PROTOCOL_VERSION });
-      return emitStatus(bus, state);
+      return controller.emitStatus();
     }
     if (!command) {
       return bus.emitTo(socket, "engine.error", { code: "bad_command", message: "Comando inválido" });
     }
-    handleCommand(command, { bus, state, socket });
+    controller.handle(command);
   });
 
   socket.on("close", () => {

@@ -22,5 +22,8 @@ export const AGENT_STATES = [
 /** Roles de un mensaje de chat. */
 export const CHAT_ROLES = ["usuario", "orquestador", "sistema"] as const;
 
-/** Tipos de rama del diagrama. */
-export const BRANCH_KINDS = ["planificacion", "codificacion", "investigacion"] as const;
+/** Tipos de bloque del plan: los visuales los aprueba el usuario. */
+export const BLOCK_KINDS = ["visual", "tecnico"] as const;
+
+/** Decisiones posibles cuando una tarea quedó bloqueada (`run.answer`). */
+export const RUN_DECISIONS = ["reintentar", "cancelar"] as const;

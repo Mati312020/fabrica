@@ -1,7 +1,8 @@
 import type { ApiKeyResult } from "@fabrica/events";
-import { ipcMain, type IpcMainInvokeEvent } from "electron";
+import { BrowserWindow, dialog, ipcMain, type IpcMainInvokeEvent } from "electron";
 import { CHANNELS } from "./channels";
 import type { EngineProcess } from "./engineProcess";
+import { loadSettings, saveSettings } from "./settings";
 import { clearApiKey, hasApiKey, isValidApiKeyFormat, saveApiKey } from "./secrets";
 import { isTrustedUrl } from "./trust";
 
@@ -21,6 +22,18 @@ async function setApiKey(engine: EngineProcess, key: unknown): Promise<ApiKeyRes
   return { ok: true };
 }
 
+/** Abre el selector de carpeta; guarda la elegida y se la manda al motor. */
+async function chooseWorkspace(engine: EngineProcess): Promise<string | null> {
+  const parent = BrowserWindow.getFocusedWindow() ?? undefined;
+  const options = { properties: ["openDirectory", "createDirectory"] as ("openDirectory" | "createDirectory")[] };
+  const result = await (parent ? dialog.showOpenDialog(parent, options) : dialog.showOpenDialog(options));
+  const dir = result.canceled ? undefined : result.filePaths[0];
+  if (!dir) return null;
+  await saveSettings({ workspace: dir });
+  if (engine.alive()) engine.sendWorkspace(dir);
+  return dir;
+}
+
 /**
  * Registra los canales IPC. La API key entra por `apiKey:set` y nunca se devuelve.
  * @param engine Proceso del motor.
@@ -33,6 +46,14 @@ export function registerIpc(engine: EngineProcess): void {
   ipcMain.handle(
     CHANNELS.apiKeySet,
     guard((key: unknown) => setApiKey(engine, key)),
+  );
+  ipcMain.handle(
+    CHANNELS.workspaceChoose,
+    guard(() => chooseWorkspace(engine)),
+  );
+  ipcMain.handle(
+    CHANNELS.workspaceCurrent,
+    guard(async () => (await loadSettings()).workspace),
   );
   ipcMain.handle(
     CHANNELS.apiKeyStatus,

@@ -11,5 +11,6 @@ await build({
   ...common,
   entryPoints: ["../../packages/engine/src/child.ts"],
   outfile: "dist/engine.cjs",
-  external: ["bufferutil", "utf-8-validate"],
+  // El SDK de Claude se carga con import() en runtime: lleva su propio binario nativo y no se empaqueta.
+  external: ["bufferutil", "utf-8-validate", "@anthropic-ai/claude-agent-sdk"],
 });

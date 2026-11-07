@@ -27,3 +27,10 @@ apps/ui         Vite + React + Tailwind v4 (renderer)
 packages/events contrato de eventos y comandos (zod)
 packages/engine motor: WebSocket en 127.0.0.1 + bus de eventos
 ```
+
+## Fases 1 y 2: orquestación real
+
+Elegí la carpeta del proyecto (botón en la barra superior de la app de escritorio; se guarda en `userData/settings.json`) y cargá la API key. Los agentes usan `@anthropic-ai/claude-agent-sdk` con `settingSources: []`, sin sesión en disco, sin Bash y con las rutas confinadas a esa carpeta.
+
+`dev:web` (solo desarrollo): el motor standalone toma la carpeta de `FABRICA_WORKSPACE` y la key de `ANTHROPIC_API_KEY`
+(variables de entorno del proceso; nunca se imprimen). Sin ellas, el chat responde con el error guiado `no_workspace` / `no_api_key`.

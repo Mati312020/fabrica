@@ -27,9 +27,42 @@ describe("commandSchema", () => {
   });
 });
 
+describe("comandos de la Fase 1", () => {
+  it("acepta budget.setLimit positivo y run.answer con decisión válida", () => {
+    expect(commandSchema.safeParse({ type: "budget.setLimit", at, data: { usd: 10 } }).success).toBe(true);
+    expect(commandSchema.safeParse({ type: "budget.setLimit", at, data: { usd: 0 } }).success).toBe(false);
+    const answer = { type: "run.answer", at, data: { taskId: "t1", decision: "reintentar" } };
+    expect(commandSchema.safeParse(answer).success).toBe(true);
+    expect(commandSchema.safeParse({ ...answer, data: { taskId: "t1", decision: "quizas" } }).success).toBe(false);
+  });
+
+  it("plan.reject lleva un comentario opcional", () => {
+    expect(commandSchema.safeParse({ type: "plan.reject", at, data: { planId: "p" } }).success).toBe(true);
+    expect(commandSchema.safeParse({ type: "plan.reject", at, data: { planId: "p", comentario: "x" } }).success).toBe(true);
+  });
+});
+
+describe("eventos de la Fase 1", () => {
+  it("task.blocked, agent.spawned con escaladoDesde y ramas con tipo libre", () => {
+    expect(eventSchema.safeParse({ type: "task.blocked", at, data: { taskId: "t", motivo: "m" } }).success).toBe(true);
+    const spawned = { type: "agent.spawned", at, data: { id: "a", rama: "r", modelo: "sonnet", escaladoDesde: "haiku" } };
+    expect(eventSchema.safeParse(spawned).success).toBe(true);
+    expect(eventSchema.safeParse({ ...spawned, data: { ...spawned.data, escaladoDesde: "gpt" } }).success).toBe(false);
+    expect(eventSchema.safeParse({ type: "branch.created", at, data: { id: "diseno", tipo: "diseno", nombre: "Diseño" } }).success).toBe(true);
+  });
+
+  it("plan.ready exige tipo, dependencias y familia por bloque", () => {
+    const bloque = { id: "A", nombre: "Auth", tipo: "tecnico", dependeDe: [], familia: "azul" };
+    const plan = (b: unknown) => ({ type: "plan.ready", at, data: { planId: "p", bloques: [b] } });
+    expect(eventSchema.safeParse(plan(bloque)).success).toBe(true);
+    expect(eventSchema.safeParse(plan({ id: "A", nombre: "Auth" })).success).toBe(false);
+    expect(eventSchema.safeParse(plan({ ...bloque, tipo: "raro" })).success).toBe(false);
+  });
+});
+
 describe("eventSchema", () => {
   it("acepta engine.status y chat.message", () => {
-    const status = { type: "engine.status", at, data: { apiKeyConfigured: false, paused: false } };
+    const status = { type: "engine.status", at, data: { apiKeyConfigured: false, paused: false, workspace: null, budgetLimit: 5 } };
     const chat = { type: "chat.message", at, data: { rol: "sistema", texto: "ok" } };
     expect(eventSchema.safeParse(status).success).toBe(true);
     expect(eventSchema.safeParse(chat).success).toBe(true);
