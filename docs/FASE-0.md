@@ -1,6 +1,6 @@
 # Fase 0 · Esqueleto
 
-> Especificación para implementar. Fuente de verdad del producto: `docs/ALFA-PROYECTO.md`.
+> Especificación para implementar. Fuente de verdad del producto: `docs/FABRICA-PROYECTO.md`.
 > Fuente de verdad visual: `design/tableros/*.html` (código de Claude Design, leer el CSS y el HTML).
 
 ## Objetivo
@@ -16,7 +16,7 @@ estado vacío que dice qué va a aparecer ahí. Nada de nodos, bloques o montos 
 ## Estructura (npm workspaces; no hay pnpm)
 
 ```
-alfa/
+fabrica/
 ├─ .gitignore              # PRIMERO, antes de git init
 ├─ package.json            # workspaces: apps/*, packages/*
 ├─ tsconfig.base.json      # strict, noUncheckedIndexedAccess, exactOptionalPropertyTypes
@@ -48,7 +48,7 @@ Scripts raíz: `dev` (UI + desktop + Electron), `dev:web` (motor standalone + UI
 
 ## packages/events
 
-- Tipos TS de **todos** los eventos del §9 de `ALFA-PROYECTO.md`, con los nombres de ese §9
+- Tipos TS de **todos** los eventos del §9 de `FABRICA-PROYECTO.md`, con los nombres de ese §9
   (`branch.created`, `agent.spawned`, `task.assigned`, `agent.status`, `agent.tool`,
   `agent.tokens`, `agent.output`, `task.toAudit`, `audit.result`, `task.escalated`,
   `memory.saved`, `memory.deleted`, `plan.ready`, `block.progress`, `block.approvalRequested`,
@@ -84,7 +84,7 @@ Scripts raíz: `dev` (UI + desktop + Electron), `dev:web` (motor standalone + UI
   `engine.status { apiKeyConfigured: true }`. Nunca la manda por WebSocket ni la loguea.
 - Entrada de proceso hijo (`src/child.ts`): espera `{type:"init", token}` del padre, arranca y
   responde `{type:"listening", port}`. Entrada standalone (`src/standalone.ts`, solo para
-  `dev:web`): puerto fijo 4317, token desde `ALFA_DEV_TOKEN` o generado e impreso por consola.
+  `dev:web`): puerto fijo 4317, token desde `FABRICA_DEV_TOKEN` o generado e impreso por consola.
 
 ## apps/desktop (Electron)
 
@@ -98,7 +98,7 @@ Scripts raíz: `dev` (UI + desktop + Electron), `dev:web` (motor standalone + UI
   `apiKey:set(key)` (validar que empiece con `sk-ant-` y tenga largo razonable),
   `apiKey:status() → { configured }`, `apiKey:clear()`. La UI **nunca** recibe la key de vuelta.
   Al arrancar, si hay una guardada, se descifra y se manda al motor.
-- Preload con `contextBridge`: `window.alfa = { engine: { getConnection() }, apiKey: { set,
+- Preload con `contextBridge`: `window.fabrica = { engine: { getConnection() }, apiKey: { set,
   status, clear }, onEngineExit(cb) }`. Tipado compartido con la UI.
 
 ## apps/ui (React)
@@ -113,7 +113,7 @@ Scripts raíz: `dev` (UI + desktop + Electron), `dev:web` (motor standalone + UI
   `--err-b #f87171`, `--warn-b #fbbf24`, `--famA-b #2dd4bf`, `--famB-b #f472b6`) de
   `design/tableros/01-principal-oscuro.html`, aplicados en `:root[data-theme="oscuro"|"claro"]`.
   "sistema" sigue a `prefers-color-scheme`. El cambio de tema es un fundido de 180 ms (gramática 12).
-- Conexión: hook `useEngine()` que obtiene `{url, token}` de `window.alfa` (Electron) o, solo en
+- Conexión: hook `useEngine()` que obtiene `{url, token}` de `window.fabrica` (Electron) o, solo en
   `import.meta.env.DEV`, de la query `?ws=&token=` (para `dev:web`). Envía `hello`, valida cada
   evento con zod, reconecta con backoff (1 s → 10 s máx.). Estados visibles: conectando,
   conectado, desconectado.
@@ -121,8 +121,8 @@ Scripts raíz: `dev` (UI + desktop + Electron), `dev:web` (motor standalone + UI
   testeada. Ningún componente escribe estado de dominio por su cuenta.
 - i18n: i18next, `es` por defecto, `en` completo. Todo texto visible pasa por `t()`.
 - Preferencias (tema, idioma) en `localStorage` envuelto en try/catch.
-- Pantalla (layout del tablero 01, mismas proporciones, paneles de vidrio, retícula de fondo):
-  - Barra superior: logo "Alfa", proyecto ("sin proyecto"), chips Opus/Sonnet/Haiku en gris
+- Pantalla (layout del tablero 01, mismas proporciones, paneles de vidrio, fondo liso sin retícula):
+  - Barra superior: logo "Fabrica!", proyecto ("sin proyecto"), chips Opus/Sonnet/Haiku en gris
     (se tiñen solo con agentes activos: hoy nunca), Pausar/Reanudar (manda `run.pause`/`run.resume`),
     tema (Oscuro/Claro/Sistema), idioma (ES/EN), botón Ajustes, indicador de conexión.
   - Diagrama: estado vacío ("Todavía no hay ejecución. Escribile al orquestador para empezar.").

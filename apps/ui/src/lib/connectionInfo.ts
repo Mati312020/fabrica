@@ -1,4 +1,4 @@
-import type { EngineConnection } from "@alfa/events";
+import type { EngineConnection } from "@fabrica/events";
 
 const LOCAL_WS = /^ws:\/\/127\.0\.0\.1:\d{1,5}$/;
 
@@ -7,7 +7,7 @@ const LOCAL_WS = /^ws:\/\/127\.0\.0\.1:\d{1,5}$/;
  * Valida que la URL sea el WebSocket local: la query es input no confiable.
  */
 export async function resolveConnection(): Promise<EngineConnection | null> {
-  if (window.alfa) return window.alfa.engine.getConnection();
+  if (window.fabrica) return window.fabrica.engine.getConnection();
   if (!import.meta.env.DEV) return null;
   const query = new URLSearchParams(window.location.search);
   const url = query.get("ws");

@@ -5,7 +5,7 @@ import { en } from "./en";
 import { es } from "./es";
 
 /** Clave de localStorage del idioma. */
-export const LANG_KEY = "alfa.lang";
+export const LANG_KEY = "fabrica.lang";
 
 const lng = readPref(LANG_KEY, LANGS, "es");
 document.documentElement.lang = lng;

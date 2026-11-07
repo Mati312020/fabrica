@@ -1,4 +1,4 @@
-import type { EngineConnection } from "@alfa/events";
+import type { EngineConnection } from "@fabrica/events";
 import { utilityProcess } from "electron";
 import { randomBytes } from "node:crypto";
 import path from "node:path";
@@ -19,7 +19,7 @@ export interface EngineProcess {
  */
 export function startEngineProcess(onExit: (code: number) => void): EngineProcess {
   const token = randomBytes(32).toString("hex");
-  const child = utilityProcess.fork(path.join(__dirname, "engine.cjs"), [], { serviceName: "alfa-engine" });
+  const child = utilityProcess.fork(path.join(__dirname, "engine.cjs"), [], { serviceName: "fabrica-engine" });
   let alive = true;
   let killedByUs = false;
 

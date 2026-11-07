@@ -1,4 +1,4 @@
-import type { AlfaCommand } from "@alfa/events";
+import type { FabricaCommand } from "@fabrica/events";
 import type { EventBus } from "./bus.js";
 import type { EngineState } from "./state.js";
 import type { WebSocket } from "ws";
@@ -26,7 +26,7 @@ export function emitStatus(bus: EventBus, state: EngineState): void {
  * @param command Comando UI -> motor.
  * @param ctx Bus, estado y socket que envió el comando.
  */
-export function handleCommand(command: AlfaCommand, ctx: CommandContext): void {
+export function handleCommand(command: FabricaCommand, ctx: CommandContext): void {
   const { bus, state, socket } = ctx;
   switch (command.type) {
     case "chat.send":

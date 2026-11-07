@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import type { SendCommand } from "../hooks/useEngine";
-import { useAlfaStore } from "../store/store";
+import { useFabricaStore } from "../store/store";
 
 /** Props de {@link PauseButton}. */
 interface PauseButtonProps {
@@ -10,8 +10,8 @@ interface PauseButtonProps {
 /** Pausar / Reanudar: manda `run.pause` o `run.resume` según el estado que informa el motor. */
 export function PauseButton({ send }: PauseButtonProps) {
   const { t } = useTranslation();
-  const paused = useAlfaStore((s) => s.domain.paused);
-  const connected = useAlfaStore((s) => s.connection === "conectado");
+  const paused = useFabricaStore((s) => s.domain.paused);
+  const connected = useFabricaStore((s) => s.connection === "conectado");
   const toggle = () => send(paused ? "run.resume" : "run.pause", {});
   return (
     <button

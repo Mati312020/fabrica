@@ -1,4 +1,4 @@
-import type { EventOf, EventType } from "@alfa/events";
+import type { EventOf, EventType } from "@fabrica/events";
 import type { WebSocket } from "ws";
 
 /** Distribuye eventos a los clientes autenticados. */

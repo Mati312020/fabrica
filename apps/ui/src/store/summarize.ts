@@ -1,4 +1,4 @@
-import type { AlfaEvent } from "@alfa/events";
+import type { FabricaEvent } from "@fabrica/events";
 
 const MAX_SUMMARY = 80;
 
@@ -17,7 +17,7 @@ export function formatTime(at: string): string {
  * Resume los datos de un evento en una línea corta para el registro.
  * @param event Evento recibido.
  */
-export function summarize(event: AlfaEvent): string {
+export function summarize(event: FabricaEvent): string {
   const entries = Object.entries(event.data as Record<string, unknown>);
   const text = entries
     .map(([key, value]) => `${key}=${typeof value === "string" ? value : JSON.stringify(value)}`)

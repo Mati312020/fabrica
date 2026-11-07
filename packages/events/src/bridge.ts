@@ -9,8 +9,8 @@ export type ApiKeyResult =
   | { ok: true }
   | { ok: false; error: "invalid_format" | "encryption_unavailable" | "engine_unavailable" };
 
-/** API que el preload de Electron expone como `window.alfa`. */
-export interface AlfaBridge {
+/** API que el preload de Electron expone como `window.fabrica`. */
+export interface FabricaBridge {
   engine: { getConnection(): Promise<EngineConnection | null> };
   apiKey: {
     set(key: string): Promise<ApiKeyResult>;

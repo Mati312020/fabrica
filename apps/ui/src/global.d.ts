@@ -1,8 +1,8 @@
-import type { AlfaBridge } from "@alfa/events";
+import type { FabricaBridge } from "@fabrica/events";
 
 declare global {
   interface Window {
     /** Presente solo dentro de Electron (lo expone el preload). */
-    alfa?: AlfaBridge;
+    fabrica?: FabricaBridge;
   }
 }

@@ -17,7 +17,7 @@ async function waitForUi() {
 
 await waitForUi();
 
-const env = { ...process.env, ALFA_UI_URL: UI_URL };
+const env = { ...process.env, FABRICA_UI_URL: UI_URL };
 delete env.ELECTRON_RUN_AS_NODE;
 const child = spawn(String(electron), ["."], { stdio: "inherit", env, cwd: new URL("..", import.meta.url) });
 child.on("exit", (code) => process.exit(code ?? 0));

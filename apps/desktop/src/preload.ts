@@ -1,8 +1,8 @@
-import type { AlfaBridge } from "@alfa/events";
+import type { FabricaBridge } from "@fabrica/events";
 import { contextBridge, ipcRenderer } from "electron";
 import { CHANNELS } from "./channels";
 
-const bridge: AlfaBridge = {
+const bridge: FabricaBridge = {
   engine: { getConnection: () => ipcRenderer.invoke(CHANNELS.getConnection) },
   apiKey: {
     set: (key) => ipcRenderer.invoke(CHANNELS.apiKeySet, key),
@@ -16,4 +16,4 @@ const bridge: AlfaBridge = {
   },
 };
 
-contextBridge.exposeInMainWorld("alfa", bridge);
+contextBridge.exposeInMainWorld("fabrica", bridge);

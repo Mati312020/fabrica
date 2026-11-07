@@ -1,11 +1,11 @@
-import type { ApiKeyResult } from "@alfa/events";
+import type { ApiKeyResult } from "@fabrica/events";
 import { ipcMain, type IpcMainInvokeEvent } from "electron";
 import { CHANNELS } from "./channels";
 import type { EngineProcess } from "./engineProcess";
 import { clearApiKey, hasApiKey, isValidApiKeyFormat, saveApiKey } from "./secrets";
 import { isTrustedUrl } from "./trust";
 
-/** Rechaza invocaciones que no vengan de la UI de Alfa. */
+/** Rechaza invocaciones que no vengan de la UI de Fabrica!. */
 function guard<A extends unknown[], R>(handler: (...args: A) => Promise<R>) {
   return (event: IpcMainInvokeEvent, ...args: A): Promise<R> => {
     if (!isTrustedUrl(event.senderFrame?.url)) throw new Error("Remitente no autorizado");

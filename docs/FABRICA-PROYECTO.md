@@ -1,7 +1,7 @@
-# Alfa — Orquestador visual de agentes Claude
+# Fabrica! — Orquestador visual de agentes Claude
 
-> **Nombre temporal:** Alfa
-> **Estado:** idea definida, sin código todavía
+> **Nombre:** Fabrica! (antes "Alfa", nombre de trabajo)
+> **Estado:** Fase 0 hecha (ver §16 y `docs/ESTADO.md`)
 > **Origen:** sesión de diseño en Claude Code (nube), noviembre 2026
 > **Destino:** continuar en una sesión local de Claude Code en Windows, en un repositorio nuevo de GitHub
 
@@ -22,7 +22,7 @@ Este documento resume una conversación de diseño con el usuario. Antes de escr
 
 ## 1. Visión
 
-Alfa es una **aplicación de escritorio** donde se ve, en tiempo real, un equipo de agentes de Claude construyendo un proyecto.
+Fabrica! es una **aplicación de escritorio** donde se ve, en tiempo real, un equipo de agentes de Claude construyendo un proyecto.
 
 **Requisito central:** todo lo que se ve tiene que ser real. Cada nodo del diagrama es un agente que existe y está ejecutando una tarea de verdad. Cada punto que viaja por una arista es una tarea que realmente se asignó. Cada bloque que se ensambla es un módulo realmente terminado y aprobado. No hay animaciones decorativas ni datos simulados.
 
@@ -64,7 +64,7 @@ Aclaraciones del usuario sobre el boceto:
 | 5 | Dónde corre | Localmente en la PC del usuario. **A futuro**, el motor tiene que poder pasar a un servidor o VPS propio (opción "c") sin rehacer la interfaz |
 | 6 | API key | El usuario todavía no la tiene. Se obtiene en console.anthropic.com |
 | 7 | Archivos generados | En una carpeta local, en un repo de GitHub o en ambos, según el proyecto |
-| 8 | Repositorio de Alfa | Un repo nuevo en GitHub. **No** usar el repo `my-static-web-app`, que es una plantilla de Azure sin relación con este proyecto |
+| 8 | Repositorio de Fabrica! | Un repo nuevo en GitHub. **No** usar el repo `my-static-web-app`, que es una plantilla de Azure sin relación con este proyecto |
 | 9 | Cantidad de agentes | La decide el Opus central según la carga. **No hay máximo fijo** de agentes en paralelo |
 | 10 | Aprobación del usuario | Cuando los planes están completos **y auditados**, el usuario los aprueba antes de empezar a codificar |
 | 11 | Chat | El usuario puede hablarle al orquestador en cualquier momento, también durante la ejecución |
@@ -89,7 +89,7 @@ Aclaraciones del usuario sobre el boceto:
 ## 4. Arquitectura
 
 ```
-┌──────────────────── Alfa (Electron, Windows) ─────────────────────┐
+┌──────────────────── Fabrica! (Electron, Windows) ─────────────────────┐
 │                                                                   │
 │  INTERFAZ (renderer)                                              │
 │   React + TypeScript + Vite                                       │
@@ -306,7 +306,7 @@ En sentido inverso (interfaz → motor): `chat.send`, `plan.approve/reject`, `bl
 
 ### Estructura de carpetas sugerida
 ```
-alfa/
+fabrica/
 ├─ apps/
 │  ├─ desktop/          # Electron main + preload
 │  └─ ui/               # React (renderer)
@@ -315,7 +315,7 @@ alfa/
 │  ├─ events/           # Tipos TypeScript del contrato de eventos (§9), compartidos
 │  └─ memory/           # Capa SQLite de memoria
 ├─ docs/
-│  ├─ ALFA-PROYECTO.md  # este documento
+│  ├─ FABRICA-PROYECTO.md  # este documento
 │  └─ boceto-original.jpg
 └─ package.json         # workspaces (pnpm o npm)
 ```
@@ -364,7 +364,7 @@ alfa/
 ## 13. Requisitos previos (en la PC del usuario)
 
 - Windows con **Node.js 20+** (LTS) y **Git**.
-- Cuenta de GitHub y un **repo nuevo** para Alfa.
+- Cuenta de GitHub y un **repo nuevo** para Fabrica!.
 - **API key de Anthropic** desde console.anthropic.com, con límites de gasto configurados también en la consola como red de seguridad.
 - Claude Code instalado localmente para continuar el desarrollo.
 
@@ -372,15 +372,33 @@ alfa/
 
 ## 14. Pendientes a definir con el usuario
 
-- **Diseño visual detallado**: es la próxima etapa acordada. Incluye paleta, tipografía, forma de los nodos, estilo de los bloques isométricos y cómo se ven las aristas y los puntos.
-- **Nombre definitivo** de la app ("Alfa" es temporal).
+- ~~**Diseño visual detallado**~~ → aprobado: dirección A + Claude Design (`design/`).
+- ~~**Nombre definitivo**~~ → **Fabrica!** (decidido el 07-nov-2026).
 - **Monto del presupuesto**: por proyecto, por día o ambos, y en qué moneda se muestra.
 - **Criterio de "caso importante"** para usar la reserva del 5%. ¿Lo decide siempre el usuario o el orquestador puede sugerirlo?
-- **Contexto de Hockify**: revisarlo en la máquina local.
+- ~~**Contexto de Hockify**~~ → revisado: simulación end-to-end por la UI (ver §16).
 - Cómo se elige, al crear un proyecto, si va a carpeta local, a GitHub o a ambos.
 
 ---
 
 ## 15. Prompt sugerido para iniciar la sesión local
 
-> Leé `docs/ALFA-PROYECTO.md` y mirá `docs/boceto-original.jpg`. Es el diseño de Alfa, un orquestador visual de agentes Claude para escritorio en Windows. Todo lo de la sección 3 ya está decidido. Buscá en esta máquina el contexto del proyecto Hockify sobre auditoría en navegador. Después proponeme cómo encarar el diseño visual (sección 14) y, cuando lo aprobemos, armá la Fase 0.
+> Leé `docs/FABRICA-PROYECTO.md` y mirá `docs/boceto-original.jpg`. Es el diseño de Fabrica!, un orquestador visual de agentes Claude para escritorio en Windows. Todo lo de la sección 3 ya está decidido. Buscá en esta máquina el contexto del proyecto Hockify sobre auditoría en navegador. Después proponeme cómo encarar el diseño visual (sección 14) y, cuando lo aprobemos, armá la Fase 0.
+
+---
+
+## 16. Decisiones de la sesión local (07-nov-2026)
+
+- **Nombre:** Fabrica! (antes Alfa). Paquetes `@fabrica/*`, puente `window.fabrica`.
+- **Diseño:** dirección A (plano técnico) llevada a "terminal viva" con Claude Design.
+  Fuente visual: `design/tableros/*.html`. Fondo liso, **sin retícula**. Foco y atenuación:
+  solo se ilumina lo activo. Gramática de animación: `design/tableros/09-gramatica-animacion.html`.
+- **Contrato de eventos:** manda el §9. Se agregan `agent.progress`, `engine.ready`,
+  `engine.status` y `engine.error`. Los nombres que usó Claude Design se mapean al §9.
+- **Auditoría en navegador (enfoque Hockify):** recorrer la web como un cliente real, de punta a
+  punta por la UI, encuentra fallas silenciosas que la lectura del código no ve. Fabrica! aplica lo mismo: el auditor recorre la web
+  generada como un usuario (Playwright), no se limita a leer el código.
+- **API key:** una key propia para Fabrica! con límite de gasto en la consola; se carga solo desde
+  Ajustes de la app de escritorio. Los tests usan un proveedor de modelo simulado que nunca llega a
+  la app.
+- **Repo:** local en `D:\proyectos\fabrica`, rama `main`. Falta crear el repo en GitHub.

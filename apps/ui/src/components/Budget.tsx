@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { useAlfaStore } from "../store/store";
+import { useFabricaStore } from "../store/store";
 import { EmptyState, Panel, PanelHeader } from "./Panel";
 
 const WARN_AT = 80;
@@ -8,7 +8,7 @@ const PAUSE_AT = 95;
 /** Presupuesto: vacío hasta que el motor emita `budget.update`. */
 export function Budget() {
   const { t, i18n } = useTranslation();
-  const budget = useAlfaStore((s) => s.domain.budget);
+  const budget = useFabricaStore((s) => s.domain.budget);
   if (!budget) {
     return (
       <Panel label={t("budget.title")} className="gap-2 px-3.5 py-3">

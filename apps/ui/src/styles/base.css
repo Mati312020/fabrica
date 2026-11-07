@@ -9,12 +9,6 @@ body {
   font-family: var(--sans);
   color: var(--tx);
   background-color: var(--bg);
-  background-image:
-    linear-gradient(var(--gridM) 1px, transparent 1px),
-    linear-gradient(90deg, var(--gridM) 1px, transparent 1px),
-    linear-gradient(var(--grid) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-  background-size: 120px 120px, 120px 120px, 24px 24px, 24px 24px;
   overflow: hidden;
 }
 

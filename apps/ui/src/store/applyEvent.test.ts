@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest";
-import type { AlfaEvent } from "@alfa/events";
+import type { FabricaEvent } from "@fabrica/events";
 import { applyEvent } from "./applyEvent";
 import { initialState } from "./state";
 
 const at = "2026-11-07T12:00:00.000Z";
 
-const chat = (texto: string): AlfaEvent => ({
+const chat = (texto: string): FabricaEvent => ({
   type: "chat.message",
   at,
   data: { rol: "sistema", texto },
@@ -19,13 +19,13 @@ describe("applyEvent", () => {
   });
 
   it("engine.status actualiza pausa y API key", () => {
-    const event: AlfaEvent = { type: "engine.status", at, data: { apiKeyConfigured: true, paused: true } };
+    const event: FabricaEvent = { type: "engine.status", at, data: { apiKeyConfigured: true, paused: true } };
     const state = applyEvent(initialState, event);
     expect(state).toMatchObject({ apiKeyConfigured: true, paused: true });
   });
 
   it("engine.ready guarda la versión del motor", () => {
-    const event: AlfaEvent = { type: "engine.ready", at, data: { version: "1.2.3", protocol: 1 } };
+    const event: FabricaEvent = { type: "engine.ready", at, data: { version: "1.2.3", protocol: 1 } };
     expect(applyEvent(initialState, event).engine).toEqual({ version: "1.2.3", protocol: 1 });
   });
 
@@ -45,7 +45,7 @@ describe("applyEvent", () => {
   });
 
   it("ignora agent.status de un agente desconocido", () => {
-    const event: AlfaEvent = { type: "agent.status", at, data: { id: "x", estado: "trabajando" } };
+    const event: FabricaEvent = { type: "agent.status", at, data: { id: "x", estado: "trabajando" } };
     expect(applyEvent(initialState, event).agents).toEqual({});
   });
 });

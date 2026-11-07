@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import type { SendCommand } from "../hooks/useEngine";
-import { useAlfaStore } from "../store/store";
+import { useFabricaStore } from "../store/store";
 import { ConnectionBadge } from "./ConnectionBadge";
 import { LanguageSwitch } from "./LanguageSwitch";
 import { ModelChips } from "./ModelChips";
@@ -18,7 +18,7 @@ const Sep = () => <div className="h-[22px] w-px bg-line" />;
 /** Barra superior: marca, proyecto, chips de modelo y controles. */
 export function TopBar({ send, onOpenSettings }: TopBarProps) {
   const { t } = useTranslation();
-  const engine = useAlfaStore((s) => s.domain.engine);
+  const engine = useFabricaStore((s) => s.domain.engine);
   const engineLine = engine
     ? t("topbar.engine", { version: engine.version, protocol: engine.protocol })
     : t("topbar.engineWaiting");
@@ -28,7 +28,7 @@ export function TopBar({ send, onOpenSettings }: TopBarProps) {
         <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">
           <path d="M10 2 18 6.5v7L10 18 2 13.5v-7Z M10 2v16M2 6.5l8 4.5 8-4.5" fill="none" stroke="currentColor" strokeWidth="1.3" />
         </svg>
-        <span>Alfa</span>
+        <span>Fabrica!</span>
       </div>
       <Sep />
       <div className="flex flex-col gap-px font-mono">

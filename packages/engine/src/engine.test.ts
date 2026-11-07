@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { WebSocket } from "ws";
-import { PROTOCOL_VERSION, type AlfaEvent } from "@alfa/events";
+import { PROTOCOL_VERSION, type FabricaEvent } from "@fabrica/events";
 import { startEngine, type EngineHandle } from "./index.js";
 
 const TOKEN = "t".repeat(32);
@@ -17,11 +17,11 @@ function connect(origin?: string): WebSocket {
   return new WebSocket(`ws://127.0.0.1:${engine.port}`, origin ? { origin } : {});
 }
 
-function collect(ws: WebSocket, count: number): Promise<AlfaEvent[]> {
-  const events: AlfaEvent[] = [];
+function collect(ws: WebSocket, count: number): Promise<FabricaEvent[]> {
+  const events: FabricaEvent[] = [];
   return new Promise((resolve) => {
     ws.on("message", (raw) => {
-      events.push(JSON.parse(String(raw)) as AlfaEvent);
+      events.push(JSON.parse(String(raw)) as FabricaEvent);
       if (events.length === count) resolve(events);
     });
   });

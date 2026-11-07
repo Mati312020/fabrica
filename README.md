@@ -1,8 +1,8 @@
-# Alfa
+# Fabrica!
 
 Orquestador visual de agentes Claude. Fase 0: esqueleto (Electron + UI React + motor con WebSocket). Sin agentes todavía.
 
-Documentación: `docs/ALFA-PROYECTO.md` (producto) y `docs/FASE-0.md` (especificación de esta fase).
+Documentación: `docs/FABRICA-PROYECTO.md` (producto) y `docs/FASE-0.md` (especificación de esta fase).
 
 ## Comandos
 
@@ -17,7 +17,7 @@ npm test           # vitest
 ```
 
 `dev:web`: el motor imprime la URL con el token (`http://localhost:5173/?ws=...&token=...`). Abrila en el navegador.
-Para fijar el token: `ALFA_DEV_TOKEN=...`. La API key solo se guarda desde la app de escritorio.
+Para fijar el token: `FABRICA_DEV_TOKEN=...`. La API key solo se guarda desde la app de escritorio.
 
 ## Estructura
 

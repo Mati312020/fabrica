@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
-import { useAlfaStore } from "../store/store";
+import { useFabricaStore } from "../store/store";
 
 /**
  * Estado y acciones de la API key. La key viaja solo UI -> main; nunca vuelve.
  * Fuera de Electron (`dev:web`) no hay puente y solo se muestra el estado del motor.
  */
 export function useApiKey() {
-  const bridge = window.alfa;
-  const engineConfigured = useAlfaStore((s) => s.domain.apiKeyConfigured);
+  const bridge = window.fabrica;
+  const engineConfigured = useFabricaStore((s) => s.domain.apiKeyConfigured);
   const [stored, setStored] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);

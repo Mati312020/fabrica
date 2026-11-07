@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import { resolveConnection } from "../lib/connectionInfo";
 import { createEngineClient, type EngineClient } from "../lib/engineClient";
-import { useAlfaStore } from "../store/store";
+import { useFabricaStore } from "../store/store";
 
 /** Función para mandar comandos al motor. */
 export type SendCommand = EngineClient["send"];
@@ -14,14 +14,14 @@ export function useEngine(): { send: SendCommand } {
   const client = useRef<EngineClient | null>(null);
 
   useEffect(() => {
-    const { dispatchEvent, setConnection } = useAlfaStore.getState();
+    const { dispatchEvent, setConnection } = useFabricaStore.getState();
     const active = createEngineClient({
       resolve: resolveConnection,
       onEvent: dispatchEvent,
       onStatus: setConnection,
     });
     client.current = active;
-    const unsubscribe = window.alfa?.onEngineExit(() => {
+    const unsubscribe = window.fabrica?.onEngineExit(() => {
       active.stop();
       setConnection("desconectado");
     });

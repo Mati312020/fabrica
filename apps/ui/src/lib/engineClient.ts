@@ -3,9 +3,9 @@ import {
   eventSchema,
   type CommandOf,
   type CommandType,
-  type AlfaEvent,
+  type FabricaEvent,
   type EngineConnection,
-} from "@alfa/events";
+} from "@fabrica/events";
 
 /** Estado de la conexión con el motor. */
 export type ConnectionStatus = "conectando" | "conectado" | "desconectado";
@@ -13,7 +13,7 @@ export type ConnectionStatus = "conectando" | "conectado" | "desconectado";
 /** Callbacks que necesita el cliente. */
 export interface ClientHandlers {
   resolve(): Promise<EngineConnection | null>;
-  onEvent(event: AlfaEvent): void;
+  onEvent(event: FabricaEvent): void;
   onStatus(status: ConnectionStatus): void;
 }
 
@@ -30,7 +30,7 @@ const BACKOFF_MAX_MS = 10000;
 const stamp = (type: string, data: unknown) =>
   JSON.stringify({ type, at: new Date().toISOString(), data });
 
-function parseEvent(raw: unknown): AlfaEvent | null {
+function parseEvent(raw: unknown): FabricaEvent | null {
   if (typeof raw !== "string") return null;
   try {
     const parsed = eventSchema.safeParse(JSON.parse(raw));

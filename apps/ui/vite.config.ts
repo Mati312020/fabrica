@@ -7,7 +7,7 @@ import { defineConfig, type Plugin } from "vite";
  * Solo en dev se habilita `script-src 'unsafe-inline'`; el build conserva la CSP estricta.
  */
 const relaxCspInDev: Plugin = {
-  name: "alfa-relax-csp-dev",
+  name: "fabrica-relax-csp-dev",
   apply: "serve",
   transformIndexHtml: (html) =>
     html.replace("default-src 'self';", "default-src 'self'; script-src 'self' 'unsafe-inline';"),

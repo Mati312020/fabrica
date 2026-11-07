@@ -1,5 +1,5 @@
 {
-  "name": "alfa",
+  "name": "fabrica",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -8,9 +8,9 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "concurrently -k -n ui,desktop \"npm run dev -w @alfa/ui\" \"npm run dev -w @alfa/desktop\"",
-    "dev:web": "concurrently -k -n engine,ui \"npm run dev:standalone -w @alfa/engine\" \"npm run dev -w @alfa/ui\"",
-    "build": "npm run build -w @alfa/ui && npm run build -w @alfa/desktop",
+    "dev": "concurrently -k -n ui,desktop \"npm run dev -w @fabrica/ui\" \"npm run dev -w @fabrica/desktop\"",
+    "dev:web": "concurrently -k -n engine,ui \"npm run dev:standalone -w @fabrica/engine\" \"npm run dev -w @fabrica/ui\"",
+    "build": "npm run build -w @fabrica/ui && npm run build -w @fabrica/desktop",
     "lint": "eslint . --max-warnings 0",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "test": "vitest run"

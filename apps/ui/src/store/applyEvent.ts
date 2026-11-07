@@ -1,4 +1,4 @@
-import type { AlfaEvent } from "@alfa/events";
+import type { FabricaEvent } from "@fabrica/events";
 import type { DomainState } from "./state";
 import { formatTime, summarize } from "./summarize";
 
@@ -11,7 +11,7 @@ const MAX_MESSAGES = 500;
  * @param state Estado anterior.
  * @param event Evento ya validado con zod.
  */
-export function applyEvent(state: DomainState, event: AlfaEvent): DomainState {
+export function applyEvent(state: DomainState, event: FabricaEvent): DomainState {
   const seq = state.seq + 1;
   const entry = { id: seq, time: formatTime(event.at), type: event.type, summary: summarize(event) };
   const base = { ...state, seq, log: [...state.log, entry].slice(-MAX_LOG) };

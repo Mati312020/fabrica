@@ -13,7 +13,7 @@ export function createWindow(): BrowserWindow {
     minHeight: 700,
     show: false,
     backgroundColor: "#08090b",
-    title: "Alfa",
+    title: "Fabrica!",
     webPreferences: {
       preload: path.join(__dirname, "preload.cjs"),
       contextIsolation: true,

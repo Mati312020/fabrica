@@ -1,4 +1,4 @@
-import { CLOSE_UNAUTHORIZED, PROTOCOL_VERSION, commandSchema } from "@alfa/events";
+import { CLOSE_UNAUTHORIZED, PROTOCOL_VERSION, commandSchema } from "@fabrica/events";
 import type { WebSocket } from "ws";
 import { tokenMatches } from "./auth.js";
 import type { EventBus } from "./bus.js";

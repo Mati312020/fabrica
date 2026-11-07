@@ -4,17 +4,17 @@ import type { commandSchema } from "./commands.js";
 import type { eventSchema } from "./events.js";
 
 /** Evento motor -> UI. */
-export type AlfaEvent = z.infer<typeof eventSchema>;
+export type FabricaEvent = z.infer<typeof eventSchema>;
 /** Comando UI -> motor. */
-export type AlfaCommand = z.infer<typeof commandSchema>;
+export type FabricaCommand = z.infer<typeof commandSchema>;
 /** Nombre de cualquier comando. */
-export type CommandType = AlfaCommand["type"];
+export type CommandType = FabricaCommand["type"];
 /** Comando filtrado por nombre. */
-export type CommandOf<T extends CommandType> = Extract<AlfaCommand, { type: T }>;
+export type CommandOf<T extends CommandType> = Extract<FabricaCommand, { type: T }>;
 /** Nombre de cualquier evento. */
-export type EventType = AlfaEvent["type"];
+export type EventType = FabricaEvent["type"];
 /** Evento filtrado por nombre. */
-export type EventOf<T extends EventType> = Extract<AlfaEvent, { type: T }>;
+export type EventOf<T extends EventType> = Extract<FabricaEvent, { type: T }>;
 /** Estado de un agente. */
 export type AgentState = (typeof AGENT_STATES)[number];
 /** Modelo de un agente. */

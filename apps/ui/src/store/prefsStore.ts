@@ -3,7 +3,7 @@ import i18n, { LANG_KEY } from "../i18n";
 import { LANGS, THEMES, readPref, writePref, type Lang, type ThemePref } from "../lib/prefs";
 import { applyTheme } from "../lib/theme";
 
-const THEME_KEY = "alfa.theme";
+const THEME_KEY = "fabrica.theme";
 
 interface PrefsStore {
   theme: ThemePref;

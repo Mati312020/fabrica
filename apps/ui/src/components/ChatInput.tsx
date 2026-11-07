@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { useTranslation } from "react-i18next";
 import type { SendCommand } from "../hooks/useEngine";
-import { useAlfaStore } from "../store/store";
+import { useFabricaStore } from "../store/store";
 
 const MAX_LENGTH = 8000;
 
@@ -13,7 +13,7 @@ interface ChatInputProps {
 /** Caja de texto del chat; deshabilitada si no hay conexión con el motor. */
 export function ChatInput({ send }: ChatInputProps) {
   const { t } = useTranslation();
-  const connected = useAlfaStore((s) => s.connection === "conectado");
+  const connected = useFabricaStore((s) => s.connection === "conectado");
   const [text, setText] = useState("");
 
   const submit = (event: FormEvent) => {

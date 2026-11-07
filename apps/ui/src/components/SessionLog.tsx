@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { useAlfaStore } from "../store/store";
+import { useFabricaStore } from "../store/store";
 import { EmptyState, Panel, PanelHeader } from "./Panel";
 
 const VISIBLE_LINES = 10;
@@ -17,7 +17,7 @@ export function logOpacity(age: number): number {
 /** Registro de sesión: una línea `hh:mm:ss · tipo · resumen` por cada evento recibido. */
 export function SessionLog() {
   const { t } = useTranslation();
-  const log = useAlfaStore((s) => s.domain.log);
+  const log = useFabricaStore((s) => s.domain.log);
   const lines = log.slice(-VISIBLE_LINES);
   return (
     <Panel label={t("log.title")} className="gap-2 px-3.5 py-3">

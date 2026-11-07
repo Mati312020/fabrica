@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import type { SendCommand } from "../hooks/useEngine";
 import { useStickToBottom } from "../hooks/useStickToBottom";
-import { useAlfaStore } from "../store/store";
+import { useFabricaStore } from "../store/store";
 import { ChatInput } from "./ChatInput";
 import { ChatMessageView } from "./ChatMessageView";
 import { Panel, PanelHeader } from "./Panel";
@@ -14,7 +14,7 @@ interface ChatProps {
 /** Chat con el orquestador: muestra los `chat.message` del motor y manda `chat.send`. */
 export function Chat({ send }: ChatProps) {
   const { t } = useTranslation();
-  const messages = useAlfaStore((s) => s.domain.messages);
+  const messages = useFabricaStore((s) => s.domain.messages);
   const listRef = useStickToBottom<HTMLDivElement>(messages);
   return (
     <Panel label={t("chat.title")} className="gap-2 px-3.5 py-3">

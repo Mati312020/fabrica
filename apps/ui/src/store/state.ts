@@ -1,4 +1,4 @@
-import type { AgentState, ChatRole, ModelName } from "@alfa/events";
+import type { AgentState, ChatRole, ModelName } from "@fabrica/events";
 
 /** Mensaje de chat tal como lo emitió el motor. */
 export interface ChatMessage {
