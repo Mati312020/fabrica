@@ -10,3 +10,4 @@ release/
 *.p12
 *.log
 coverage/
+.fabrica/

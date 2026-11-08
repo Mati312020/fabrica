@@ -20,8 +20,9 @@ export type AuditVerdict = { ok: boolean; motivo: string; fatal?: string };
  * @param resumen Qué se le pidió al agente.
  * @param output Resultado ya validado.
  * @param agent Agente que produjo el resultado (origen de los recuerdos).
+ * @param extra Evidencia adicional para el auditor (por ejemplo, el informe del navegador).
  */
-export async function auditTask(ctx: Ctx, taskId: string, resumen: string, output: unknown, agent = ""): Promise<AuditVerdict> {
+export async function auditTask(ctx: Ctx, taskId: string, resumen: string, output: unknown, agent = "", extra = ""): Promise<AuditVerdict> {
   const slot = await ctx.auditors.acquire();
   try {
     let auditor = ctx.auditorIds.get(slot);
@@ -31,7 +32,9 @@ export async function auditTask(ctx: Ctx, taskId: string, resumen: string, outpu
     }
     ctx.emit("task.toAudit", { taskId, auditorId: auditor });
     const said = ctx.userMessages.slice(-MAX_USER_MESSAGES).map((m) => `- ${m.slice(0, MAX_USER_CHARS)}`).join("\n");
-    const prompt = `Tarea pedida:\n${resumen}\n\nResultado a auditar:\n${JSON.stringify(output).slice(0, MAX_OUTPUT_CHARS)}\n\nÚltimos mensajes del usuario:\n${said}`;
+    const prompt = `Tarea pedida:\n${resumen}\n\nResultado a auditar:\n${JSON.stringify(output).slice(0, MAX_OUTPUT_CHARS)}\n\nÚltimos mensajes del usuario:\n${said}${extra ? `
+
+${extra}` : ""}`;
     const role = ROLES.auditoria;
     const out = await execRole(ctx, auditor, {
       role: "auditoria", model: role.model, system: role.system, prompt, tools: role.tools,

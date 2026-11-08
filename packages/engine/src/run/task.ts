@@ -2,10 +2,10 @@ import type { ModelName } from "@fabrica/events";
 import { memoryBlock, recall } from "../memory/recall.js";
 import { ROLES, nextModel } from "../roles/roles.js";
 import type { RoleName } from "../provider/types.js";
-import { auditTask } from "./audit.js";
 import type { Ctx } from "./context.js";
 import { escalate } from "./escalate.js";
 import { execRole } from "./exec.js";
+import { verify } from "./verify.js";
 
 /** Rechazos seguidos del mismo modelo antes de escalar. */
 export const MAX_RECHAZOS = 3;
@@ -18,6 +18,8 @@ export interface TaskSpec {
   model: ModelName;
   resumen: string;
   blockId?: string;
+  /** Bloque visual: tras la auditoría de código se recorre en el navegador (si trae `recorrido`). */
+  visual?: boolean;
   /** Arma el prompt a partir de los motivos de rechazo acumulados. */
   build(motivos: string[]): string;
   /** Validación del motor sobre la salida; devuelve el motivo de rechazo o null. */
@@ -66,7 +68,7 @@ export async function runTask(ctx: Ctx, spec: TaskSpec): Promise<TaskResult> {
     if (out.ok && motivo === null) {
       progress(60);
       ctx.agents.status(agent, "en_auditoria");
-      const verdict = await auditTask(ctx, spec.id, spec.resumen, out.data, agent);
+      const verdict = await verify(ctx, spec, out.data, agent);
       if (verdict.fatal !== undefined) return fail(ctx, agent, verdict.fatal);
       if (verdict.ok) {
         ctx.agents.status(agent, "terminado");

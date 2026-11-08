@@ -21,7 +21,7 @@ describe("camino feliz", () => {
     h.send("plan.approve", { planId: plan.data.planId });
 
     const card = await h.waitFor("block.approvalRequested");
-    expect(card.data).toMatchObject({ blockId: "B", previewUrl: "", archivos: ["a.ts"] });
+    expect(card.data).toMatchObject({ blockId: "B", previewUrl: expect.stringMatching(/^http:\/\/127\.0\.0\.1:\d+\/$/), archivos: ["a.ts"] });
     expect(h.of("block.assembled").map((b) => b.blockId)).toEqual(["A"]);
     h.send("block.approve", { blockId: "B" });
     await h.waitFor("block.assembled", (d) => d.blockId === "C");

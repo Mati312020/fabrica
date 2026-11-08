@@ -1,5 +1,10 @@
 import type { Emit } from "../emit.js";
 import type { MemoryStore } from "../memory/store.js";
+import type { BrowserRunner } from "../browser/types.js";
+import { playwrightRunner } from "../browser/playwright.js";
+import { createPreviewManager, type PreviewManager } from "../preview/manager.js";
+import { commitEnabled } from "../git/blockCommit.js";
+import { isGitRepo } from "../git/commit.js";
 import { createBudget, type Budget } from "../budget/budget.js";
 import type { ModelProvider } from "../provider/types.js";
 import type { PlanOut } from "../roles/schemas.js";
@@ -35,6 +40,12 @@ export interface Ctx {
   userMessages: string[];
   pendingPlan: { id: string; data: PlanOut } | null;
   done: Map<string, DoneBlock>;
+  /** Servidores de vista previa de las carpetas de proyecto. */
+  preview: PreviewManager;
+  /** Ejecutor de recorridos en el navegador (Edge). */
+  browser: BrowserRunner;
+  /** Capturas del último recorrido de cada bloque, para dárselas al agente si el usuario rechaza. */
+  captures: Map<string, string[]>;
   decisions: Map<string, (decision: unknown) => void>;
   counter: number;
   nextId(prefix: string): string;
@@ -47,12 +58,15 @@ export interface Ctx {
  * Crea el contexto de una corrida.
  * @param deps Publicador, proveedor, estado del motor y señal de cierre.
  */
-export function createCtx(deps: Pick<Ctx, "emit" | "provider" | "state" | "signal" | "memory">): Ctx {
+export function createCtx(deps: Pick<Ctx, "emit" | "provider" | "state" | "signal" | "memory"> & { browser?: BrowserRunner }): Ctx {
   const { emit } = deps;
   const gate = createGate(() => deps.state.paused || budget.blocked());
   const budget = createBudget(emit, () => gate.poke());
   return {
     ...deps,
+    browser: deps.browser ?? playwrightRunner,
+    preview: createPreviewManager(),
+    captures: new Map(),
     budget,
     gate,
     agents: createAgents(emit),
@@ -74,6 +88,7 @@ export function createCtx(deps: Pick<Ctx, "emit" | "provider" | "state" | "signa
       emit("engine.status", {
         apiKeyConfigured: deps.state.hasApiKey(), paused: deps.state.paused, workspace: deps.state.workspace,
         budgetLimit: budget.limit(), memoryCount: deps.memory.repo()?.count() ?? 0,
+        commitPerBlock: commitEnabled(deps.state), gitRepo: deps.state.workspace !== null && isGitRepo(deps.state.workspace),
       }),
   };
 }

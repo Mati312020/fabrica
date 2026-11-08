@@ -1,4 +1,5 @@
 import type { FabricaCommand } from "@fabrica/events";
+import type { BrowserRunner } from "../browser/types.js";
 import { memoryControl } from "../memory/control.js";
 import { emitMemory } from "../memory/sync.js";
 import type { MemoryStore } from "../memory/store.js";
@@ -7,6 +8,7 @@ import type { ModelProvider } from "../provider/types.js";
 import type { EngineState } from "../state.js";
 import { handleChat } from "./chat.js";
 import { createCtx } from "./context.js";
+import { setCommitPerBlock } from "../git/setting.js";
 import { approvePlan, rejectPlan } from "./planControl.js";
 
 /** Dependencias del controlador de corridas. */
@@ -15,6 +17,8 @@ export interface ControllerDeps {
   provider: ModelProvider;
   state: EngineState;
   memory: MemoryStore;
+  /** Ejecutor de recorridos; por defecto Edge vía playwright-core. Los tests inyectan uno simulado. */
+  browser?: BrowserRunner;
 }
 
 /** Controlador: traduce comandos de la UI en corridas del motor. */
@@ -71,7 +75,10 @@ export function createController(deps: ControllerDeps): Controller {
       case "plan.reject": return rejectPlan(ctx, command.data.planId, command.data.comentario ?? "", background);
       case "block.approve": return resolve(`block:${command.data.blockId}`, { approve: true });
       case "block.reject":
-        return resolve(`block:${command.data.blockId}`, { approve: false, comentario: command.data.comentario });
+        return resolve(`block:${command.data.blockId}`, {
+          approve: false, comentario: command.data.comentario, marcas: command.data.marcas ?? [],
+        });
+      case "project.setCommitPerBlock": return setCommitPerBlock(ctx, command.data.enabled);
       case "memory.read": return memory.read(command, reply);
       case "memory.delete": return memory.remove(command);
       case "run.answer": return resolve(command.data.taskId, command.data.decision);
@@ -90,7 +97,10 @@ export function createController(deps: ControllerDeps): Controller {
   }
 
   return {
-    handle, emitStatus, shutdown: () => abort.abort(),
+    handle, emitStatus, shutdown: () => {
+      abort.abort();
+      void ctx.preview.closeAll();
+    },
     emitMemory: (reply) => emitMemory(ctx, reply),
     setMemoryPath: memory.setPath, guardMemory: memory.guard,
   };

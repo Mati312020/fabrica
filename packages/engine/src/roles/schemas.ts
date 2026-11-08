@@ -25,8 +25,25 @@ export const planBlockOut = z.object({
 /** Salida de planificación. */
 export const planOut = z.object({ resumen: z.string(), bloques: z.array(planBlockOut).min(1) });
 
-/** Salida de codificación. */
-export const codeOut = z.object({ resumen: z.string(), archivos: z.array(z.string()) });
+/** Acciones permitidas en un recorrido de navegador. */
+export const STEP_ACTIONS = ["ir", "click", "escribir", "esperar", "verificarTexto"] as const;
+
+/** Paso de un recorrido: cómo usaría un cliente lo construido. Lo ejecuta el motor, no el modelo. */
+export const stepOut = z.object({
+  accion: z.enum(STEP_ACTIONS),
+  selector: z.string().optional(),
+  valor: z.string().optional(),
+});
+
+/** Máximo de pasos de un recorrido. */
+export const MAX_PASOS = 15;
+
+/** Salida de codificación; los bloques visuales suman un `recorrido`. */
+export const codeOut = z.object({
+  resumen: z.string(),
+  archivos: z.array(z.string()),
+  recorrido: z.array(stepOut).max(MAX_PASOS).optional(),
+});
 
 /** Aprendizaje reutilizable que propone el auditor (se valida en el motor antes de guardarlo). */
 export const learningOut = z.object({ titulo: z.string(), contenido: z.string(), etiquetas: z.array(z.string()) });
@@ -43,5 +60,6 @@ export type OrchestratorOut = z.infer<typeof orchestratorOut>;
 export type ResearchOut = z.infer<typeof researchOut>;
 export type PlanOut = z.infer<typeof planOut>;
 export type PlanBlock = z.infer<typeof planBlockOut>;
+export type Step = z.infer<typeof stepOut>;
 export type CodeOut = z.infer<typeof codeOut>;
 export type AuditOut = z.infer<typeof auditOut>;

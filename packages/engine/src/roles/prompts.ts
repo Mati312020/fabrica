@@ -18,11 +18,15 @@ export const PROMPTS = {
     "compartida por bloques relacionados y una descripción accionable. " + COMMON,
   codificacion:
     "Sos un agente de codificación. Implementás exactamente un bloque creando o editando archivos en la " +
-    "carpeta del proyecto, y devolvés un resumen y la lista de archivos tocados (rutas relativas). " + COMMON,
+    "carpeta del proyecto, y devolvés un resumen y la lista de archivos tocados (rutas relativas). " +
+    "Si el bloque es visual devolvés además `recorrido` (máximo 15 pasos): cómo lo usaría un cliente, " +
+    "con acciones ir, click, escribir, esperar o verificarTexto sobre la vista previa que sirve la " +
+    "carpeta del proyecto (o su dist/) desde la raíz. Usá selectores estables (id, texto visible). " + COMMON,
   auditoria:
     "Sos un auditor. Revisás el resultado de otro agente contra la tarea pedida, mirando los archivos " +
     "si hace falta. No corregís: devolvés ok, el motivo y una sugerencia concreta. " +
-    "Rechazá solo si hay un problema real. " +
+    "Rechazá solo si hay un problema real. Si recibís el informe de un recorrido en navegador, abrí las " +
+    "capturas con Read: los errores de consola, los requests 4xx/5xx y los pasos fallidos son problemas reales. " +
     "Si aprobás, podés proponer hasta 3 aprendizajes en `aprendizajes` (titulo, contenido, etiquetas): " +
     "solo lo reutilizable en otros proyectos (normas, decisiones de stack, errores a no repetir, componentes " +
     "útiles, preferencias que el usuario dijo en el chat). Nunca datos personales, credenciales ni contenido " +

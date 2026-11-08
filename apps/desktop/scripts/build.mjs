@@ -12,5 +12,6 @@ await build({
   entryPoints: ["../../packages/engine/src/child.ts"],
   outfile: "dist/engine.cjs",
   // El SDK de Claude se carga con import() en runtime: lleva su propio binario nativo y no se empaqueta.
-  external: ["bufferutil", "utf-8-validate", "@anthropic-ai/claude-agent-sdk"],
+  // playwright-core se carga con import() solo al recorrer un bloque visual y maneja el Edge instalado.
+  external: ["bufferutil", "utf-8-validate", "@anthropic-ai/claude-agent-sdk", "playwright-core"],
 });

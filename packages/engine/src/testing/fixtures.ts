@@ -20,6 +20,15 @@ export const orch = (over: Record<string, unknown> = {}, costUsd?: number): Repl
 /** Salida de codificación. */
 export const code: Handler = () => ok({ resumen: "hecho", archivos: ["a.ts"] });
 
+/** Recorrido de ejemplo de un bloque visual. */
+export const walk = [
+  { accion: "ir" as const, valor: "/" },
+  { accion: "click" as const, selector: "#enviar" },
+];
+
+/** Salida de codificación de un bloque visual, con `recorrido`. */
+export const codeVisual: Handler = () => ok({ resumen: "hecho", archivos: ["index.html"], recorrido: walk });
+
 /** Bloque de plan. */
 export const blk = (id: string, dependeDe: string[] = [], tipo: "visual" | "tecnico" = "tecnico") => ({
   id, nombre: `Bloque ${id}`, tipo, dependeDe, familia: "azul", descripcion: `Hacer ${id}`,

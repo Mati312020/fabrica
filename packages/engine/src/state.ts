@@ -2,6 +2,8 @@
 export interface EngineState {
   paused: boolean;
   workspace: string | null;
+  /** Commit por bloque: `null` = sin elegir (se activa solo si la carpeta ya es un repo git). */
+  commitPerBlock: boolean | null;
   readonly hasApiKey: () => boolean;
   /** Solo para el proveedor del SDK, dentro del proceso del motor. */
   readonly apiKey: () => string;
@@ -14,6 +16,7 @@ export function createState(): EngineState {
   return {
     paused: false,
     workspace: null,
+    commitPerBlock: null,
     hasApiKey: () => apiKey.length > 0,
     apiKey: () => apiKey,
     setApiKey(key) {

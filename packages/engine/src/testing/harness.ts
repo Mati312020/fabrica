@@ -3,6 +3,7 @@ import type { CommandType, EventOf, EventType, FabricaCommand, FabricaEvent } fr
 import { createController } from "../run/controller.js";
 import { ScriptedProvider, type Handler } from "./scripted.js";
 import type { RoleName } from "../provider/types.js";
+import type { BrowserRunner } from "../browser/types.js";
 import { createMemoryStore, type MemoryStore } from "../memory/store.js";
 
 /** Banco de pruebas: motor con guion, sin WebSocket. */
@@ -24,21 +25,23 @@ export interface Harness {
 /**
  * Arma un controlador con carpeta y key de mentira y un ScriptedProvider.
  * @param script Guiones por rol.
- * @param options `workspace: null` o `apiKey: false` para probar los errores de configuración.
+ * @param options `workspace: null` o `apiKey: false` para probar los errores de configuración; `browser` simula el navegador; `commitPerBlock: null` deja el commit en automático (por defecto apagado).
  */
 export function makeHarness(
   script: Partial<Record<RoleName, Handler>>,
-  options: { workspace?: string | null; apiKey?: boolean } = {},
+  options: { workspace?: string | null; apiKey?: boolean; browser?: BrowserRunner; commitPerBlock?: boolean | null } = {},
 ): Harness {
   const events: FabricaEvent[] = [];
   const state = createState();
   state.workspace = options.workspace === undefined ? process.cwd() : options.workspace;
+  // Por seguridad los tests no commitean (la carpeta por defecto es el propio repo): hay que pedirlo.
+  state.commitPerBlock = options.commitPerBlock === undefined ? false : options.commitPerBlock;
   if (options.apiKey !== false) state.setApiKey("sk-ant-test");
   const provider = new ScriptedProvider(script);
   const memory = createMemoryStore();
   memory.open(":memory:", null);
   const abort = createController({
-    provider, state, memory,
+    provider, state, memory, ...(options.browser ? { browser: options.browser } : {}),
     emit: (type, data) => void events.push({ type, at: new Date().toISOString(), data } as unknown as FabricaEvent),
   });
   const find = <T extends EventType>(type: T, test?: (d: EventOf<T>["data"]) => boolean) =>

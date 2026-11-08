@@ -20,7 +20,7 @@ describe("applyEvent", () => {
   });
 
   it("engine.status actualiza pausa y API key", () => {
-    const event: FabricaEvent = { type: "engine.status", at, data: { apiKeyConfigured: true, paused: true, workspace: null, budgetLimit: 5, memoryCount: 3 } };
+    const event: FabricaEvent = { type: "engine.status", at, data: { apiKeyConfigured: true, paused: true, workspace: null, budgetLimit: 5, memoryCount: 3, commitPerBlock: false, gitRepo: false } };
     const state = applyEvent(initialState, event);
     expect(state).toMatchObject({ apiKeyConfigured: true, paused: true, workspace: null, budgetLimit: 5 });
     expect(state.memory.count).toBe(3);

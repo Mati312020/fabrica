@@ -34,6 +34,17 @@ export const agentEventSchemas = [
   msg("agent.output", { id: z.string(), texto: z.string() }),
   msg("task.toAudit", { taskId: z.string(), auditorId: z.string() }),
   msg("audit.result", { taskId: z.string(), ok: z.boolean(), motivo: z.string() }),
+  msg("audit.browserReport", {
+    taskId: z.string(),
+    /** Errores de consola y excepciones de la página. */
+    errores: z.array(z.string()),
+    /** Requests fallidos (4xx/5xx o de red). */
+    fallidos: z.array(z.string()),
+    /** Pasos del recorrido que no se pudieron hacer. */
+    pasosFallidos: z.array(z.string()),
+    /** Rutas absolutas de las capturas en `<proyecto>/.fabrica/capturas/`. */
+    capturas: z.array(z.string()),
+  }),
   msg("task.escalated", { taskId: z.string(), modeloAnterior: model, modeloNuevo: model }),
   msg("task.blocked", { taskId: z.string(), motivo: z.string() }),
   msg("memory.saved", { id: z.string(), titulo: z.string() }),

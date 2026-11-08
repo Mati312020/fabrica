@@ -79,6 +79,7 @@ export async function startEngine(options: EngineOptions): Promise<EngineHandle>
     setMemoryPath: (file) => controller.setMemoryPath(file),
     setWorkspace(dir) {
       state.workspace = validDirectory(dir);
+      state.commitPerBlock = null;
       controller.guardMemory();
       controller.emitStatus();
     },

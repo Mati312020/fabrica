@@ -25,6 +25,7 @@ export const runEventSchemas = [
     archivos: z.array(z.string()),
   }),
   msg("block.assembled", { blockId: z.string() }),
+  msg("block.committed", { blockId: z.string(), hash: z.string() }),
   msg("budget.update", { usado: nonNegative, limite: nonNegative }),
   msg("budget.warning", { pct }),
   msg("budget.paused", { pct }),
@@ -37,6 +38,10 @@ export const runEventSchemas = [
     budgetLimit: nonNegative,
     /** Recuerdos guardados en la memoria persistente. */
     memoryCount: nonNegative.default(0),
+    /** Si cada bloque aprobado se guarda como commit en el repo del proyecto. */
+    commitPerBlock: z.boolean().default(false),
+    /** Si la carpeta del proyecto ya es un repositorio git. */
+    gitRepo: z.boolean().default(false),
   }),
   msg("engine.error", { code: z.string(), message: z.string() }),
 ] as const;
