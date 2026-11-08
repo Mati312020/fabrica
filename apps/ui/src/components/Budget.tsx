@@ -10,7 +10,7 @@ import { Panel, PanelHeader } from "./Panel";
 /** Presupuesto (tablero 08): tres estados, desglose por modelo, límite editable y botón de reserva. */
 export function Budget({ send }: { send: SendCommand }) {
   const { t } = useTranslation();
-  const { money } = useFormat();
+  const { money, int } = useFormat();
   const b = useBudget(send);
   const tone = b.phase === "pausa" ? "stop" : b.phase === "aviso" ? "warn" : "";
   return (
@@ -32,9 +32,11 @@ export function Budget({ send }: { send: SendCommand }) {
             <span className="tl text-err" style={{ left: `${PAUSE_AT}%` }}>{PAUSE_AT}</span>
           </div>
           {(b.canReserve ? [] : MODELS).map((m) => (
-            <div key={m} className="mono flex justify-between text-[11px] text-tx3">
+            <div key={m} className="mono flex justify-between gap-2 text-[11px] text-tx3">
               <span style={{ color: `var(--${m})` }}>{m}</span>
-              <span>{money(b.costs[m])}</span>
+              <span title={t("budget.tokens", { input: int(b.usage[m].entrada), output: int(b.usage[m].salida) })}>
+                {int(b.usage[m].entrada + b.usage[m].salida)} tok · {money(b.usage[m].costo)}
+              </span>
             </div>
           ))}
           {b.canReserve ? null : (

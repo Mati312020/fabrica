@@ -41,6 +41,7 @@ export const esPanels = {
     empty: "Sin presupuesto informado todavía",
     used: "{{pct}}% usado",
     phase: { normal: "EN CURSO", aviso: "AVISO 80 %", pausa: "PAUSA 95 %" },
+    tokens: "entrada {{input}} · salida {{output}}",
     thresholds: "aviso en {{warn}} · pausa en {{pause}}",
     reserve: "Usar la reserva del 5 % · {{amount}}",
     final: "Pausa definitiva: subí el límite para seguir.",

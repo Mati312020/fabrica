@@ -49,12 +49,23 @@ describe("bloque visual: recorrido en el navegador", () => {
   it("el rechazo con marcas llega al agente con las capturas", async () => {
     await visual({ run: async () => report() });
     await h.waitFor("block.approvalRequested");
-    h.send("block.reject", { blockId: "V", comentario: "el botón está feo", marcas: [{ x: 42.5, y: 17, texto: "más grande" }] });
+    h.send("block.reject", { blockId: "V", comentario: "el botón está feo", marcas: [{ x: 42.5, y: 17, texto: "más grande" }], ancho: "movil" });
     await until(() => h.provider.count("codificacion") === 2);
     const prompt = h.provider.calls.filter((c) => c.role === "codificacion")[1]?.prompt ?? "";
     expect(prompt).toContain("el botón está feo");
     expect(prompt).toContain("Marca 1 (x 42.5%, y 17%): más grande");
     expect(prompt).toContain("blk-V-1-390-paso1.png");
+    expect(prompt).not.toContain("blk-V-1-1280-paso1.png");
+  });
+
+  it("las marcas en ancho escritorio (o sin ancho) reciben solo la captura de 1280", async () => {
+    await visual({ run: async () => report() });
+    await h.waitFor("block.approvalRequested");
+    h.send("block.reject", { blockId: "V", comentario: "mal", marcas: [{ x: 1, y: 2, texto: "ahí" }] });
+    await until(() => h.provider.count("codificacion") === 2);
+    const prompt = h.provider.calls.filter((c) => c.role === "codificacion")[1]?.prompt ?? "";
+    expect(prompt).toContain("blk-V-1-1280-paso1.png");
+    expect(prompt).not.toContain("blk-V-1-390-paso1.png");
   });
 
   it("rechazo sin marcas: solo el comentario", async () => {

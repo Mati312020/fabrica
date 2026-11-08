@@ -7,6 +7,7 @@ import { formatTime } from "../../store/summarize";
 import { EmptyState } from "../Panel";
 import { BrowserReports } from "./BrowserReportView";
 import { CloseButton } from "./CloseButton";
+import { TokenChart } from "./TokenChart";
 
 const Stat = ({ label, value, unit }: { label: string; value: string; unit?: string }) => (
   <div>
@@ -55,6 +56,7 @@ export function AgentDetail({ id }: { id: string }) {
         <Stat label={t("detail.input")} value={int(agent.entrada)} unit={t("detail.tokens")} />
         <Stat label={t("detail.output")} value={int(agent.salida)} unit={t("detail.tokens")} />
       </div>
+      <TokenChart serie={agent.serie} />
       {agent.taskId ? <BrowserReports taskId={agent.taskId} /> : null}
       <div className="flex min-h-0 flex-col gap-2">
         <span className="lbl">{t("detail.liveText")}</span>

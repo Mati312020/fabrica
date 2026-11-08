@@ -5,6 +5,15 @@ export interface Mark {
   texto: string;
 }
 
+/** Ancho de la vista previa tal como lo nombra el contrato. */
+export type Ancho = "escritorio" | "movil";
+
+/**
+ * Traduce el ancho de la UI al del contrato.
+ * @param width Ancho elegido en la vista previa.
+ */
+export const toAncho = (width: "desktop" | "mobile"): Ancho => (width === "mobile" ? "movil" : "escritorio");
+
 /** Máximo de marcas que acepta el contrato. */
 export const MAX_MARKS = 30;
 

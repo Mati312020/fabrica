@@ -1,20 +1,14 @@
 import type { ApiKeyResult } from "@fabrica/events";
-import { BrowserWindow, dialog, ipcMain, type IpcMainInvokeEvent } from "electron";
+import { BrowserWindow, dialog, ipcMain } from "electron";
 import { CHANNELS } from "./channels";
 import type { EngineProcess } from "./engineProcess";
 import { loadSettings, saveSettings } from "./settings";
 import { clearApiKey, hasApiKey, isValidApiKeyFormat, saveApiKey } from "./secrets";
-import { isTrustedUrl } from "./trust";
-
-/** Rechaza invocaciones que no vengan de la UI de Fabrica!. */
-function guard<A extends unknown[], R>(handler: (...args: A) => Promise<R>) {
-  return (event: IpcMainInvokeEvent, ...args: A): Promise<R> => {
-    if (!isTrustedUrl(event.senderFrame?.url)) throw new Error("Remitente no autorizado");
-    return handler(...args);
-  };
-}
+import { guard } from "./guard";
+import { registerEngineConfigIpc } from "./ipcEngine";
 
 async function setApiKey(engine: EngineProcess, key: unknown): Promise<ApiKeyResult> {
+  if (engine.kind === "remote") return { ok: false, error: "engine_remote" };
   if (!isValidApiKeyFormat(key)) return { ok: false, error: "invalid_format" };
   if (!engine.alive()) return { ok: false, error: "engine_unavailable" };
   if (!(await saveApiKey(key))) return { ok: false, error: "encryption_unavailable" };
@@ -22,8 +16,9 @@ async function setApiKey(engine: EngineProcess, key: unknown): Promise<ApiKeyRes
   return { ok: true };
 }
 
-/** Abre el selector de carpeta; guarda la elegida y se la manda al motor. */
+/** Abre el selector de carpeta; guarda la elegida y se la manda al motor. Con motor remoto la carpeta es del servidor. */
 async function chooseWorkspace(engine: EngineProcess): Promise<string | null> {
+  if (engine.kind === "remote") return null;
   const parent = BrowserWindow.getFocusedWindow() ?? undefined;
   const options = { properties: ["openDirectory", "createDirectory"] as ("openDirectory" | "createDirectory")[] };
   const result = await (parent ? dialog.showOpenDialog(parent, options) : dialog.showOpenDialog(options));
@@ -39,6 +34,7 @@ async function chooseWorkspace(engine: EngineProcess): Promise<string | null> {
  * @param engine Proceso del motor.
  */
 export function registerIpc(engine: EngineProcess): void {
+  registerEngineConfigIpc();
   ipcMain.handle(
     CHANNELS.getConnection,
     guard(() => engine.connection.catch(() => null)),

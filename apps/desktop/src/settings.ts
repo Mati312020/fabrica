@@ -3,7 +3,11 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import { z } from "zod";
 
-const settingsSchema = z.object({ workspace: z.string().nullable().default(null) });
+const settingsSchema = z.object({
+  workspace: z.string().nullable().default(null),
+  /** Motor elegido; el token del remoto no está acá: va cifrado en su propio archivo. */
+  engine: z.object({ mode: z.enum(["local", "remote"]).default("local"), url: z.string().nullable().default(null) }).default({ mode: "local", url: null }),
+});
 
 /** Ajustes no secretos de la app, guardados en `userData/settings.json`. */
 export type Settings = z.infer<typeof settingsSchema>;

@@ -2,9 +2,12 @@ import type { EngineConnection } from "@fabrica/events";
 import { utilityProcess } from "electron";
 import { randomBytes } from "node:crypto";
 import path from "node:path";
+import { packagedEnv } from "./packagedPaths";
 
 /** Motor corriendo como proceso hijo. */
 export interface EngineProcess {
+  /** `local` = proceso hijo de esta app; `remote` = motor de un servidor (key y carpeta viven allá). */
+  kind: "local" | "remote";
   /** Se resuelve cuando el motor informa `listening`; falla si muere antes. */
   connection: Promise<EngineConnection>;
   alive(): boolean;
@@ -23,7 +26,7 @@ export interface EngineProcess {
  */
 export function startEngineProcess(onExit: (code: number) => void): EngineProcess {
   const token = randomBytes(32).toString("hex");
-  const child = utilityProcess.fork(path.join(__dirname, "engine.cjs"), [], { serviceName: "fabrica-engine" });
+  const child = utilityProcess.fork(path.join(__dirname, "engine.cjs"), [], { serviceName: "fabrica-engine", env: packagedEnv() });
   let alive = true;
   let killedByUs = false;
 
@@ -44,6 +47,7 @@ export function startEngineProcess(onExit: (code: number) => void): EngineProces
   child.postMessage({ type: "init", token });
 
   return {
+    kind: "local",
     connection,
     alive: () => alive,
     sendApiKey: (key) => child.postMessage({ type: "config.apiKey", key }),

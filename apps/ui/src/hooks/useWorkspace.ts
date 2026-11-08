@@ -1,4 +1,5 @@
 import { useFabricaStore } from "../store/store";
+import { useEngineConfig } from "./useEngineConfig";
 
 /** Último tramo de una ruta (Windows o POSIX). */
 export function folderName(path: string): string {
@@ -12,10 +13,13 @@ export function folderName(path: string): string {
 export function useWorkspace() {
   const path = useFabricaStore((s) => s.domain.workspace);
   const bridge = window.fabrica?.workspace;
+  const { remote } = useEngineConfig();
   return {
+    /** Con motor remoto la carpeta es del servidor: no hay diálogo local. */
+    remote,
     path,
     name: path ? folderName(path) : null,
-    canChoose: Boolean(bridge),
+    canChoose: Boolean(bridge) && !remote,
     choose: () => void bridge?.choose(),
   };
 }

@@ -19,6 +19,8 @@ export const commandSchema = z.discriminatedUnion("type", [
     comentario: z.string().max(4000),
     /** Marcas sobre la vista previa; opcional (sin marcas = rechazo solo con comentario). */
     marcas: z.array(mark).max(30).optional(),
+    /** Ancho de la vista previa en el que se hicieron las marcas (escritorio 1280 o móvil 390); sin él se asume escritorio. */
+    ancho: z.enum(["escritorio", "movil"]).optional(),
   }),
   msg("project.setCommitPerBlock", { enabled: z.boolean() }),
   msg("memory.delete", { id: z.string() }),

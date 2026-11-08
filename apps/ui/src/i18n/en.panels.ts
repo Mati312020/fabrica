@@ -43,6 +43,7 @@ export const enPanels: typeof esPanels = {
     empty: "No budget reported yet",
     used: "{{pct}}% used",
     phase: { normal: "RUNNING", aviso: "WARNING 80 %", pausa: "PAUSED 95 %" },
+    tokens: "input {{input}} · output {{output}}",
     thresholds: "warning at {{warn}} · pause at {{pause}}",
     reserve: "Use the 5 % reserve · {{amount}}",
     final: "Hard stop: raise the limit to continue.",

@@ -1,4 +1,5 @@
 import type { FabricaEvent } from "@fabrica/events";
+import { appendPoint } from "../lib/tokenSeries";
 import { light, patchAgent } from "./fx";
 import type { DomainState } from "./state";
 import type { AgentInfo, BlockInfo } from "./types";
@@ -7,7 +8,7 @@ const MAX_TEXT = 4000;
 
 const blank = (id: string, rama: string, at: string, order: number) => ({
   id, rama, order, estado: "esperando" as const, pct: null, herramienta: null, tarea: null,
-  taskId: null, entrada: 0, salida: 0, costo: 0, texto: "", errores: 0, escalado: false,
+  taskId: null, entrada: 0, salida: 0, costo: 0, serie: [], texto: "", errores: 0, escalado: false,
   startedAt: null, lastAt: at,
 });
 
@@ -70,8 +71,12 @@ export function reduceAgents(state: DomainState, event: FabricaEvent): DomainSta
       return patchAgent(state, event.data.id, at, { pct: event.data.pct });
     case "agent.tool":
       return patchAgent(state, event.data.id, at, { herramienta: { nombre: event.data.herramienta, detalle: event.data.detalle } });
-    case "agent.tokens":
-      return patchAgent(state, event.data.id, at, { entrada: event.data.entrada, salida: event.data.salida, costo: event.data.costo });
+    case "agent.tokens": {
+      const { id, entrada, salida, costo } = event.data;
+      const agent = state.agents[id];
+      const serie = agent ? appendPoint(agent.serie, entrada - agent.entrada, salida - agent.salida) : [];
+      return patchAgent(state, id, at, { entrada, salida, costo, serie });
+    }
     case "agent.output": {
       const texto = (state.agents[event.data.id]?.texto ?? "") + event.data.texto;
       return patchAgent(state, event.data.id, at, { texto: texto.slice(-MAX_TEXT), herramienta: null });

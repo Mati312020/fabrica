@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import type { SendCommand } from "../hooks/useEngine";
 import { ApiKeySection } from "./ApiKeySection";
 import { CommitSwitch } from "./CommitSwitch";
+import { EngineSection } from "./EngineSection";
 import { LanguageSwitch } from "./LanguageSwitch";
 import { ThemeSwitch } from "./ThemeSwitch";
 
@@ -12,7 +13,7 @@ interface SettingsDrawerProps {
   send: SendCommand;
 }
 
-/** Panel lateral de ajustes: API key, tema e idioma. Se cierra con Esc o clic afuera. */
+/** Panel lateral de ajustes: motor, API key, tema e idioma. Se cierra con Esc o clic afuera. */
 export function SettingsDrawer({ onClose, send }: SettingsDrawerProps) {
   const { t } = useTranslation();
 
@@ -42,6 +43,7 @@ export function SettingsDrawer({ onClose, send }: SettingsDrawerProps) {
             {t("settings.close")}
           </button>
         </div>
+        <EngineSection />
         <ApiKeySection />
         <CommitSwitch send={send} />
         <div className="flex items-center justify-between">

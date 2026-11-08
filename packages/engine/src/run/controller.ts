@@ -76,7 +76,7 @@ export function createController(deps: ControllerDeps): Controller {
       case "block.approve": return resolve(`block:${command.data.blockId}`, { approve: true });
       case "block.reject":
         return resolve(`block:${command.data.blockId}`, {
-          approve: false, comentario: command.data.comentario, marcas: command.data.marcas ?? [],
+          approve: false, comentario: command.data.comentario, marcas: command.data.marcas ?? [], ancho: command.data.ancho ?? "escritorio",
         });
       case "project.setCommitPerBlock": return setCommitPerBlock(ctx, command.data.enabled);
       case "memory.read": return memory.read(command, reply);

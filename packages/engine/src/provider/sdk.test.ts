@@ -22,6 +22,16 @@ describe("buildOptions", () => {
     expect(options.model).toBe("sonnet");
   });
 
+  it("usa el CLI desempaquetado que informa Electron (FABRICA_CLAUDE_BIN) y, si no, el del SDK", () => {
+    expect(options.pathToClaudeCodeExecutable).toBeUndefined();
+    process.env["FABRICA_CLAUDE_BIN"] = "C:/app/unpacked/claude.exe";
+    try {
+      expect(buildOptions(req, "k", new AbortController()).pathToClaudeCodeExecutable).toBe("C:/app/unpacked/claude.exe");
+    } finally {
+      delete process.env["FABRICA_CLAUDE_BIN"];
+    }
+  });
+
   it("pasa la key solo por env y el esquema como json_schema", () => {
     expect(options.env?.["ANTHROPIC_API_KEY"]).toBe("sk-ant-secreta");
     expect(JSON.stringify({ ...options, env: undefined })).not.toContain("secreta");

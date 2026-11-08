@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { useEscape } from "../../hooks/useEscape";
 import { usePreviewReview } from "../../hooks/usePreviewReview";
-import { toCommandMarks, type Mark } from "../../lib/marks";
+import { toAncho, toCommandMarks, type Ancho, type Mark } from "../../lib/marks";
 import type { BlockInfo } from "../../store/types";
 import { MarkList } from "./MarkList";
 import { PreviewFrame } from "./PreviewFrame";
@@ -13,7 +13,7 @@ interface PreviewReviewProps {
   /** URL ya validada como 127.0.0.1. */
   url: string;
   onApprove(): void;
-  onReject(comment: string, marks: Mark[]): void;
+  onReject(comment: string, marks: Mark[], ancho: Ancho): void;
   onClose(): void;
 }
 
@@ -44,7 +44,7 @@ export function PreviewReview({ block, url, onApprove, onReject, onClose }: Prev
             <textarea id="preview-comment" value={r.comment} maxLength={4000} onChange={(e) => r.setComment(e.target.value)} />
             <div className="mt-auto flex flex-col gap-2.5">
               <button type="button" className="btn big ok" onClick={onApprove}>{t("preview.approve")}</button>
-              <button type="button" disabled={!r.canReject} className="btn big no" onClick={() => onReject(r.comment.trim(), toCommandMarks(r.marks))}>
+              <button type="button" disabled={!r.canReject} className="btn big no" onClick={() => onReject(r.comment.trim(), toCommandMarks(r.marks), toAncho(r.width))}>
                 {r.marks.length === 0 ? t("preview.rejectComment") : t("preview.reject", { count: r.marks.length })}
               </button>
               <span className="mono text-[11px] leading-normal text-tx3">{t("preview.rejectNote")}</span>

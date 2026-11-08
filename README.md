@@ -14,10 +14,15 @@ npm run build      # build de la UI y del proceso main/preload/motor
 npm run lint       # ESLint, 0 warnings (incluye max-lines: 100)
 npm run typecheck  # tsc --noEmit en cada workspace
 npm test           # vitest
+npm run dist       # instalador NSIS (sin firma) en release/Fabrica-Setup-<versión>.exe
 ```
 
 `dev:web`: el motor imprime la URL con el token (`http://localhost:5173/?ws=...&token=...`). Abrila en el navegador.
-Para fijar el token: `FABRICA_DEV_TOKEN=...`. La API key solo se guarda desde la app de escritorio.
+Sin token definido (loopback) el motor genera uno de 32 bytes; para fijarlo: `FABRICA_TOKEN=...` (mínimo 32 bytes; `FABRICA_DEV_TOKEN` sigue valiendo). La API key solo se guarda desde la app de escritorio.
+
+Motor en un servidor (`--host`, `--tls-cert`, `--behind-proxy`, token, Origin): `docs/SERVIDOR.md`.
+Instalador: `npm run dist`; el ícono sale de `apps/desktop/build/icon.svg` (`npm run icon -w @fabrica/desktop`).
+Windows SmartScreen advierte al instalar porque el instalador no está firmado.
 
 ## Estructura
 

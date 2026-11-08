@@ -21,6 +21,12 @@ export interface ToolUse {
   detalle: string;
 }
 
+/** Tokens consumidos en una actualización de uso de un agente. */
+export interface TokenPoint {
+  entrada: number;
+  salida: number;
+}
+
 /** Agente conocido por los eventos `agent.*` (los tokens y costos son acumulados). */
 export interface AgentInfo {
   id: string;
@@ -36,6 +42,8 @@ export interface AgentInfo {
   entrada: number;
   salida: number;
   costo: number;
+  /** Tokens de cada actualización de uso (la diferencia entre dos `agent.tokens`), las más recientes. */
+  serie: TokenPoint[];
   texto: string;
   errores: number;
   escalado: boolean;
@@ -122,16 +130,4 @@ export interface Verdict {
   motivo: string;
 }
 
-/** Color de un cable encendido. */
-export type FxColor = ModelName | "ok" | "err";
-
-/** Último encendido de un cable: `seq` cambia con cada evento y reinicia la animación. */
-export interface EdgeFx {
-  seq: number;
-  color: FxColor;
-  /** Segmento dentro del recorrido (0 primero): retrasa la mecha. */
-  step: number;
-}
-
-/** Fase del presupuesto según los avisos del motor. */
-export type BudgetPhase = "normal" | "aviso" | "pausa";
+export type { BudgetPhase, EdgeFx, FxColor } from "./fxTypes";

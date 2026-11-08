@@ -69,5 +69,8 @@ export const esRun = {
     reason: "motivo del veredicto",
     noReason: "Sin motivo informado.",
     noAudits: "Todavía no hubo auditorías.",
+    series: "tokens por actualización",
+    seriesEmpty: "Todavía no hay consumo registrado.",
+    seriesLabel: "Serie de tokens: {{count}} actualizaciones",
   },
 };

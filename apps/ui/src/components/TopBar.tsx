@@ -46,6 +46,7 @@ export function TopBar({ send, onOpenSettings }: TopBarProps) {
           {t("topbar.chooseFolder")}
         </button>
       ) : null}
+      {workspace.remote ? <span className="whitespace-nowrap font-mono text-[10.5px] text-warn">{t("topbar.remoteFolder")}</span> : null}
       <ModelChips />
       <Sep />
       <PauseButton send={send} />

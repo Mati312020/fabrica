@@ -44,6 +44,28 @@ export function costByModel(agents: DomainState["agents"]): Record<ModelName, nu
   return total;
 }
 
+/** Costo y tokens acumulados de un modelo. */
+export interface ModelUsage {
+  costo: number;
+  entrada: number;
+  salida: number;
+}
+
+/**
+ * Costo y tokens por modelo, sumando todos los agentes.
+ * @param agents Agentes conocidos.
+ */
+export function usageByModel(agents: DomainState["agents"]): Record<ModelName, ModelUsage> {
+  const blank = (): ModelUsage => ({ costo: 0, entrada: 0, salida: 0 });
+  const total = { opus: blank(), sonnet: blank(), haiku: blank() };
+  for (const a of Object.values(agents)) {
+    total[a.modelo].costo += a.costo;
+    total[a.modelo].entrada += a.entrada;
+    total[a.modelo].salida += a.salida;
+  }
+  return total;
+}
+
 /**
  * Cuántos agentes hay y cuántos están activos por modelo.
  * @param agents Agentes conocidos.

@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { PAUSE_AT, WARN_AT } from "../store/reduceRun";
-import { costByModel } from "../store/selectors";
+import { usageByModel } from "../store/selectors";
 import { useFabricaStore } from "../store/store";
 import { useUi } from "../store/uiStore";
 import type { SendCommand } from "./useEngine";
@@ -16,7 +16,7 @@ export function useBudget(send: SendCommand) {
   const agents = useFabricaStore((s) => s.domain.agents);
   const reserveAsked = useUi((s) => s.reserveAsked);
   const askReserve = useUi((s) => s.askReserve);
-  const costs = useMemo(() => costByModel(agents), [agents]);
+  const usage = useMemo(() => usageByModel(agents), [agents]);
   const limit = budget?.limite ?? fallbackLimit;
   const pct = budget && limit > 0 ? Math.min(100, (budget.usado / limit) * 100) : 0;
   return {
@@ -24,7 +24,7 @@ export function useBudget(send: SendCommand) {
     limit,
     pct,
     phase,
-    costs,
+    usage,
     warnAt: (limit * WARN_AT) / 100,
     pauseAt: (limit * PAUSE_AT) / 100,
     reserveUsd: (limit * RESERVE_SHARE) / 100,

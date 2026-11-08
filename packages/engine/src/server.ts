@@ -1,7 +1,5 @@
 import { statSync } from "node:fs";
-import type { AddressInfo } from "node:net";
 import path from "node:path";
-import { WebSocketServer } from "ws";
 import { DEV_UI_ORIGINS, originAllowed } from "./auth.js";
 import { createBus } from "./bus.js";
 import { attachConnection } from "./connection.js";
@@ -9,6 +7,7 @@ import type { ModelProvider } from "./provider/types.js";
 import { SdkProvider } from "./provider/sdk.js";
 import { createController } from "./run/controller.js";
 import { createMemoryStore } from "./memory/store.js";
+import { listen, type TlsOptions } from "./listen.js";
 import { createState } from "./state.js";
 
 const MAX_PAYLOAD_BYTES = 64 * 1024;
@@ -18,6 +17,10 @@ export interface EngineOptions {
   token: string;
   /** Puerto TCP; 0 (por defecto) elige uno libre. */
   port?: number;
+  /** Interfaz de red; por defecto 127.0.0.1. Un host no loopback exige que el llamador haya validado TLS o proxy. */
+  host?: string;
+  /** Certificado y clave: el motor sirve `wss://` por sí mismo. */
+  tls?: TlsOptions;
   /** Orígenes web permitidos además de null, file:// y app://. */
   allowedOrigins?: readonly string[];
   /** Proveedor de modelos; por defecto el SDK real. Los tests inyectan un guion. */
@@ -48,8 +51,8 @@ function validDirectory(dir: string | null): string | null {
 }
 
 /**
- * Levanta el WebSocket del motor, siempre en 127.0.0.1.
- * @param options Token de sesión, puerto, orígenes permitidos y proveedor.
+ * Levanta el WebSocket del motor (por defecto en 127.0.0.1).
+ * @param options Token de sesión, host, puerto, TLS, orígenes permitidos y proveedor.
  */
 export async function startEngine(options: EngineOptions): Promise<EngineHandle> {
   const allowed = options.allowedOrigins ?? DEV_UI_ORIGINS;
@@ -58,20 +61,17 @@ export async function startEngine(options: EngineOptions): Promise<EngineHandle>
   const provider = options.provider ?? new SdkProvider(state.apiKey);
   const controller = createController({ emit: bus.emit, provider, state, memory: createMemoryStore() });
   if (options.memoryPath) controller.setMemoryPath(options.memoryPath);
-  const wss = new WebSocketServer({
-    host: "127.0.0.1",
+  const { wss, port, close } = await listen({
+    host: options.host ?? "127.0.0.1",
     port: options.port ?? 0,
+    tls: options.tls,
     maxPayload: MAX_PAYLOAD_BYTES,
-    verifyClient: ({ origin }: { origin?: string }) => originAllowed(origin, allowed),
-  });
-  await new Promise<void>((resolve, reject) => {
-    wss.once("listening", resolve);
-    wss.once("error", reject);
+    verifyOrigin: (origin) => originAllowed(origin, allowed),
   });
   wss.on("connection", (socket) => attachConnection(socket, { token: options.token, bus, controller }));
 
   return {
-    port: (wss.address() as AddressInfo).port,
+    port,
     setApiKey(key) {
       state.setApiKey(key);
       controller.emitStatus();
@@ -83,11 +83,9 @@ export async function startEngine(options: EngineOptions): Promise<EngineHandle>
       controller.guardMemory();
       controller.emitStatus();
     },
-    close: () =>
-      new Promise<void>((resolve) => {
-        controller.shutdown();
-        for (const client of wss.clients) client.terminate();
-        wss.close(() => resolve());
-      }),
+    close() {
+      controller.shutdown();
+      return close();
+    },
   };
 }

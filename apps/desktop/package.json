@@ -1,21 +1,79 @@
 {
   "name": "@fabrica/desktop",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.5.0",
   "type": "module",
   "main": "dist/main.cjs",
   "scripts": {
     "dev": "node scripts/dev.mjs",
     "build": "node scripts/build.mjs",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "icon": "node scripts/make-icon.mjs",
+    "dist": "node scripts/dist.mjs"
   },
   "devDependencies": {
+    "@fabrica/events": "^0.0.0",
+    "@resvg/resvg-js": "^2.6.2",
     "@types/node": "^26.6.6",
-    "electron": "^45.2.3",
+    "electron": "45.2.3",
+    "electron-builder": "^26.18.0",
     "esbuild": "^0.28.2"
   },
   "dependencies": {
-    "@fabrica/events": "^0.0.0",
+    "@anthropic-ai/claude-agent-sdk": "0.3.319",
+    "@anthropic-ai/sdk": "^1.6.0",
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "playwright-core": "^1.65.0",
     "zod": "^4.6.7"
+  },
+  "description": "Fabrica! - orquestador visual de agentes Claude",
+  "author": "ByteCraft",
+  "build": {
+    "appId": "ar.com.bytecraft.fabrica",
+    "productName": "Fabrica!",
+    "copyright": "ByteCraft",
+    "asar": true,
+    "directories": {
+      "output": "../../release",
+      "buildResources": "build"
+    },
+    "files": [
+      "dist/**",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "../ui/dist",
+        "to": "ui/dist"
+      }
+    ],
+    "asarUnpack": [
+      "node_modules/@anthropic-ai/**",
+      "node_modules/playwright-core/**"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.ico",
+      "signAndEditExecutable": true
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "perMachine": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Fabrica!",
+      "artifactName": "Fabrica-Setup-${version}.${ext}",
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico"
+    },
+    "publish": null
   }
 }

@@ -71,5 +71,8 @@ export const enRun: typeof esRun = {
     reason: "verdict reason",
     noReason: "No reason given.",
     noAudits: "No audits yet.",
+    series: "tokens per update",
+    seriesEmpty: "No usage recorded yet.",
+    seriesLabel: "Token series: {{count}} updates",
   },
 };

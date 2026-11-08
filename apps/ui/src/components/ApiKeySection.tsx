@@ -8,7 +8,7 @@ const buttonClass =
 /** Ajuste de la API key: input password, Guardar, Borrar y estado. La key nunca se muestra. */
 export function ApiKeySection() {
   const { t } = useTranslation();
-  const { available, configured, error, busy, save, clear } = useApiKey();
+  const { available, remote, configured, error, busy, save, clear } = useApiKey();
   const [value, setValue] = useState("");
 
   const submit = async (event: FormEvent) => {
@@ -51,7 +51,7 @@ export function ApiKeySection() {
           </button>
         </form>
       ) : (
-        <p className="m-0 text-[12px] text-tx3">{t("settings.desktopOnly")}</p>
+        <p className="m-0 text-[12px] text-tx3">{t(remote ? "settings.remoteKey" : "settings.desktopOnly")}</p>
       )}
       {error ? <p className="m-0 text-[12px] text-err">{t(`settings.errors.${error}`)}</p> : null}
     </section>

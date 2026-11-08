@@ -8,6 +8,9 @@ const MAX_TURNS = 30;
 
 /** Opciones del SDK para un rol. Aislamiento: sin settings del usuario, sin sesión en disco, sin Bash. */
 export function buildOptions(req: RoleRequest, apiKey: string, abortController: AbortController): Options {
+  // En la app empaquetada el binario del CLI vive fuera del asar (no se puede ejecutar desde adentro):
+  // el proceso main de Electron informa su ruta real.
+  const claudeBin = process.env["FABRICA_CLAUDE_BIN"];
   const schema = z.toJSONSchema(req.schema) as Record<string, unknown>;
   delete schema["$schema"];
   return {
@@ -31,6 +34,7 @@ export function buildOptions(req: RoleRequest, apiKey: string, abortController: 
     settingSources: [],
     persistSession: false,
     strictMcpConfig: true,
+    ...(claudeBin ? { pathToClaudeCodeExecutable: claudeBin } : {}),
   };
 }
 

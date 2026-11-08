@@ -3,7 +3,11 @@ import { contextBridge, ipcRenderer } from "electron";
 import { CHANNELS } from "./channels";
 
 const bridge: FabricaBridge = {
-  engine: { getConnection: () => ipcRenderer.invoke(CHANNELS.getConnection) },
+  engine: {
+    getConnection: () => ipcRenderer.invoke(CHANNELS.getConnection),
+    getConfig: () => ipcRenderer.invoke(CHANNELS.engineConfigGet),
+    setConfig: (input) => ipcRenderer.invoke(CHANNELS.engineConfigSet, input),
+  },
   apiKey: {
     set: (key) => ipcRenderer.invoke(CHANNELS.apiKeySet, key),
     status: () => ipcRenderer.invoke(CHANNELS.apiKeyStatus),

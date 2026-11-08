@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { writeDiagnostics } from "./diag.js";
 import { startEngine, type EngineHandle } from "./server.js";
 
 /** `process.parentPort` solo existe dentro de un utilityProcess de Electron. */
@@ -47,4 +48,6 @@ parentPort.on("message", async ({ data }) => {
   if (pendingWorkspace !== null) engine.setWorkspace(pendingWorkspace);
   if (pendingMemory !== null) engine.setMemoryPath(pendingMemory);
   parentPort.postMessage({ type: "listening", port: engine.port });
+  const diagFile = process.env["FABRICA_DIAG_FILE"];
+  if (diagFile) void writeDiagnostics(diagFile, engine.port, m.token);
 });

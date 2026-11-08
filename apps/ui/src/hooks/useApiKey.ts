@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useFabricaStore } from "../store/store";
+import { useEngineConfig } from "./useEngineConfig";
 
 /**
  * Estado y acciones de la API key. La key viaja solo UI -> main; nunca vuelve.
@@ -7,6 +8,7 @@ import { useFabricaStore } from "../store/store";
  */
 export function useApiKey() {
   const bridge = window.fabrica;
+  const { remote } = useEngineConfig();
   const engineConfigured = useFabricaStore((s) => s.domain.apiKeyConfigured);
   const [stored, setStored] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -36,5 +38,5 @@ export function useApiKey() {
     setError(null);
   }, [bridge]);
 
-  return { available: bridge !== undefined, configured: bridge ? stored : engineConfigured, error, busy, save, clear };
+  return { available: bridge !== undefined && !remote, remote, configured: bridge && !remote ? stored : engineConfigured, error, busy, save, clear };
 }

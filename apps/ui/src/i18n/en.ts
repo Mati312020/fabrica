@@ -1,6 +1,7 @@
 import type { es } from "./es";
 import { enPanels } from "./en.panels";
 import { enPhase4 } from "./en.phase4";
+import { enPhase5, enRemoteKey } from "./en.phase5";
 import { enRun } from "./en.run";
 
 type Messages = typeof es;
@@ -17,6 +18,7 @@ export const en: Messages = {
     language: "Language",
     settings: "Settings",
     chooseFolder: "Choose folder",
+    remoteFolder: "server folder",
   },
   theme: { oscuro: "Dark", claro: "Light", sistema: "System" },
   connection: {
@@ -49,6 +51,7 @@ export const en: Messages = {
     clear: "Delete",
     configured: "configured",
     missing: "missing",
+    remoteKey: enRemoteKey,
     desktopOnly: "The API key can only be saved from the desktop app.",
     errors: {
       invalid_format: "The key must start with sk-ant- and have a reasonable length.",
@@ -59,4 +62,5 @@ export const en: Messages = {
   ...enRun,
   ...enPanels,
   ...enPhase4,
+  ...enPhase5,
 };

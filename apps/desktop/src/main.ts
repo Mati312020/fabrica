@@ -1,7 +1,7 @@
 import { app, BrowserWindow } from "electron";
 import path from "node:path";
 import { CHANNELS } from "./channels";
-import { startEngineProcess } from "./engineProcess";
+import { chooseEngine } from "./engineRemote";
 import { registerIpc } from "./ipc";
 import { loadApiKey } from "./secrets";
 import { loadSettings } from "./settings";
@@ -10,7 +10,7 @@ import { createWindow } from "./window";
 if (!app.requestSingleInstanceLock()) app.quit();
 
 app.whenReady().then(async () => {
-  const engine = startEngineProcess((code) => {
+  const engine = await chooseEngine((code) => {
     for (const win of BrowserWindow.getAllWindows()) {
       if (!win.isDestroyed()) win.webContents.send(CHANNELS.engineExit, code);
     }

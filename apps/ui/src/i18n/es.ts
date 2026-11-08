@@ -1,5 +1,6 @@
 import { esPanels } from "./es.panels";
 import { esPhase4 } from "./es.phase4";
+import { esPhase5, esRemoteKey } from "./es.phase5";
 import { esRun } from "./es.run";
 
 /** Textos en español rioplatense neutro (idioma por defecto). */
@@ -14,6 +15,7 @@ export const es = {
     language: "Idioma",
     settings: "Ajustes",
     chooseFolder: "Elegir carpeta",
+    remoteFolder: "carpeta del servidor",
   },
   theme: { oscuro: "Oscuro", claro: "Claro", sistema: "Sistema" },
   connection: {
@@ -46,6 +48,7 @@ export const es = {
     clear: "Borrar",
     configured: "configurada",
     missing: "falta",
+    remoteKey: esRemoteKey,
     desktopOnly: "Guardar la API key solo se puede desde la app de escritorio.",
     errors: {
       invalid_format: "La key tiene que empezar con sk-ant- y tener un largo razonable.",
@@ -56,4 +59,5 @@ export const es = {
   ...esRun,
   ...esPanels,
   ...esPhase4,
+  ...esPhase5,
 };

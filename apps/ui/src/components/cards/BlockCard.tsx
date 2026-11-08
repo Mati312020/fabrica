@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { safePreviewUrl } from "../../lib/previewUrl";
-import type { Mark } from "../../lib/marks";
+import type { Ancho, Mark } from "../../lib/marks";
 import type { BlockInfo } from "../../store/types";
 import { PreviewReview } from "../preview/PreviewReview";
 
@@ -9,7 +9,7 @@ import { PreviewReview } from "../preview/PreviewReview";
 interface BlockCardProps {
   block: BlockInfo;
   onApprove(): void;
-  onReject(comment: string, marks?: Mark[]): void;
+  onReject(comment: string, marks?: Mark[], ancho?: Ancho): void;
 }
 
 /** Tarjeta de un bloque visual: archivos, vista previa (solo si es 127.0.0.1) y decisión. */

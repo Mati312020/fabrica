@@ -11,6 +11,10 @@ describe("contrato de la Fase 4", () => {
     expect(cmd({ ...base, marcas: [{ x: 10, y: 99.5, texto: "aquí" }] }).success).toBe(true);
     expect(cmd({ ...base, marcas: [{ x: 101, y: 5, texto: "aquí" }] }).success).toBe(false);
     expect(cmd({ ...base, marcas: [{ x: 1, y: 5 }] }).success).toBe(false);
+    const ancho = (v: unknown) => cmd({ ...base, marcas: [], ancho: v });
+    expect(ancho("movil").success && ancho("movil")).toMatchObject({ data: { data: { ancho: "movil" } } });
+    expect(ancho("tablet").success).toBe(false);
+    expect(cmd(base).success).toBe(true); // sin ancho: el motor asume escritorio
   });
 
   it("project.setCommitPerBlock exige un booleano", () => {

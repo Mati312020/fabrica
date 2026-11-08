@@ -10,7 +10,12 @@ export interface Mark {
   texto: string;
 }
 
-type Decision = { approve: true } | { approve: false; comentario: string; marcas: Mark[] };
+/** Ancho de la vista previa en que se marcó. */
+export type Ancho = "escritorio" | "movil";
+
+const WIDTH_PX: Record<Ancho, number> = { escritorio: 1280, movil: 390 };
+
+type Decision = { approve: true } | { approve: false; comentario: string; marcas: Mark[]; ancho: Ancho };
 
 function prompt(ctx: Ctx, block: PlanBlock, motivos: string[]): string {
   const parts = [`Bloque "${block.nombre}" (${block.tipo}): ${block.descripcion}`];
@@ -29,12 +34,17 @@ function prompt(ctx: Ctx, block: PlanBlock, motivos: string[]): string {
  * @param comentario Comentario del usuario.
  * @param marcas Marcas sobre la vista previa.
  * @param capturas Capturas del último recorrido del bloque.
+ * @param ancho Ancho de la vista previa en que se hicieron las marcas; solo se pasan las capturas de ese ancho.
  */
-export function rejectionReason(comentario: string, marcas: readonly Mark[], capturas: readonly string[] = []): string {
+export function rejectionReason(
+  comentario: string, marcas: readonly Mark[], capturas: readonly string[] = [], ancho: Ancho = "escritorio",
+): string {
   const lines = [`El usuario rechazó el bloque: ${comentario}`];
   marcas.forEach((m, i) => lines.push(`  Marca ${i + 1} (x ${m.x}%, y ${m.y}%): ${m.texto}`));
-  if (marcas.length && capturas.length) {
-    lines.push("  Las marcas son % del área visible. Capturas por ancho (el ancho está en el nombre):", ...capturas.map((c) => `  - ${c}`));
+  const px = WIDTH_PX[ancho];
+  const shots = capturas.filter((c) => c.includes(`-${px}-`));
+  if (marcas.length && shots.length) {
+    lines.push(`  Las marcas son % del área visible en ancho ${ancho} (${px}px). Capturas de ese ancho:`, ...shots.map((c) => `  - ${c}`));
   }
   return lines.join("\n");
 }
@@ -59,7 +69,7 @@ export async function runBlock(ctx: Ctx, rama: string, block: PlanBlock): Promis
       ctx.emit("block.approvalRequested", { blockId: block.id, previewUrl, archivos: out.archivos });
       const decision = await new Promise<Decision>((resolve) => ctx.decisions.set(`block:${block.id}`, (d) => resolve(d as Decision)));
       if (!decision.approve) {
-        motivos = [rejectionReason(decision.comentario, decision.marcas, ctx.captures.get(block.id))];
+        motivos = [rejectionReason(decision.comentario, decision.marcas, ctx.captures.get(block.id), decision.ancho)];
         continue;
       }
     }

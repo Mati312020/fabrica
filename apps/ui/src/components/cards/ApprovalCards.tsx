@@ -16,7 +16,7 @@ export function ApprovalCards({ send }: { send: SendCommand }) {
           return <PlanCard key={card.key} plan={card.plan} onApprove={() => a.approvePlan(card)} onReject={(c) => a.rejectPlan(card, c)} />;
         }
         if (card.kind === "block") {
-          return <BlockCard key={card.key} block={card.block} onApprove={() => a.approveBlock(card)} onReject={(c, m) => a.rejectBlock(card, c, m)} />;
+          return <BlockCard key={card.key} block={card.block} onApprove={() => a.approveBlock(card)} onReject={(c, m, w) => a.rejectBlock(card, c, m, w)} />;
         }
         return <BlockedCard key={card.key} blocked={card.blocked} onAnswer={(d) => a.answer(card, d)} />;
       })}
