@@ -16,7 +16,7 @@ interface ChatProps {
 export function Chat({ send }: ChatProps) {
   const { t } = useTranslation();
   const messages = useFabricaStore((s) => s.domain.messages);
-  const marker = useFabricaStore((s) => `${s.domain.messages.length}:${s.domain.plan?.planId}:${s.domain.blocked.length}`);
+  const marker = useFabricaStore((s) => `${s.domain.messages.length}:${s.domain.plan?.planId}:${s.domain.blocked.length}:${Object.keys(s.domain.notices).length}`);
   const listRef = useStickToBottom<HTMLDivElement>(marker);
   return (
     <Panel label={t("chat.title")} className="gap-2 px-3.5 py-3">

@@ -1,19 +1,24 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { safePreviewUrl } from "../../lib/previewUrl";
+import type { Mark } from "../../lib/marks";
 import type { BlockInfo } from "../../store/types";
+import { PreviewReview } from "../preview/PreviewReview";
 
 /** Props de {@link BlockCard}. */
 interface BlockCardProps {
   block: BlockInfo;
   onApprove(): void;
-  onReject(comment: string): void;
+  onReject(comment: string, marks?: Mark[]): void;
 }
 
-/** Tarjeta de un bloque visual: lista sus archivos (sin vista previa hasta la Fase 4) y pide decisión. */
+/** Tarjeta de un bloque visual: archivos, vista previa (solo si es 127.0.0.1) y decisión. */
 export function BlockCard({ block, onApprove, onReject }: BlockCardProps) {
   const { t } = useTranslation();
   const [rejecting, setRejecting] = useState(false);
   const [comment, setComment] = useState("");
+  const [reviewing, setReviewing] = useState(false);
+  const url = safePreviewUrl(block.previewUrl);
   return (
     <div className="acard">
       <div>
@@ -21,6 +26,11 @@ export function BlockCard({ block, onApprove, onReject }: BlockCardProps) {
         <span className="mono text-[12px] text-tx">{block.nombre}</span>
       </div>
       {block.previewUrl ? <span className="mono truncate text-[11px] text-tx2">{block.previewUrl}</span> : null}
+      {block.previewUrl && !url ? <span className="mono text-[11px] text-err">{t("preview.unsafe")}</span> : null}
+      {url ? <button type="button" className="btn pri" onClick={() => setReviewing(true)}>{t("preview.open")}</button> : null}
+      {url && reviewing ? (
+        <PreviewReview block={block} url={url} onApprove={onApprove} onReject={onReject} onClose={() => setReviewing(false)} />
+      ) : null}
       {block.archivos.length === 0 ? (
         <span className="mono text-[11px] text-tx3">{t("cards.noFiles")}</span>
       ) : (

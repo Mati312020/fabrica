@@ -3,6 +3,7 @@ import { auditors } from "../../lib/diagram/columns";
 import type { SendCommand } from "../../hooks/useEngine";
 import { useFabricaStore } from "../../store/store";
 import { EmptyState } from "../Panel";
+import { BrowserReports } from "./BrowserReportView";
 import { CloseButton } from "./CloseButton";
 import { MemoryList } from "./MemoryList";
 
@@ -40,6 +41,7 @@ export function AuditDetail({ send }: { send: SendCommand }) {
       ) : (
         <EmptyState>{t("detail.noAudits")}</EmptyState>
       )}
+      <BrowserReports />
       <MemoryList send={send} />
       <span className="mono text-[11px] text-tx3">{t("memory.note")}</span>
       <ul className="m-0 flex list-none flex-col p-0">

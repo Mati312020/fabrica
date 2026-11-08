@@ -2,10 +2,12 @@ import type { MemoryState } from "./memoryTypes";
 import type {
   AgentInfo,
   BlockInfo,
+  BrowserReport,
   BlockedTask,
   BranchInfo,
   BudgetPhase,
   ChatMessage,
+  EngineNotice,
   EdgeFx,
   LogEntry,
   PlanInfo,
@@ -21,6 +23,14 @@ export interface DomainState {
   paused: boolean;
   workspace: string | null;
   budgetLimit: number;
+  /** Si cada bloque aprobado se guarda como commit. */
+  commitPerBlock: boolean;
+  /** Si la carpeta del proyecto es un repo git. */
+  gitRepo: boolean;
+  /** Último `engine.error` por código. */
+  notices: Record<string, EngineNotice>;
+  /** Informes del navegador por tarea. */
+  browserReports: Record<string, BrowserReport>;
   messages: ChatMessage[];
   log: LogEntry[];
   branches: BranchInfo[];
@@ -45,6 +55,10 @@ export const initialState: DomainState = {
   paused: false,
   workspace: null,
   budgetLimit: 0,
+  commitPerBlock: false,
+  gitRepo: false,
+  notices: {},
+  browserReports: {},
   messages: [],
   log: [],
   branches: [],

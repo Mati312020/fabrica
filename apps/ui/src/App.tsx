@@ -26,7 +26,7 @@ export function App() {
           <Budget send={send} />
         </div>
       </main>
-      {settingsOpen ? <SettingsDrawer onClose={closeSettings} /> : null}
+      {settingsOpen ? <SettingsDrawer onClose={closeSettings} send={send} /> : null}
     </div>
   );
 }

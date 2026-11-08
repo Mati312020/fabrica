@@ -27,6 +27,7 @@ export const esPanels = {
     building_one: "en construcción · {{count}}",
     building_other: "en construcción · {{count}}",
     assembled: "conjunto ensamblado",
+    commit: "commit {{hash}}",
     state: {
       propuesto: "propuesto",
       pendiente: "en cola",

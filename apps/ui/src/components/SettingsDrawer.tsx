@@ -1,16 +1,19 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import type { SendCommand } from "../hooks/useEngine";
 import { ApiKeySection } from "./ApiKeySection";
+import { CommitSwitch } from "./CommitSwitch";
 import { LanguageSwitch } from "./LanguageSwitch";
 import { ThemeSwitch } from "./ThemeSwitch";
 
 /** Props de {@link SettingsDrawer}. */
 interface SettingsDrawerProps {
   onClose(): void;
+  send: SendCommand;
 }
 
 /** Panel lateral de ajustes: API key, tema e idioma. Se cierra con Esc o clic afuera. */
-export function SettingsDrawer({ onClose }: SettingsDrawerProps) {
+export function SettingsDrawer({ onClose, send }: SettingsDrawerProps) {
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -40,6 +43,7 @@ export function SettingsDrawer({ onClose }: SettingsDrawerProps) {
           </button>
         </div>
         <ApiKeySection />
+        <CommitSwitch send={send} />
         <div className="flex items-center justify-between">
           <span className="lbl">{t("topbar.theme")}</span>
           <ThemeSwitch />

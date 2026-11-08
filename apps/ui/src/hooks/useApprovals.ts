@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from "react";
+import type { Mark } from "../lib/marks";
 import { pendingCards, type PendingCard } from "../store/selectors";
 import { useFabricaStore } from "../store/store";
 import { useUi } from "../store/uiStore";
@@ -24,8 +25,8 @@ export function useApprovals(send: SendCommand) {
     rejectPlan: (c: Plan, comentario: string) =>
       done(c.key, send("plan.reject", { planId: c.plan.planId, ...(comentario ? { comentario } : {}) })),
     approveBlock: (c: Block) => done(c.key, send("block.approve", { blockId: c.block.id })),
-    rejectBlock: (c: Block, comentario: string) =>
-      done(c.key, send("block.reject", { blockId: c.block.id, comentario })),
+    rejectBlock: (c: Block, comentario: string, marcas?: Mark[]) =>
+      done(c.key, send("block.reject", { blockId: c.block.id, comentario, ...(marcas?.length ? { marcas } : {}) })),
     answer: (c: Blocked, decision: "reintentar" | "cancelar") =>
       done(c.key, send("run.answer", { taskId: c.blocked.taskId, decision })),
   };

@@ -29,6 +29,7 @@ export const enPanels: typeof esPanels = {
     building_one: "under construction · {{count}}",
     building_other: "under construction · {{count}}",
     assembled: "assembled set",
+    commit: "commit {{hash}}",
     state: {
       propuesto: "proposed",
       pendiente: "queued",

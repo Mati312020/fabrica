@@ -78,6 +78,25 @@ export interface BlockInfo {
   approvalSeq: number;
   /** Número de evento en que se ensambló. */
   assembledSeq: number;
+  /** Hash del commit del bloque (`block.committed`), si se hizo. */
+  hash: string | null;
+}
+
+/** Informe de la auditoría en navegador de una tarea. */
+export interface BrowserReport {
+  seq: number;
+  taskId: string;
+  errores: string[];
+  fallidos: string[];
+  pasosFallidos: string[];
+  capturas: string[];
+}
+
+/** Aviso guiado derivado de un `engine.error`; `seq` cambia con cada repetición. */
+export interface EngineNotice {
+  seq: number;
+  code: string;
+  message: string;
 }
 
 /** Plan pendiente o vigente. */

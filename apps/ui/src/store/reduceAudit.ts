@@ -42,6 +42,10 @@ export function reduceAudit(state: DomainState, event: FabricaEvent): DomainStat
       const withErrors = task && !event.data.ok ? patchAgent(next, task.a, event.at, { errores }) : next;
       return light(withErrors, ["return"], event.data.ok ? "ok" : "err");
     }
+    case "audit.browserReport": {
+      const report = { seq: state.seq, ...event.data };
+      return { ...state, browserReports: { ...state.browserReports, [report.taskId]: report } };
+    }
     case "task.escalated": {
       const task = state.tasks[event.data.taskId];
       return task ? patchAgent(state, task.a, event.at, { escalado: true }) : state;

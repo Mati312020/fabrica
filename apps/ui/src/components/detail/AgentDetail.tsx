@@ -5,6 +5,7 @@ import { elapsedMs, formatElapsed } from "../../lib/agentView";
 import { useFabricaStore } from "../../store/store";
 import { formatTime } from "../../store/summarize";
 import { EmptyState } from "../Panel";
+import { BrowserReports } from "./BrowserReportView";
 import { CloseButton } from "./CloseButton";
 
 const Stat = ({ label, value, unit }: { label: string; value: string; unit?: string }) => (
@@ -54,6 +55,7 @@ export function AgentDetail({ id }: { id: string }) {
         <Stat label={t("detail.input")} value={int(agent.entrada)} unit={t("detail.tokens")} />
         <Stat label={t("detail.output")} value={int(agent.salida)} unit={t("detail.tokens")} />
       </div>
+      {agent.taskId ? <BrowserReports taskId={agent.taskId} /> : null}
       <div className="flex min-h-0 flex-col gap-2">
         <span className="lbl">{t("detail.liveText")}</span>
         <div ref={live} className="live">{agent.texto || t("detail.noText")}</div>

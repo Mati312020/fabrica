@@ -1,0 +1,58 @@
+/** Textos de la Fase 4 (vista previa, informe del navegador, avisos, commit) en español. */
+export const esPhase4 = {
+  preview: {
+    open: "Revisar vista previa…",
+    unsafe: "La vista previa no es una dirección local segura; no se muestra.",
+    dialog: "Aprobación del bloque {{name}}",
+    pending: "aprobación pendiente · bloque visual",
+    title: "vista previa",
+    iframe: "Vista previa del bloque",
+    width: "Ancho de la vista previa",
+    desktop: "Escritorio",
+    mobile: "Móvil",
+    mark: "Marcar en pantalla",
+    marking: "Marcando en pantalla",
+    markLayer: "Capa para marcar zonas",
+    close: "Cerrar",
+    changes: "qué cambiar · {{count}}",
+    markHint: "Hacé clic sobre la vista previa para dejar un pin numerado y escribí qué cambiar.",
+    enableHint: "Activá “Marcar en pantalla” para señalar zonas. Cada marca viaja con el rechazo al agente.",
+    markText: "Comentario de la marca {{n}}",
+    removeMark: "Quitar la marca {{n}}",
+    general: "comentario general",
+    approve: "Aprobar y encastrar",
+    rejectComment: "Rechazar con comentario",
+    reject_one: "Rechazar con {{count}} marca",
+    reject_other: "Rechazar con {{count}} marcas",
+    rejectNote: "Rechazar devuelve el bloque a codificación con las marcas y el comentario; vuelve a pasar por auditoría.",
+  },
+  report: {
+    title: "informe del navegador · tarea {{task}}",
+    clean: "Sin errores en el recorrido.",
+    errors: "errores de consola",
+    failed: "requests fallidos",
+    steps: "pasos fallidos",
+    captures: "capturas",
+    capturesNote: "Rutas en la carpeta del proyecto (.fabrica/capturas); no se abren desde la interfaz.",
+  },
+  notices: {
+    dismiss: "Entendido",
+    no_browser: {
+      title: "SIN NAVEGADOR",
+      help: "No se encontró Microsoft Edge, así que este bloque se audita solo leyendo el código. Instalá o reparar Edge para recorrer la página como un usuario.",
+    },
+    browser_failed: {
+      title: "FALLÓ EL NAVEGADOR",
+      help: "El recorrido en el navegador no pudo completarse. El bloque siguió con la auditoría de código; probá de nuevo o revisá la vista previa a mano.",
+    },
+    git_failed: {
+      title: "FALLÓ EL COMMIT",
+      help: "No se pudo guardar el commit del bloque, pero quedó ensamblado igual. Revisá que la carpeta sea un repo git sano y que git esté instalado.",
+    },
+  },
+  commit: {
+    label: "Commit por bloque",
+    help: "Cada bloque aprobado queda como un commit en la carpeta del proyecto. Nunca se hace push.",
+    noRepo: "Deshabilitado: la carpeta del proyecto todavía no es un repositorio git (corré git init ahí para activarlo).",
+  },
+};

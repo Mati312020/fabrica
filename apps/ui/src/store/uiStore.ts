@@ -26,5 +26,6 @@ export const useUi = create<UiStore>((set) => ({
 export const cardKey = {
   plan: (planId: string) => `plan:${planId}`,
   block: (blockId: string, seq: number) => `block:${blockId}#${seq}`,
+  notice: (code: string, seq: number) => `notice:${code}#${seq}`,
   blocked: (taskId: string, seq: number) => `blocked:${taskId}#${seq}`,
 };

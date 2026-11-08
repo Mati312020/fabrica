@@ -11,7 +11,7 @@ export const PAUSE_AT = 95;
 type PlanBlock = Pick<BlockInfo, "id" | "nombre" | "dependeDe" | "familia" | "tipo">;
 
 const proposed = (b: PlanBlock): BlockInfo => ({
-  ...b, pct: 0, estado: "propuesto", archivos: [], previewUrl: "", approvalSeq: 0, assembledSeq: 0,
+  ...b, pct: 0, estado: "propuesto", archivos: [], previewUrl: "", approvalSeq: 0, assembledSeq: 0, hash: null,
 });
 
 function phaseFor(current: BudgetPhase, usado: number, limite: number): BudgetPhase {
@@ -57,6 +57,12 @@ export function reduceRun(state: DomainState, event: FabricaEvent): DomainState 
       });
     case "block.assembled":
       return patchBlock(state, event.data.blockId, { estado: "ensamblado", pct: 100, assembledSeq: state.seq });
+    case "block.committed":
+      return patchBlock(state, event.data.blockId, { hash: event.data.hash });
+    case "engine.error": {
+      const { code, message } = event.data;
+      return { ...state, notices: { ...state.notices, [code]: { seq: state.seq, code, message } } };
+    }
     case "budget.update": {
       const { usado, limite } = event.data;
       return { ...state, budget: { usado, limite }, budgetPhase: phaseFor(state.budgetPhase, usado, limite) };

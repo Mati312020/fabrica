@@ -1,5 +1,6 @@
 import type { es } from "./es";
 import { enPanels } from "./en.panels";
+import { enPhase4 } from "./en.phase4";
 import { enRun } from "./en.run";
 
 type Messages = typeof es;
@@ -57,4 +58,5 @@ export const en: Messages = {
   },
   ...enRun,
   ...enPanels,
+  ...enPhase4,
 };

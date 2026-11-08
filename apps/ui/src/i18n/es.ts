@@ -1,4 +1,5 @@
 import { esPanels } from "./es.panels";
+import { esPhase4 } from "./es.phase4";
 import { esRun } from "./es.run";
 
 /** Textos en español rioplatense neutro (idioma por defecto). */
@@ -54,4 +55,5 @@ export const es = {
   },
   ...esRun,
   ...esPanels,
+  ...esPhase4,
 };
