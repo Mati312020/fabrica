@@ -1,6 +1,7 @@
 import { mkdir } from "node:fs/promises";
 import path from "node:path";
 import type { Browser, BrowserContext } from "playwright-core";
+import { browserChannel } from "./channel.js";
 import { describeStep, runStep } from "./steps.js";
 import {
   DEFAULT_WIDTHS, NoBrowserError, RUN_TIMEOUT_MS, STEP_TIMEOUT_MS,
@@ -14,7 +15,8 @@ const LOOPBACK = new Set(["127.0.0.1", "localhost", "[::1]"]);
 async function launch(): Promise<Browser> {
   try {
     const { chromium } = await import("playwright-core");
-    return await chromium.launch({ channel: "msedge", headless: true, timeout: LAUNCH_TIMEOUT_MS });
+    const channel = browserChannel();
+    return await chromium.launch({ ...(channel ? { channel } : {}), headless: true, timeout: LAUNCH_TIMEOUT_MS });
   } catch (error) {
     throw new NoBrowserError(error instanceof Error ? error.message.split("\n")[0] ?? "sin navegador" : "sin navegador");
   }

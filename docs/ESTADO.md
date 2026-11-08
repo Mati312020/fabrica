@@ -1,4 +1,4 @@
-# Estado de Fabrica! · 07-nov-2026
+# Estado de Fabrica! · 08-nov-2026
 
 > Leer esto primero al retomar. Spec: `FABRICA-PROYECTO.md`. Fases: `FASE-0.md` … `FASE-5.md`.
 
@@ -13,8 +13,19 @@ build e instalador). Todo el circuito de agentes se verificó con un **proveedor
 | 0 | Electron + UI + motor por WebSocket, API key con DPAPI | conexión, chat ida y vuelta, cifrado de la key | — |
 | 1-2 | Orquestador, ramas, auditoría obligatoria, reintentos, escalamiento, paralelismo, presupuesto, diagrama animado | lógica del motor (tests), UI con un motor de prueba | adaptador del Agent SDK contra la API real |
 | 3 | Memoria SQLite + FTS5 entre proyectos, filtro anti-secretos | repositorio y búsqueda (tests), `node:sqlite` dentro de Electron | calidad de lo que aprende un auditor real |
-| 4 | Vista previa, auditoría en navegador (Edge + Playwright), marcas, montaje isométrico, commit por bloque | recorrido real en Edge contra una página de prueba; git en repo temporal | recorridos propuestos por un agente real; la UI de la vista previa no se miró en pantalla |
+| 4 | Vista previa, auditoría en navegador (Edge + Playwright), marcas, montaje isométrico, commit por bloque | recorrido real en Edge contra una página de prueba; git en repo temporal | recorridos propuestos por un agente real; el contenido del iframe de la vista previa (carga, pero el panel del navegador de Claude no lo pinta en capturas) |
 | 5 | Gráficos de tokens, instalador NSIS, motor en servidor (wss + token) | app empaquetada arranca con su motor; `wss://` con certificado autofirmado | instalación asistida del `.exe`; motor remoto contra un servidor real |
+
+### Revisión en pantalla (08-nov-2026)
+
+Se recorrió la UI completa contra el **motor real** con el proveedor simulado (script fuera del repo,
+respuestas con pausas): chat → investigación → plan auditado → aprobación → 4 bloques (2 en paralelo)
+→ auditoría con Edge real del bloque visual → vista previa → aprobación → 4/4 ensamblados. Se vio:
+foco y atenuación, conectores "mecha" en el color de cada modelo, rechazo y reintento, memoria
+guardando un recuerdo, presupuesto por modelo y montaje isométrico apilado por dependencias.
+Encontrado y corregido: la revisión de vista previa quedaba encerrada en el panel del chat (un
+`backdrop-filter` en un ancestro vuelve relativo a él a `position: fixed`; ahora va por portal) y los
+montos sin redondear en el registro.
 
 ## Por qué se frenó (y qué destraba cada cosa)
 
@@ -23,12 +34,18 @@ build e instalador). Todo el circuito de agentes se verificó con un **proveedor
    corrida. **Destraba:** crear una key con límite bajo (≈ US$ 5) en console.anthropic.com y
    cargarla en Ajustes de la app de escritorio. Primera prueba: proyecto chico, todo con Haiku.
 2. **Motor en el NAS** → no desplegado. **Causa:** pool RAIDZ1 con dos discos con sectores
-   pendientes (un disco más y se pierde el pool) y falta la API key. Plan en `NAS.md`. Falta
-   además el Dockerfile y elegir Chromium en Linux.
+   pendientes (un disco más y se pierde el pool) y falta la API key. Plan en `NAS.md`. El
+   Dockerfile (`packages/engine/Dockerfile`) y la elección de Chromium en Linux ya están, pero la
+   imagen **no se construyó**: esta PC no tiene Docker.
 3. **Tests de bloques técnicos y proyectos con `npm run dev`** → fuera de alcance a propósito:
-   requieren que los agentes ejecuten comandos en la PC. Antes hay que verificar si el `sandbox`
-   del Agent SDK funciona en Windows. Mientras tanto, los bloques técnicos los aprueba la auditoría
-   de código.
+   requieren que los agentes ejecuten comandos en la PC. El Agent SDK 0.3.319 documenta un
+   `sandbox` para **Windows nativo** (el comando corre como un usuario aparte sin derechos propios,
+   con `filesystem.allowWrite` y `network.allowedDomains`; `failIfUnavailable: true` corta si no
+   arranca). **No se probó**: activarlo crea ese usuario en Windows, un cambio de sistema que tiene
+   que autorizar el usuario. Camino propuesto: Bash solo con `sandbox: { enabled: true,
+   failIfUnavailable: true, allowUnsandboxedCommands: false }`, escritura solo en la carpeta del
+   proyecto y red solo al registro de npm. Mientras tanto, los bloques técnicos los aprueba la
+   auditoría de código.
 4. **Instalador sin firma** → Windows SmartScreen advierte al instalar. Solo importa si se
    distribuye a terceros (certificado de firma de código, pago anual).
 

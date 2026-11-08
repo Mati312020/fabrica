@@ -1,0 +1,10 @@
+**/node_modules
+**/dist
+release
+apps
+design
+docs
+.git
+.fabrica
+*.db
+.env*

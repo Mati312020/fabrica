@@ -1,3 +1,4 @@
+import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
 import { useEscape } from "../../hooks/useEscape";
 import { usePreviewReview } from "../../hooks/usePreviewReview";
@@ -22,7 +23,8 @@ export function PreviewReview({ block, url, onApprove, onReject, onClose }: Prev
   const { t } = useTranslation();
   const r = usePreviewReview();
   useEscape(onClose, true);
-  return (
+  // Portal: un ancestro con backdrop-filter (los paneles de vidrio) vuelve relativo a él a `fixed`.
+  return createPortal(
     <div className="fixed inset-0 z-20 flex bg-black/55 p-8" onClick={onClose}>
       <section role="dialog" aria-modal="true" aria-label={t("preview.dialog", { name: block.nombre })} onClick={(e) => e.stopPropagation()} className="glass pcard">
         <div className="flex flex-wrap items-center gap-3">
@@ -52,6 +54,7 @@ export function PreviewReview({ block, url, onApprove, onReject, onClose }: Prev
           </div>
         </div>
       </section>
-    </div>
+    </div>,
+    document.body,
   );
 }

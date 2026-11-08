@@ -42,8 +42,18 @@
 5. En la app de escritorio: Ajustes → Motor → remoto, URL `wss://<nombre-tailscale-del-nas>/` y token.
 6. Probar: conexión, chat, un proyecto chico con Haiku y presupuesto bajo.
 
-## Pendiente de implementar para esto
+## Imagen
 
-- Dockerfile del motor y variable para elegir navegador (Edge en Windows / Chromium en Linux).
+- `packages/engine/Dockerfile` (construir desde la raíz: `docker build -f packages/engine/Dockerfile
+  -t fabrica-engine .`). Node 24, Chromium de Playwright con sus dependencias, usuario sin
+  privilegios (uid 10001), volúmenes `/data/proyectos` y `/data/memoria`. **No se construyó todavía**:
+  la PC de desarrollo no tiene Docker; el primer build va en el NAS.
+- Navegador: `FABRICA_BROWSER_CHANNEL` (por defecto Edge en Windows y el Chromium de Playwright en
+  Linux).
+- El contenedor escucha en `0.0.0.0:4317` **dentro** de su red; en la App de TrueNAS publicar el
+  puerto solo en `127.0.0.1` y exponerlo con `tailscale serve`, nunca en la LAN ni en internet.
+
+## Pendiente de implementar
+
 - Con motor remoto, la carpeta del proyecto vive en el NAS: elegirla desde la UI entre las carpetas
-  de `/data/proyectos` (hoy el selector abre un diálogo local).
+  de `/data/proyectos` (hoy se fija con `FABRICA_WORKSPACE`).
